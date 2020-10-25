@@ -45,7 +45,6 @@ export default {
   }
 
   ul {
-      margin-top: 20px;
     width: 100%;
     text-align: center;
     li {
