@@ -10,17 +10,22 @@ import Header from "./Header/Header"
 export default {
     name: "Layout",
     components: {
-        Header,
+        Header
     }
 }
 </script>
 
 <style lang="scss" scoped>
 #layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
+  height: 100%;
   #router {
     width: calc(100% - 300px);
-    margin-left: 300px;
+    height: 100%;
+    left: 300px;
   }
 }
 </style>

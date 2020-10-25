@@ -12,7 +12,7 @@
         <router-link to="/ReviewLiterature">审核文献</router-link>
       </li>
       <li>
-        <router-link to="/CustomerServiceChat">客服聊天</router-link>
+        <router-link to="/CustomerService">客服聊天</router-link>
       </li>
       <li>
         <router-link to="/ServiceManager">客服管理</router-link>
@@ -30,16 +30,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 #header-container {
-  z-index: 999;
   top: 0;
-  position: fixed;
   width: 300px;
   height: 100%;
   background-color: rgb(52, 152, 219);
   color: white;
   font-size: 12px;
   box-shadow: 0 0 10px rgba($color: grey, $alpha: 0.5);
-
   .header-logo {
       text-align: center;
       background-color: pink;

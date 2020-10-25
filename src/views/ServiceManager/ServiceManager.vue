@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Banner :title="title"></Banner>
+    <Banner :title="title" :icon="'md-list'"></Banner>
     <div class="SM-main">ServiceManager</div>
   </div>
 </template>

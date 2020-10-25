@@ -4,7 +4,7 @@ import Layout from '@/views/Layout/Layout'
 import Journal from '@/views/Journal/Journal'
 import Literature from '@/views/Literature/Literature'
 import ReviewLiterature from '@/views/ReviewLiterature/ReviewLiterature'
-import CustomerServiceChat from '@/views/CustomerServiceChat/CustomerServiceChat'
+import CustomerService from '@/views/CustomerService/CustomerService'
 import ServiceManager from '@/views/ServiceManager/ServiceManager'
 
 Vue.use(Router)
@@ -33,9 +33,9 @@ export default new Router({
           component: ReviewLiterature
         },
         {
-          path: 'CustomerServiceChat',
-          name: 'CustomerServiceChat',
-          component: CustomerServiceChat
+          path: 'CustomerService',
+          name: 'CustomerService',
+          component: CustomerService
         },
         {
           path: 'ServiceManager',
