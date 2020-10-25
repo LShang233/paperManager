@@ -12,7 +12,7 @@ export default {
   components: { Banner },
   data() {
     return {
-      title: "我是标题",
+      title: "客服管理",
     };
   },
 };
