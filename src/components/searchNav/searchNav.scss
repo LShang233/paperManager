@@ -1,0 +1,48 @@
+.search-nav {
+  width: 300px;
+  float: left;
+
+  .search-nav-title {
+    width: 75px;
+    height: 40px;
+    margin: 0 auto;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 600;
+    line-height: 40px;
+    font-size: 18px;
+  }
+
+  ul {
+    outline: none;
+    list-style: none;
+
+    li {
+      text-align: center;
+      float: left;
+      line-height: 18px;
+      height: 29px;
+      width: 100%;
+      padding: 5px 0;
+
+      a {
+        font-size: 12px;
+        color: #666666;
+        width: 32%;
+        height: 20px;
+        line-height: 20px;
+        width: 30%;
+        text-align: center;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      a:hover {
+        color: #0677C4;
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+
+  }
+}

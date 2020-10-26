@@ -24,7 +24,8 @@ export default {
   height: 100%;
   #router {
     width: calc(100% - 300px);
-    height: 100%;
+    height: 100vh;
+    overflow: auto;
     left: 300px;
   }
 }

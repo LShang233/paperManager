@@ -6,6 +6,8 @@ import Literature from '@/views/Literature/Literature'
 import ReviewLiterature from '@/views/ReviewLiterature/ReviewLiterature'
 import CustomerService from '@/views/CustomerService/CustomerService'
 import ServiceManager from '@/views/ServiceManager/ServiceManager'
+import JournalDetail from '@/views/JournalDetail/JournalDetail'
+import Setting from '@/views/Setting/Setting'
 
 Vue.use(Router)
 
@@ -16,6 +18,7 @@ export default new Router({
       path: '/',
       name: 'Layout',
       component: Layout,
+      redirect: "Journal",
       children: [
         {
           path: 'Journal',
@@ -41,6 +44,16 @@ export default new Router({
           path: 'ServiceManager',
           name: 'ServiceManager',
           component: ServiceManager
+        },
+        {
+          path: 'JournalDetail/:jid',
+          name: 'JournalDetail',
+          component: JournalDetail
+        },
+        {
+          path: 'Setting',
+          name: 'Setting',
+          component: Setting
         },
       ]
     }

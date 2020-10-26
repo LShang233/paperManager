@@ -1,18 +1,27 @@
 <template>
   <div>
     <Banner :title="title" :icon="'md-list'"></Banner>
-    <div class="SM-main">ServiceManager</div>
+    <div class="SM-main">
+      <ServiceRegistered></ServiceRegistered>
+    </div>
   </div>
 </template>
 
 <script>
 import Banner from "../../components/Banner/Banner";
+import ServiceRegistered from "../../components/ServiceRegistered/ServiceRegistered";
+
 export default {
   name: "ServiceManager",
-  components: { Banner },
+  components: { Banner, ServiceRegistered },
   data() {
     return {
-      title: "我是标题",
+      title: "客服管理",
+      servicePerson: [
+        {a: "mingzi", b:'zhanghao', c:'mima'},
+        {a: "mingzi111", b:'zhangha111o', c:'mi111ma'},
+        {a: "mingz222i", b:'zhan222ghao', c:'mim222a'},
+      ]
     };
   },
 };
@@ -20,7 +29,10 @@ export default {
 
 <style lang="scss" scoped>
 .SM-main {
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.15);
+  position: relative;
+  width: 100%;
+  padding: 24px;
+  height: calc(100% - 72px);
+  overflow: auto;
 }
 </style>

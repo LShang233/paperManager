@@ -18,6 +18,7 @@
         <router-link to="/ServiceManager">客服管理</router-link>
       </li>
     </ul>
+    <router-link to="/Setting" class="setting">设置</router-link>
   </div>
 </template>
 <script>
@@ -30,6 +31,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 #header-container {
+  position: relative;
   top: 0;
   width: 300px;
   height: 100%;
@@ -37,29 +39,28 @@ export default {
   color: white;
   font-size: 12px;
   box-shadow: 0 0 10px rgba($color: grey, $alpha: 0.5);
+
   .header-logo {
-      text-align: center;
-      background-color: pink;
-      height: 72px;
-      line-height: 72px;
+    text-align: center;
+    background-color: pink;
+    height: 72px;
+    line-height: 72px;
   }
 
-  ul {
-      margin-top: 20px;
+  a {
+    color: white;
+    display: block;
     width: 100%;
+    padding: 16px 0;
     text-align: center;
-    li {
-      height: 64px;
-      line-height: 64px;
-      vertical-align: middle;
-      a {
-        font-size: 18px;
-        color: white;
-      }
-    }
-    li:hover {
+    font-size: 18px;
+    &:hover {
       background-color: rgba(255, 255, 255, 0.2);
     }
+  }
+  .setting {
+    position: absolute;
+    bottom: 52px;
   }
 }
 </style>
