@@ -2,14 +2,18 @@
   position: relative;
   width: 100%;
   padding: 24px;
+  height: calc(100% - 72px);
+  overflow: auto;
 
   .jm-buttom {
     width: 100%;
-    text-align: right;
+    text-align: left;
     margin-bottom: 24px;
+    position: relative;
 
     button {
-      right: 24px;
+      position: absolute;
+      right: 0;
       padding: 8px 16px;
       outline: none;
       border-radius: 5px;
@@ -19,6 +23,63 @@
       font-size: 14px;
       cursor: pointer;
     }
+  }
 
+  .journal-page {
+    text-align: center;
+    margin-top: 24px;
+  }
+}
+
+.dropdown {
+  display: inline-block;
+  width: 100px;
+  height: 32px;
+  line-height: 32px;
+  margin-right: 16px;
+  border-radius: 5px;
+  color: black;
+  background-color: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  font-size: 12px;
+  padding: 0 14px;
+  vertical-align: middle;
+  cursor: pointer;
+
+  .drop-down {
+    width: 100%;
+    vertical-align: middle;
+    outline: none;
+    border: none;
+    height: 100%;
+    text-align: center;
+    background-color: transparent;
+  }
+
+  span {
+    float: right;
+    cursor: pointer;
+  }
+
+  select, option {
+    cursor: pointer;
+  }
+}
+
+.searchNav {
+  position: absolute;
+  z-index: 999;
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid grey;
+  margin-top: 3px;
+  padding-bottom: 16px;
+
+  .searchNav-delete {
+    width: 100%;
+    padding: 8px 16px 0;
+    text-align: right;
+    font-size: 16px;
+    cursor: pointer;
   }
 }
