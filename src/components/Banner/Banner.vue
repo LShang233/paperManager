@@ -18,6 +18,7 @@ export default {
   height: 72px;
   line-height: 72px;
   overflow: hidden;
+  border-right: 1px solid rgba($color: grey, $alpha: 0.3);
   border-bottom: 1px solid rgba($color: grey, $alpha: 0.3);
   background-color: white;
   padding: 0 24px;

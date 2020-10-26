@@ -21,15 +21,44 @@
       }
     
       .chat-utils {
-        height: 30px;
+        padding: 10px;
+        height: 50px;
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        .chat-icon {
+          width: 25px;
+          height: 25px;
+          cursor: pointer;
+          margin: 0 5px;
+          &:hover{
+            opacity: 0.5;
+          }
+        }
+        .chat-model{
+          width: 300px;
+          max-height: 500px;
+          overflow: auto;
+          font-size: 14px;
+          li{
+            cursor: pointer;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.16);
+            &:hover{
+              background-color: rgba(0, 0, 0, 0.16);
+            }
+          }
+        }
+        .chat-pop-title{
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
       }
     
       .chat-area {
         width: 100%;
-        height: calc(40% - 152px);
+        height: calc(40% - 192px);
         border: 1px solid rgba(0, 0, 0, 0.16);
         overflow-y: auto;
         outline: none;

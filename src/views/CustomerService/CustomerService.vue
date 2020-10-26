@@ -1,58 +1,85 @@
 <template>
   <div class="customer-service">
-      <div class="chat-pane">
-        <Header :title="customerName" :icon="'ios-chatboxes'"></Header>
-        <div class="chat-history">
-          <ul id="chat-history">
-            <message
-              v-for="(item,key) in history"
-              :key="key"
-              :class="item.type == 1?'chat-customer' : 'chat-server'"
-              :content="item.content"
-              :date="item.date"
-              :time="item.time"
-              :name="item.name"
-            />
-          </ul>
-        </div>
-        <div class="chat-utils">
-          <emoji @emotion="handleEmotion" />
-        </div>
-
-        <textarea
-          type="text"
-          class="chat-area"
-          id="chat-area"
-          v-model="content"
-          @keyup.enter="sendMsg"
-        ></textarea>
-        <div class="chat-footer">
-          <Poptip v-model="visible">
-            <Button icon="md-arrow-round-up" type="primary" @click="sendMsg">发送</Button>
-            <div slot="content" class="poptip">{{alert}}</div>
-          </Poptip>
-        </div>
-      </div>
-      <div class="user-list">
-        <Header :title="'游客列表'" :icon="'ios-people'"></Header>
-        <ul id="user-list">
-          <User v-for="(item,key) in 10" :key="key"/>
+    <div class="chat-pane">
+      <Header :title="customerName" :icon="'ios-chatboxes'"></Header>
+      <div class="chat-history">
+        <ul id="chat-history">
+          <message
+            v-for="(item, key) in history"
+            :key="key"
+            :class="item.type == 1 ? 'chat-customer' : 'chat-server'"
+            :content="item.content"
+            :date="item.date"
+            :time="item.time"
+            :name="item.name"
+          />
         </ul>
       </div>
+      <div class="chat-utils">
+        <emoji @emotion="handleEmotion" />
+        <Poptip width="500px">
+          <div slot="title" class="chat-pop-title">
+            <h3>请选择模板</h3>
+            <div class="chat-icon">
+              <svg t="1603717925375" class="icon" viewBox="0 0 1026 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3910" width="20" height="20"><path d="M511.17819 1023.449171C232.458621 1030.059121-1.643784 782.185986 0.008703 508.974708 1.661191 236.865089 239.068571-1.64395 516.135653 0.008538c271.55879 1.652488 510.618658 239.059868 508.966171 516.12695C1023.449336 787.694278 787.694443 1031.711609 511.17819 1023.449171zM491.34834 97.505304c-195.544362-1.652488-418.630184 188.383583-394.944528 457.188227 15.974046 181.222803 190.03607 398.249504 459.942373 374.013019 181.773632-16.524876 396.046187-190.586899 371.809703-459.391544C911.080182 278.177278 730.408208 79.327941 491.34834 97.505304z" p-id="3911"></path><path d="M560.201988 362.454144c0 27.541459 0.550829 55.082919 0 82.624378-0.550829 15.423217 5.508292 20.38068 20.38068 19.829851 55.082919-0.550829 110.165838 0 165.248757-0.550829 15.974046 0 22.583997 4.406634 21.482338 20.931509-1.101658 18.728192-1.101658 37.456385 0 55.633748 0.550829 14.872388-5.508292 19.279022-19.279022 18.728192-55.082919-0.550829-110.165838 0-165.248757-0.550829-16.524876 0-23.134826 4.957463-22.583997 22.033168 1.101658 54.53209 0 108.51335 0.550829 163.04544 0.550829 17.626534-6.059121 23.134826-22.583997 22.033168-17.075705-1.101658-34.702239-1.101658-51.777944 0-15.974046 1.101658-21.482338-4.957463-21.482338-21.482338 0.550829-53.430431-0.550829-107.411692 0.550829-160.842123 0.550829-20.38068-6.60995-25.888972-25.888972-25.338143-53.430431 1.101658-107.411692 0-160.842123 0.550829-14.872388 0-21.482338-4.406634-20.38068-19.829851 1.101658-18.728192 1.101658-37.456385 0-55.633748-1.101658-15.974046 5.508292-19.829851 20.38068-19.829851 54.53209 0.550829 108.51335-0.550829 163.04544 0.550829 17.626534 0.550829 24.236484-4.406634 23.685655-23.134826-1.101658-54.53209 0-108.51335-0.550829-163.04544 0-16.524876 5.508292-22.033168 21.482338-21.482338 17.626534 1.101658 35.803897 1.101658 53.430431 0 14.872388-0.550829 20.931509 4.406634 20.38068 19.829851C559.651159 306.269567 560.201988 334.361856 560.201988 362.454144z" p-id="3912"></path></svg>
+            </div>
+          </div>
+          <div slot="content">
+            <ul class="chat-model">
+              <li>您好，请问您需要咨询什么问题?</li>
+              <li>您好。</li>
+              <li>如有其他问题，请咨询电话:138xxxxxxx。</li>
+              <li>很高兴为您服务，请问您需要什么帮助？</li>
+              <li>和你聊天很愉快，拜拜</li>
+            </ul>
+          </div>
+          <div class="chat-icon">
+            <svg t="1603717334088" class="icon" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3089" width="25" height="25"><path d="M12.98964 96.615106c0 52.883721 31.765403 95.759822 70.956589 95.759821 39.183193 0 70.956589-42.8761 70.956589-95.759821 0-52.883721-31.773397-95.759822-70.956589-95.759822-39.191186 0-70.956589 42.8761-70.956589 95.759822zM1006.357907 0.855284H284.985901c-10.135514 0-16.897852 11.398456-16.897851 22.796912v145.917826c0 13.684542 8.448926 22.804906 16.897851 22.804905h721.372006c10.135514 0 16.897852-11.398456 16.897852-22.804905V23.66019c0-13.676549-8.448926-22.796912-16.897852-22.796913zM1.167538 502.459298c0 52.875728 31.765403 95.751828 70.948596 95.751829 39.191186 0 70.956589-42.8761 70.956589-95.759822 0-52.883721-31.765403-95.759822-70.956589-95.759822-39.183193 0-70.948596 42.8761-70.948596 95.759822zM992.849218 406.699477H271.461225c-10.135514 0-16.897852 11.390463-16.897851 22.788919v145.925818c0 13.676549 8.448926 22.796912 16.897851 22.796913h721.372006c10.135514 0 16.897852-11.398456 16.897852-22.796913V429.480402c0-11.398456-6.762338-22.796912-16.897852-22.796912zM1.167538 926.528232c0 52.883721 31.765403 95.759822 70.948596 95.759822 39.191186 0 70.956589-42.8761 70.956589-95.759822 0-52.883721-31.765403-95.759822-70.956589-95.759822-39.183193 0-70.948596 42.8761-70.948596 95.759822z m991.68168-95.759822H271.461225c-10.135514 0-16.897852 11.398456-16.897851 22.804906v145.917825c0 13.676549 8.448926 22.796912 16.897851 22.796913h721.372006c10.135514 0 16.897852-11.398456 16.897852-22.796913v-145.917825c0-11.40645-6.762338-22.804906-16.897852-22.804906z" p-id="3090"></path></svg>
+          </div>
+        </Poptip>
+      </div>
+      <textarea
+        type="text"
+        class="chat-area"
+        id="chat-area"
+        v-model="content"
+        @keyup.enter="sendMsg"
+      ></textarea>
+      <div class="chat-footer">
+        <Poptip v-model="visible">
+          <Button icon="md-arrow-round-up" type="primary" @click="sendMsg"
+            >发送</Button
+          >
+          <div slot="content" class="poptip">{{ alert }}</div>
+        </Poptip>
+      </div>
+    </div>
+    <div class="user-list">
+      <Header :title="'游客列表'" :icon="'ios-people'"></Header>
+      <ul id="user-list">
+        <User
+          v-for="(item, key) in users"
+          :key="key"
+          :username="item"
+          @click.native="getClientId(item)"
+        />
+      </ul>
+    </div>
   </div>
 </template>
 <script>
 import Header from "../../components/Banner/Banner";
 import Emoji from "./Emoji/Emoji";
 import Message from "./Message/Message";
-import User from "../../components/CustomerService/User"
+import User from "../../components/CustomerService/User";
 import SockJs from "sockjs-client";
 import Stomp from "stompjs";
 export default {
   name: "CutomerService",
   data() {
     return {
-      customerName: "游客123",
+      users: [],
+      customerName: "请选择游客",
       alert: "发送成功！",
       content: "",
       // 聊天历史，1为用户，2为客服，3为消息提示
@@ -61,14 +88,15 @@ export default {
       serverId: "",
       serverName: "",
       // 提示框
-      visible: false
+      visible: false,
+      token: "84a26421-5bbe-43b4-beaf-7ac27b4cd31e",
     };
   },
   components: {
     Header,
     Emoji,
     Message,
-    User
+    User,
   },
   methods: {
     handleEmotion(val) {
@@ -194,7 +222,7 @@ export default {
         "街舞",
         "献吻",
         "左太极",
-        "右太极"
+        "右太极",
       ];
       let index = list.indexOf(word);
       return `$${index}&`;
@@ -207,8 +235,8 @@ export default {
           this.visible = false;
         }, 2000);
         return;
-      } else if (this.serverId == "") {
-        this.alert = "当前客服不在线！";
+      } else if (this.clientId == "") {
+        this.alert = "请选择游客！";
         setTimeout(() => {
           this.visible = false;
         }, 2000);
@@ -233,7 +261,7 @@ export default {
         date: date.getMonth() + 1 + "-" + date.getDate(),
         time:
           date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
-        content: this.content
+        content: this.content,
       });
       // 发送至服务端
       let formdata = new FormData();
@@ -243,7 +271,7 @@ export default {
           `http://39.98.41.126:30001/chat/${this.clientId}/sendTo/${this.serverId}`,
           formdata
         )
-        .then(res => {
+        .then((res) => {
           console.log("发送成功！");
         });
       this.content = "";
@@ -254,105 +282,73 @@ export default {
       });
     },
     // 获取聊天id
-    getClientId() {
+    getServerId() {
       let data = new FormData();
-      data.append("chat", sessionStorage.getItem("chat"));
+      data.append("chat", localStorage.getItem("chat"));
       this.$http
-        .post("http://39.98.41.126:30001/chat/chatId", data)
-        .then(res => {
+        .post("http://39.98.41.126:30001/chat/chatId", data, {
+          headers: {
+            // token: localStorage.getItem("token"),
+            token: this.token,
+          },
+        })
+        .then((res) => {
           if (res.data.code == 1) {
             console.log(res.data);
-            this.clientId = res.data.data;
-            sessionStorage.setItem("chat", res.data.data);
-            console.log("获取用户id成功!");
+            this.serverId = res.data.data;
+            localStorage.setItem("chat", res.data.data);
+            console.log("获取客服id成功!");
           }
         })
         .then(() => {
-          this.getService();
           this.initWebSocket();
         });
     },
-    // 获取客服服务
-    getService() {
-      if (this.serverId == "") {
+    // 获取用户列表
+    getUsers() {
+      if (this.serverId) {
         this.$http
-          .post("http://39.98.41.126:30001/chat/getService/" + this.clientId)
-          .then(res => {
-            if (res.data.code === 1) {
-              this.serverId = res.data.data.id;
-              this.serverName = res.data.data.username;
-              let date = new Date();
-              this.history.push({
-                type: 2,
-                name: this.serverName,
-                date:
-                  date.getFullYear() +
-                  "-" +
-                  (date.getMonth() + 1) +
-                  "-" +
-                  date.getDate(),
-                time:
-                  date.getHours() +
-                  ":" +
-                  date.getMinutes() +
-                  ":" +
-                  date.getSeconds(),
-                content: `您好，我是${this.serverName},请问您需要咨询什么业务？`
-              });
-              console.log("获取客服id成功！");
-            } else {
-              let date = new Date();
-              this.history.push({
-                type: 2,
-                name: "机器人",
-                date: date.getMonth() + 1 + "-" + date.getDate(),
-                time:
-                  date.getHours() +
-                  ":" +
-                  date.getMinutes() +
-                  ":" +
-                  date.getSeconds(),
-                content:
-                  "当前无客服在线，请拨打电话：xxxxxxxxx 或者 扫描左侧微信二维码联系我们。"
-              });
-
-              console.log("当前客服不在线");
+          .post(
+            `http://39.98.41.126:30001/chat/admin/${this.serverId}/onlineUser`,
+            {
+              pageNum: "1",
+              pageSize: "10",
             }
-          })
-          .then(() => {
-            this.getHistory();
-          })
-          .catch(err => {
-            console.log("服务器连接已断开");
+          )
+          .then((res) => {
+            if (res.data.code == 1) {
+              this.users = res.data.data.users;
+            }
           });
       }
     },
     // 获取历史记录
     getHistory() {
+      this.history = [];
       if (this.serverId) {
         this.$http
           .post(
             `http://39.98.41.126:30001/chat/${this.clientId}/history/${this.serverId}`
           )
-          .then(res => {
+          .then((res) => {
             console.log(res.data);
             let data = res.data.data;
             for (let i = 0; i < data.length; i++) {
               if (data[i].sender.roleType == 1) {
                 this.history.push({
                   type: 1,
-                  name: "我",
+                  name: data[i].sender.username,
                   date: data[i].time.slice(0, 10),
                   time: data[i].time.slice(11, 19),
-                  content: data[i].content
+                  content: data[i].content,
                 });
               } else {
                 this.history.push({
                   type: 2,
-                  name: data[i].sender.username,
+                  name: "我",
                   date: data[i].time.slice(0, 10),
                   time: data[i].time.slice(11, 19),
-                  content: data[i].content
+                  content: data[i].content,
                 });
               }
             }
@@ -365,37 +361,42 @@ export default {
           });
       }
     },
+    // 点击用户名称，获取用户id
+    getClientId(id) {
+      this.clientId = id;
+      this.customerName = "游客" + id;
+      this.getHistory();
+      window.socket.subscribe("/user/queue/chat/" + this.clientId, (res) => {
+        let data = JSON.parse(msg.body);
+        console.log(data);
+        that.history.push({
+          type: 1,
+          name: that.serverName,
+          date: data.time.slice(0, 10),
+          time: data.time.slice(11, 19),
+          content: data.content,
+        });
+        that.$Message.info({
+          content: `游客${this.clientId}发来消息！`,
+          duration: 2,
+        });
+      });
+    },
     // 启动连接
     initWebSocket() {
       if (!window.socket) {
         let that = this;
         let socket = new SockJs(
-          "http://39.98.41.126:30001/ws-websocket?" + this.clientId
+          "http://39.98.41.126:30001/ws-websocket?" + this.serverId
         );
         // 获取Stomp子协议的客户端对象
         window.socket = Stomp.over(socket);
         // 发起websocket连接
-        window.socket.connect({}, function(res) {
+        window.socket.connect({}, function (res) {
           console.log("连接成功！");
-          // 用户接收客服信息
-          window.socket.subscribe("/user/queue/chat", function(msg) {
-            let data = JSON.parse(msg.body);
-            console.log(data);
-            that.history.push({
-              type: 2,
-              name: that.serverName,
-              date: data.time.slice(0, 10),
-              time: data.time.slice(11, 19),
-              content: data.content
-            });
-            that.$Message.info({
-              content: "客服发来消息！",
-              duration: 2
-            });
-          });
-          // 用户等待获取客服服务
-          window.socket.subscribe("/user/queue/chat/serverOnline", res => {
-            that.getService();
+          that.getUsers();
+          window.socket.subscribe("/user/queue/chat/newUserIn", (res) => {
+            that.getUsers();
           });
         });
       }
@@ -406,14 +407,14 @@ export default {
         console.log("链接已经断开！");
       });
       window.socket = null;
-    }
+    },
   },
   created() {
-    this.getClientId();
+    this.getServerId();
   },
   destroyed() {
-    // this.closeSocket();
-  }
+    this.closeSocket();
+  },
 };
 </script>
 <style lang="scss" scoped>

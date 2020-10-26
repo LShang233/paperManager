@@ -15,15 +15,24 @@
         p-id="4444"
       />
     </svg>
-    <p>游客12312312312312312312312312312312</p>
+    <p>游客{{username}}</p>
   </li>
 </template>
 <script>
 export default {
   name: "User",
+  props : ["username"],
   data() {
-    return {};
-  }
+    return {
+      clientId: "",
+    };
+  },
+  methods: {
+    
+  },
+  created() {
+    
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -37,6 +46,7 @@ export default {
   width: 100%;
   overflow: hidden;
   cursor: pointer;
+  user-select: none;
   &:hover {
     background-color: rgba(0, 0, 0, 0.2);
   }
