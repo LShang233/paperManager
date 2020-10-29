@@ -10,7 +10,6 @@ import axios from 'axios'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.use(iView)
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
