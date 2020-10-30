@@ -7,7 +7,6 @@ import ReviewLiterature from '@/views/ReviewLiterature/ReviewLiterature'
 import CustomerService from '@/views/CustomerService/CustomerService'
 import ServiceManager from '@/views/ServiceManager/ServiceManager'
 import JournalDetail from '@/views/JournalDetail/JournalDetail'
-import Setting from '@/views/Setting/Setting'
 import Login from "@/views/Login/Login"
 Vue.use(Router)
 
@@ -49,12 +48,7 @@ export default new Router({
           path: 'JournalDetail/:jid',
           name: 'JournalDetail',
           component: JournalDetail
-        },
-        {
-          path: 'Setting',
-          name: 'Setting',
-          component: Setting
-        },
+        }
       ]
     },
     {

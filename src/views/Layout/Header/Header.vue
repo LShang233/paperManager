@@ -18,15 +18,16 @@
         <router-link to="/ServiceManager">客服管理</router-link>
       </li>
     </ul>
-    <router-link to="/Setting" class="setting">设置</router-link>
+    <Setting/>
   </div>
 </template>
 <script>
+import Setting from "./Setting"
 export default {
   name: "Header",
-  data() {
-    return {};
-  },
+  components : {
+    Setting
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -61,6 +62,17 @@ export default {
   .setting {
     position: absolute;
     bottom: 52px;
+    font-size: 20px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    user-select: none;
+    cursor: pointer;
   }
 }
 </style>
