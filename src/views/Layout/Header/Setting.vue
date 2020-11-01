@@ -17,10 +17,25 @@
             <span>确认密码:</span>
           </div>
           <div class="right-box">
-            <Input placeholder="请输入昵称" />
-            <Input type="password" password placeholder="请输入旧密码" />
-            <Input type="password" password placeholder="请输入新密码" />
-            <Input type="password" password placeholder="请再次输入新密码" />
+            <Input placeholder="请输入昵称" v-model="nickname" />
+            <Input
+              type="password"
+              v-model="oldPwd"
+              password
+              placeholder="请输入旧密码"
+            />
+            <Input
+              type="password"
+              v-model="newPwd"
+              password
+              placeholder="请输入新密码"
+            />
+            <Input
+              type="password"
+              v-model="newPwd2"
+              password
+              placeholder="请再次输入新密码"
+            />
           </div>
         </div>
         <div slot="footer">
@@ -37,6 +52,10 @@ export default {
     return {
       value: false,
       modal: false,
+      nickname: "",
+      oldPwd: "",
+      newPwd: "",
+      newPwd2: "",
     };
   },
   methods: {
@@ -48,23 +67,42 @@ export default {
         this.modal = true;
       }
     },
+    // 修改管理员信息
     changeInfos() {
       let flag = confirm("确定修改个人信息吗？");
       if (flag) {
         this.modal = false;
-        this.$Message.success("修改成功！");
-      } else {
-        this.$Message.warning("取消修改！");
+        if (this.nickname && this.oldPwd && this.newPwd2) {
+          if (this.newPwd == this.newPwd2) {
+            this.$http.post("http://39.98.41.126:30001/user/ed").then((res) => {
+              if (res.data.code == 1) {
+                this.$Message.success("修改成功！");
+              } else {
+                this.$Message.success(res.data.msg);
+              }
+            });
+          } else {
+            this.$Message.warning("两次密码不一致！");
+          }
+        } else {
+          this.$Message.warning("信息不能为空！");
+        }
       }
     },
+    // 退出登录
     exit() {
       let flag = confirm("确定退出登录吗？");
       if (flag) {
-        this.$Message.success("退出成功！");
-      } else {
-        this.$Message.warning("取消退出！");
+        this.$http.get("http://39.98.41.126:30001/user/logout").then((res) => {
+          this.$Message.success("退出成功！");
+          setTimeout(() => {
+            window.location.href = "/Login";
+          }, 1000);
+        });
       }
     },
+    // 获取管理员信息
+    getAdminInfos() {},
   },
 };
 </script>

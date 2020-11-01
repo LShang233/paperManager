@@ -84,8 +84,8 @@ export default {
   name: "CutomerService",
   data() {
     return {
-      on_users: [1, 2, 3, 4],
-      off_users: [1, 2, 3, 4, 5],
+      on_users: [],
+      off_users: [],
       customerName: "请选择游客",
       alert: "发送成功！",
       content: "",
@@ -96,7 +96,6 @@ export default {
       serverName: "",
       // 提示框
       visible: false,
-      token: "b8f2de65-116c-4e72-bea8-c224e800a472",
       // 聊天模板添加
       addModel: false,
       newModel: "",
@@ -298,8 +297,7 @@ export default {
       this.$http
         .post("http://39.98.41.126:30001/chat/chatId", data, {
           headers: {
-            // token: localStorage.getItem("token"),
-            token: this.token,
+            token: localStorage.getItem("token")
           },
         })
         .then((res) => {
@@ -312,6 +310,7 @@ export default {
         })
         .then(() => {
           this.initWebSocket();
+          this.getAuto();
         });
     },
     // 获取用户列表
@@ -435,13 +434,26 @@ export default {
     //   添加模板
     setAuto() {
       if(this.newModel){
-        this.$http.post("http://39.98.41.126:30001/chat/admin/setAutoSend",{
-          auto : this.newModel
-        })
+        let data = new FormData();
+        data.append("auto",this.newModel)
+        this.$http.post("http://39.98.41.126:30001/chat/admin/setAutoSend",data)
         .then(res=>{
-          console.log(res);
+          if(res.data.code == 1){
+            console.log(res.data)
+          }
         })
       }
+    },
+    // 获取自动回复模板
+    getAuto(){
+      this.$http.post(`http://39.98.41.126:30001/chat/admin/${this.serverId}/getAutoSend`)
+      .then(res=>{
+        if(res.data.code === 1){
+          this.newModel = res.data.data;
+        }else{
+          this.$Message.warning(res.data.msg);
+        }
+      })
     }
   },
   created() {
