@@ -47,7 +47,9 @@
             </option>
           </select>
         </div>
-        <button>添加期刊</button>
+        <router-link to="/JournalDetail/0">
+          <button>添加期刊</button>
+        </router-link>
       </div>
       <JournalTable :journalList="dataList"></JournalTable>
       <Page :total="total / 2" class="journal-page" @on-change="change" />
@@ -66,10 +68,18 @@ export default {
   data() {
     return {
       title: "期刊管理",
-      dataList: "",
+      dataList: [],
       total: 0,
       journalOption: [
-        ["不限","核心（南大）","国家级","省级","核心（北大）","核心（北大.南大）","未分级",],
+        [
+          "不限",
+          "核心（南大）",
+          "国家级",
+          "省级",
+          "核心（北大）",
+          "核心（北大.南大）",
+          "未分级",
+        ],
         [
           "不限",
           "年刊",
@@ -132,12 +142,11 @@ export default {
         .then((res) => {
           if (res.data.code == 1) {
             this.dataList = res.data.data.list;
-            console.log(this.dataList);
             this.total = res.data.data.total;
           }
         });
     },
-    
+
     // 处理子组件传来的期刊类别
     getSearchNavMsg(data) {
       if (data) this.realLabels.journalType = data;

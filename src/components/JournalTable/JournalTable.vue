@@ -1,16 +1,16 @@
 <template>
-  <Table border :columns="columns" :data="dataList">
+  <Table border :columns="columns" :data="journalList">
     <template slot-scope="{ row }" slot="name">
       <strong>{{ row.name }}</strong>
     </template>
-    <template slot-scope="{ index }" slot="action">
+    <template slot-scope="{ index, row }" slot="action">
       <Button
         type="primary"
         size="small"
         style="margin-right: 5px"
-        @click="show(index)"
-        >修改</Button
-      >
+        :to="'/JournalDetail/' + row.id"
+        >修改
+        </Button>
       <Button type="error" size="small" @click="remove(index)">删除</Button>
     </template>
   </Table>
@@ -56,17 +56,12 @@ export default {
   },
 
   methods: {
-    show(index) {
-      let id = this.dataList[index].id;
-      
-    },
-
     // 删除杂志
     remove(index) {
+      // 未完成 未测试
       if (confirm("是否确认删除？")) {
         let formdata = new FormData();
-        formdata.append("id", this.dataList[index].id);
-        alert(this.dataList[index].id);
+        formdata.append("id", this.journalList[index].id);
         this.$http
           .post("http://39.98.41.126:30004/journal/deleteJournal", formdata)
           .then((res) => {
@@ -79,7 +74,6 @@ export default {
   },
 
   mounted() {
-    console.log(this.journalList);
   },
 };
 </script>
