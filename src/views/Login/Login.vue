@@ -106,8 +106,8 @@ export default {
           .then((res) => {
             if (res.data.code === 1) {
               this.$Message.success("登录成功！");
-              localStorage.setItem("token", res.data.data.token);
-              localStorage.setItem("nickname",res.data.data.nickname);
+              sessionStorage.setItem("token", res.data.data.token);
+              sessionStorage.setItem("nickname",res.data.data.nickname);
               setTimeout(() => {
                 window.location.href = "/Journal";
               }, 1000);

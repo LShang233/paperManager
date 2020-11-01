@@ -52,7 +52,7 @@ export default {
     return {
       value: false,
       modal: false,
-      nickname: localStorage.getItem('nickname'),
+      nickname: sessionStorage.getItem('nickname'),
       oldPwd: "",
       newPwd: "",
       newPwd2: "",

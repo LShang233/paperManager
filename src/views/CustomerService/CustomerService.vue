@@ -293,18 +293,18 @@ export default {
     // 获取聊天id
     getServerId() {
       let data = new FormData();
-      data.append("chat", localStorage.getItem("chat"));
+      data.append("chat", sessionStorage.getItem("chat"));
       this.$http
         .post("http://39.98.41.126:30004/chat/chatId", data, {
           headers: {
-            token: localStorage.getItem("token")
+            token: sessionStorage.getItem("token")
           },
         })
         .then((res) => {
           if (res.data.code == 1) {
             console.log(res.data);
             this.serverId = res.data.data;
-            localStorage.setItem("chat", res.data.data);
+            sessionStorage.setItem("chat", res.data.data);
             console.log("获取客服id成功!");
           }
         })
