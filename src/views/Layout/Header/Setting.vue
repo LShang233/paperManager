@@ -2,7 +2,7 @@
   <div class="setting" @click="value = true">
     设置
     <div>
-      <Drawer title="Create" v-model="value" width="200">
+      <Drawer title="设置" v-model="value" width="200">
         <div class="setting-btn">
           <Button type="primary" @click="modal = true">修改个人信息</Button>
           <Button type="error" @click="exit">退出管理登录</Button>
@@ -52,7 +52,7 @@ export default {
     return {
       value: false,
       modal: false,
-      nickname: "",
+      nickname: localStorage.getItem('nickname'),
       oldPwd: "",
       newPwd: "",
       newPwd2: "",
@@ -74,7 +74,7 @@ export default {
         this.modal = false;
         if (this.nickname && this.oldPwd && this.newPwd2) {
           if (this.newPwd == this.newPwd2) {
-            this.$http.post("http://39.98.41.126:30001/user/ed").then((res) => {
+            this.$http.post("http://39.98.41.126:30004/user/ed").then((res) => {
               if (res.data.code == 1) {
                 this.$Message.success("修改成功！");
               } else {
@@ -93,10 +93,10 @@ export default {
     exit() {
       let flag = confirm("确定退出登录吗？");
       if (flag) {
-        this.$http.get("http://39.98.41.126:30001/user/logout").then((res) => {
+        this.$http.get("http://39.98.41.126:30004/user/logout").then((res) => {
           this.$Message.success("退出成功！");
           setTimeout(() => {
-            window.location.href = "/Login";
+            window.location.href = "/";
           }, 1000);
         });
       }

@@ -28,6 +28,7 @@ export default {
     height: 100vh;
     overflow: auto;
     left: 300px;
+    background-color: rgb(245, 246, 250);
   }
 }
 </style>

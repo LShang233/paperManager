@@ -277,7 +277,7 @@ export default {
       formdata.append("content", this.content);
       this.$http
         .post(
-          `http://39.98.41.126:30001/chat/${this.serverId}/sendTo/${this.clientId}`,
+          `http://39.98.41.126:30004/chat/${this.serverId}/sendTo/${this.clientId}`,
           formdata
         )
         .then((res) => {
@@ -295,7 +295,7 @@ export default {
       let data = new FormData();
       data.append("chat", localStorage.getItem("chat"));
       this.$http
-        .post("http://39.98.41.126:30001/chat/chatId", data, {
+        .post("http://39.98.41.126:30004/chat/chatId", data, {
           headers: {
             token: localStorage.getItem("token")
           },
@@ -318,7 +318,7 @@ export default {
       if (this.serverId) {
         this.$http
           .post(
-            `http://39.98.41.126:30001/chat/admin/${this.serverId}/onlineUser`,
+            `http://39.98.41.126:30004/chat/admin/${this.serverId}/onlineUser`,
             {
               pageNum: "1",
               pageSize: "10",
@@ -332,7 +332,7 @@ export default {
 
         this.$http
           .post(
-            `http://39.98.41.126:30001/chat/admin/${this.serverId}/offlineUser`,
+            `http://39.98.41.126:30004/chat/admin/${this.serverId}/offlineUser`,
             {
               pageNum: "1",
               pageSize: "10",
@@ -351,7 +351,7 @@ export default {
       if (this.serverId) {
         this.$http
           .post(
-            `http://39.98.41.126:30001/chat/${this.clientId}/history/${this.serverId}`
+            `http://39.98.41.126:30004/chat/${this.clientId}/history/${this.serverId}`
           )
           .then((res) => {
             console.log(res.data);
@@ -407,7 +407,7 @@ export default {
       if (!window.socket) {
         let that = this;
         let socket = new SockJs(
-          "http://39.98.41.126:30001/ws-websocket?" + this.serverId
+          "http://39.98.41.126:30004/ws-websocket?" + this.serverId
         );
         // 获取Stomp子协议的客户端对象
         window.socket = Stomp.over(socket);
@@ -436,7 +436,7 @@ export default {
       if(this.newModel){
         let data = new FormData();
         data.append("auto",this.newModel)
-        this.$http.post("http://39.98.41.126:30001/chat/admin/setAutoSend",data)
+        this.$http.post("http://39.98.41.126:30004/chat/admin/setAutoSend",data)
         .then(res=>{
           if(res.data.code == 1){
             console.log(res.data)
@@ -446,7 +446,7 @@ export default {
     },
     // 获取自动回复模板
     getAuto(){
-      this.$http.post(`http://39.98.41.126:30001/chat/admin/${this.serverId}/getAutoSend`)
+      this.$http.post(`http://39.98.41.126:30004/chat/admin/${this.serverId}/getAutoSend`)
       .then(res=>{
         if(res.data.code === 1){
           this.newModel = res.data.data;
@@ -458,10 +458,11 @@ export default {
   },
   created() {
     this.getServerId();
-  },
-  destroyed() {
-    this.closeSocket();
-  },
+    // 浏览器离开，断开连接
+    window.addEventListener('beforeunload',e=>{
+      this.closeSocket();
+    })
+  }
 };
 </script>
 <style lang="scss" scoped>

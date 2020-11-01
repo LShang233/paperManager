@@ -20,13 +20,14 @@ export default {
   overflow: hidden;
   border-right: 1px solid rgba($color: grey, $alpha: 0.3);
   border-bottom: 1px solid rgba($color: grey, $alpha: 0.3);
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   padding: 0 24px;
   p {
     display: inline-block;
     font-size: 20px;
     margin: 0 16px;
-    font-weight: 600;
+    font-weight: 500;
+    user-select: none;
   }
   .banner-svg {
     margin-top: -8px;

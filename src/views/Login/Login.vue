@@ -102,11 +102,12 @@ export default {
         data.append("username", this.email);
         data.append("password", this.l_pwd);
         this.$http
-          .post("http://39.98.41.126:30001/user/login", data)
+          .post("http://39.98.41.126:30004/user/login", data)
           .then((res) => {
             if (res.data.code === 1) {
               this.$Message.success("登录成功！");
               localStorage.setItem("token", res.data.data.token);
+              localStorage.setItem("nickname",res.data.data.nickname);
               setTimeout(() => {
                 window.location.href = "/Journal";
               }, 1000);
@@ -138,7 +139,7 @@ export default {
 
         let formdata = new FormData();
         formdata.append("email",this.email);
-        this.$http.post("http://39.98.41.126:30001/user/getCode",formdata)
+        this.$http.post("http://39.98.41.126:30004/user/getCode",formdata)
         .then(res=>{
             this.$Message.success("验证码已发送，请查收(两分钟内有效)");  
         })
@@ -157,7 +158,7 @@ export default {
           data.append('email',this.email);
           data.append('code',this.verify);
           data.append('password',this.r_pwd2);
-          this.$http.post('http://39.98.41.126:30001/user/fp',data)
+          this.$http.post('http://39.98.41.126:30004/user/fp',data)
           .then(res=>{
             if(res.data.code == 1){
               this.$Message.success("修改密码成功！"); 
