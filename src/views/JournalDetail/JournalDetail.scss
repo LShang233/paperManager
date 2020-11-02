@@ -18,13 +18,14 @@
     // 图片
     &:first-child>div:first-child {
       text-align: center;
-      width: 140px;
+      width: 150px;
       height: 200px;
       line-height: 200px;
-      margin-left: calc(50% - 70px);
+      margin-left: calc(50% - 75px);
       margin-bottom: 16px;
-      background-image: url("../../../src/assets/photo.jpg");
       background-size: 100%;
+      background-repeat: no-repeat;
+      background-position:center center;
       border-radius: 5px;
       border: 1px solid #dcdee2;
       overflow: hidden;
