@@ -1,6 +1,6 @@
 <template>
   <div id="header-container">
-    <div class="header-logo">我是logo</div>
+    <div class="header-logo">期刊管理平台</div>
     <ul>
       <li>
         <router-link to="/Journal">期刊管理</router-link>
@@ -36,16 +36,18 @@ export default {
   top: 0;
   width: 300px;
   height: 100%;
-  background-color: rgb(52, 152, 219);
+  background-color: rgb(53, 64, 82);
   color: white;
   font-size: 12px;
   box-shadow: 0 0 10px rgba($color: grey, $alpha: 0.5);
 
   .header-logo {
     text-align: center;
-    background-color: pink;
+    font-size: 24px;
+    background-color: rgb(25, 28, 37);
     height: 72px;
     line-height: 72px;
+    font-weight: 600;
   }
 
   a {

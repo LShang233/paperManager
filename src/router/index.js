@@ -14,6 +14,11 @@ export default new Router({
   mode: "history",
   routes: [
     {
+      path : "/",
+      name : "Login",
+      component : Login
+    },
+    {
       path: '/',
       name: 'Layout',
       component: Layout,
@@ -50,11 +55,6 @@ export default new Router({
           component: JournalDetail
         }
       ]
-    },
-    {
-      path : "/login",
-      name : "Login",
-      component : Login
     }
   ]
 })

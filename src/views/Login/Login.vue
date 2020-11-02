@@ -17,12 +17,12 @@
             v-model="l_pwd"
             type="password"
             password
+            prefix="md-lock"
             placeholder="请输入您的密码"
             style="width: 320px"
           >
-          <Icon slot="prepend" type="md-lock" />
           </Input>
-          <button class="login-btn">登录</button>
+          <button class="login-btn" @click="login">登录</button>
           <span @click="flag = true">找回密码</span>
         </div>
         <div class="login" v-else>
@@ -32,7 +32,7 @@
             placeholder="请输入邮箱"
             style="width: 320px; height: 40px"
           />
-          <Input
+          <!-- <Input
             v-model="verify"
             suffix="md-flag"
             placeholder="请输入验证码"
@@ -42,7 +42,16 @@
             <Button slot="append" @click="sendVerify" id="login-verify">{{
               clock
             }}</Button>
-          </Input>
+          </Input> -->
+          <div class="verify">
+            <Input
+              v-model="verify"
+              prefix="md-flag"
+              placeholder="请输入验证码"
+              style="width: 220px"
+            />
+            <Button @click="sendVerify" id="login-verify">{{ clock }}</Button>
+          </div>
           <Input
             v-model="r_pwd1"
             type="password"
@@ -59,8 +68,8 @@
             placeholder="请再次输入新密码"
             style="width: 320px; height: 40px"
           />
-          <button class="login-btn">修改密码</button>
-          <span @click="flag = false">找回密码</span>
+          <button class="login-btn" @click="changePwd">修改密码</button>
+          <span @click="flag = false">返回登录</span>
         </div>
       </div>
     </div>
@@ -81,18 +90,89 @@ export default {
     };
   },
   methods: {
+    // 验证邮箱格式
+    isEmailValid(){
+      const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+      return reg.test(this.email);
+    },
+    // 登录
+    login() {
+      if (this.isEmailValid() && this.l_pwd) {
+        let data = new FormData();
+        data.append("username", this.email);
+        data.append("password", this.l_pwd);
+        this.$http
+          .post("http://39.98.41.126:30001/user/login", data)
+          .then((res) => {
+            if (res.data.code === 1) {
+              this.$Message.success("登录成功！");
+              sessionStorage.setItem("token", res.data.data.token);
+              sessionStorage.setItem("nickname",res.data.data.nickname);
+              setTimeout(() => {
+                window.location.href = "/Journal";
+              }, 1000);
+            } else {
+              this.$Message.warning("邮箱与密码不匹配，请检查后重试");
+            }
+          })
+          .catch((err) => {
+            this.$Message.error("服务器连接失败");
+          });
+      } else {
+        this.$Message.warning("请检查邮箱格式或密码");
+      }
+    },
+    // 发送验证码
     sendVerify() {
-      this.clock = 60;
-      let btn = document.getElementById("login-verify");
-      btn.setAttribute("disabled", "");
-      let timer = setInterval(() => {
-        this.clock -= 1;
-        if (this.clock == 0) {
-          this.clock = "发送验证码";
-          btn.removeAttribute("disabled");
-          clearInterval(timer);
+      if (this.isEmailValid()) {
+        this.clock = 120;
+        let btn = document.getElementById("login-verify");
+        btn.setAttribute("disabled", "");
+        let timer = setInterval(() => {
+          this.clock -= 1;
+          if (this.clock == 0) {
+            this.clock = "发送验证码";
+            btn.removeAttribute("disabled");
+            clearInterval(timer);
+          }
+        }, 1000);
+
+        let formdata = new FormData();
+        formdata.append("email",this.email);
+        this.$http.post("http://39.98.41.126:30001/user/getCode",formdata)
+        .then(res=>{
+            this.$Message.success("验证码已发送，请查收(两分钟内有效)");  
+        })
+        .catch((err) => {
+            this.$Message.error("服务器连接失败");
+          });
+      } else {
+        this.$Message.warning("请检查邮箱格式");
+      }
+    },
+    // 修改密码
+    changePwd() {
+      if(this.isEmailValid() && (this.r_pwd1 == this.r_pwd2)){
+        if(this.verify != ''){
+          let data = new FormData();
+          data.append('email',this.email);
+          data.append('code',this.verify);
+          data.append('password',this.r_pwd2);
+          this.$http.post('http://39.98.41.126:30001/user/fp',data)
+          .then(res=>{
+            if(res.data.code == 1){
+              this.$Message.success("修改密码成功！"); 
+              this.flag = false;
+            }else{
+              this.$Message.warning(res.data.msg);
+            }
+          })
+        }else{
+          this.$Message.warning('请填写验证码！');
         }
-      }, 1000);
+      }else{
+        this.$Message.warning('请检查邮箱格式或两次密码是否一致');
+      }
     },
   },
 };
@@ -165,6 +245,15 @@ export default {
         }
       }
     }
+  }
+}
+
+.verify {
+  width: 320px;
+  display: flex;
+  justify-content: space-between;
+  #login-verify {
+    width: 80px;
   }
 }
 </style>
