@@ -80,25 +80,14 @@ export default {
     // 删除客服
     remove(index) {
       if (confirm("是否确认删除？")) {
-        // 未完成，未测试接口，默认密码，header权限
-        /* let formdata = new FormData();
-        formdata.append("id", this.dataList[index].id);
         this.$http
-          .delete("http://39.98.41.126:30001/user/delete", formdata)
+          .delete(
+            `http://39.98.41.126:30001/user/delete/${this.dataList[index].id}`
+          )
           .then((res) => {
             if (res.data.code == 1) {
               alert("删除成功！");
-            } else {
-              alert(res.data.msg);
-            }
-          }); */
-
-        var param = { id: this.dataList[index].id };
-        this.$http
-          .delete("http://39.98.41.126:30001/user/delete", { data: param })
-          .then((res) => {
-            if (res.data.code == 1) {
-              alert("删除成功！");
+              location.reload();
             } else {
               alert(res.data.msg);
             }
@@ -126,17 +115,15 @@ export default {
       }
       this.tips = "";
 
-      // 未完成，未测试接口，默认密码，header权限
       let formdata = new FormData();
-      formdata.append("username", this.username);
+      formdata.append("mail", this.username);
       formdata.append("nickname", this.nickname);
       this.$http
         .post("http://39.98.41.126:30001/user/re", formdata)
         .then((res) => {
           if (res.data.code == 1) {
             alert("注册成功，初始密码为 000000");
-            this.nickname = "";
-            this.username = "";
+            location.reload();
           } else {
             alert(res.data.msg);
           }

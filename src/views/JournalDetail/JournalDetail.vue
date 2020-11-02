@@ -202,10 +202,10 @@ export default {
         receiveWebsite: "",
         releaseCycle: "",
         journalType: "请选择期刊类型",
-        journalPhoto: "/static/img/photo.4f7a60a.jpg",
+        journalPhoto: "/static/img/photo.4f7a60a.jpg",// 数据回写，页面显示
         subscriptionPrice: "",
       },
-      myPhoto: "",
+      myPhoto: "",// 图片文件，真实路径
     };
   },
   methods: {
@@ -228,12 +228,12 @@ export default {
       if (id == 0) return;
       var data = new FormData();
       data.append("id", id);
-      // 未完成  未测试
       this.$http
         .post("http://39.98.41.126:30001/journal/getJournalById", data)
         .then((res) => {
           if (res.data.code == 1) {
             this.dataList = res.data.data;
+            this.myPhoto = res.data.data.journalPhoto;
             // console.log(this.dataList);
           } else {
             alert(res.data.msg);
@@ -241,7 +241,7 @@ export default {
         });
     },
 
-    // 写入图片
+    // 写入图片    未完成
     update(e) {
       // 显示
       let _this = this;
@@ -252,8 +252,20 @@ export default {
       reader.onloadend = function () {
         _this.dataList.journalPhoto = this.result;
       };
-      // 写入
+      // 写入页面
       this.myPhoto = e.target.files[0];
+      // 图片上传
+      var data = new FormData();
+      data.append("file", this.myPhoto);
+      this.$http
+        .post("http://39.98.41.126:30004/journal/upload", data)
+        .then((res) => {
+          if (res.data.code == 1) {
+            this.myPhoto = res.data.data;
+          } else {
+            alert(res.data.msg);
+          }
+        });
     },
 
     // 点击提交
@@ -284,11 +296,12 @@ export default {
       data.append("journalPhoto", this.myPhoto);
       data.append("subscriptionPrice", this.dataList.subscriptionPrice);
       if (id != 0) data.append("id", id);
-      // 未完成
+
       this.$http.post(url, data).then((res) => {
         if (res.data.code == 1) {
           if (id == 0) alert("添加成功！");
           else alert("修改成功！");
+          location.reload();
         } else {
           alert(res.data.msg);
         }
@@ -307,19 +320,18 @@ export default {
         this.tips += "期刊类型、";
       if (!this.dataList.mainSection) this.tips += "主要栏目、";
       if (!this.dataList.impactFactor) this.tips += "影响因子、";
-      if (!this.dataList.totalUsed) this.tips += "总被引频次、";
       if (!this.dataList.reviewCycle) this.tips += "审稿周期、";
       if (!this.dataList.releaseCycle) this.tips += "发行周期、";
       if (!this.dataList.journalLevel) this.tips += "期刊级别、";
       if (!this.dataList.receiveWebsite) this.tips += "收录网站、";
-      if (!this.dataList.subscriptionPrice) this.tips += "订阅价格、";
       if (!this.dataList.journalHonors) this.tips += "期刊荣誉、";
       if (!this.dataList.journalIntroduction) this.tips += "期刊简介、";
       if (this.tips) {
         this.tips = "请输入" + this.tips.slice(0, this.tips.length - 1) + "！";
       }
       // 新建时未上传图片
-      if (!this.myPhoto && this.$route.params.jid == 0) this.tips = "请选择图片！" + this.tips;
+      if (!this.myPhoto && this.$route.params.jid == 0)
+        this.tips = "请选择图片！" + this.tips;
 
       // 判断
       if (this.tips == "") return 0;
