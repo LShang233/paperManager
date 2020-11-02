@@ -22,14 +22,16 @@ export default {
   margin: 10px;
   .name {
     font-weight: 600;
-    color: rgb(6, 128, 178);
+    color: rgb(95, 217, 88);
+
   }
 }
 .chat-customer {
   margin: 10px;
   .name {
     font-weight: 600;
-    color: rgb(95, 217, 88);
+    color: rgb(6, 128, 178);
+
   }
 }
 </style>

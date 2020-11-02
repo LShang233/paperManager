@@ -85,7 +85,7 @@ export default {
         let formdata = new FormData();
         formdata.append("id", this.dataList[index].id);
         this.$http
-          .post("http://39.98.41.126:30004/user/delete", formdata)
+          .post("http://39.98.41.126:30001/user/delete", formdata)
           .then((res) => {
             if (res.data.code == 1) {
               alert("删除成功！");
@@ -135,7 +135,7 @@ export default {
 
     // 获取客服信息
     getServiceList() {
-      this.$http.get("http://39.98.41.126:30004/user/getList").then((res) => {
+      this.$http.get("http://39.98.41.126:30001/user/getList").then((res) => {
         if (res.data.code == 1) {
           let list = res.data.data;
           for (let item in list) {

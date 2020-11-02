@@ -18,7 +18,26 @@
       <div class="chat-utils">
         <emoji @emotion="handleEmotion" />
         <div class="chat-icon" @click="addModel = true">
-          <svg t="1604055294598" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3850" width="40" height="40"><path d="M338.226 641.175h-31.357l-18.292-65.328h-57.489l-18.292 65.328h-31.357l65.328-213.242h26.131l65.328 213.242z m-56.183-88.748l-20.905-75.189h-2.613l-20.905 75.189h44.423zM495.015 579.544c0 19.722-5.451 35.342-16.332 46.84-10.901 11.517-28.091 17.256-51.609 17.256s-40.729-5.739-51.609-17.256c-10.902-11.498-16.333-27.118-16.333-46.84V430.398h30.051v149.146c0 13.982 3.471 24.248 10.453 30.815 6.961 6.587 16.107 9.861 27.438 9.861 11.31 0 20.456-3.274 27.438-9.861 6.961-6.567 10.453-16.833 10.453-30.815V430.398h30.051v149.146zM660.949 453.818h-52.263v187.357h-30.052V453.818h-52.263v-23.419h134.577v23.419zM833.416 535.17c0 38.635-6.328 66.369-18.944 83.201-12.638 16.853-30.276 25.269-52.917 25.269-22.66 0-40.503-8.416-53.569-25.269-13.065-16.832-19.599-44.566-19.599-83.201 0-38.615 6.533-66.137 19.599-82.585 13.066-16.428 30.909-24.652 53.569-24.652 22.641 0 40.279 8.224 52.917 24.652 12.616 16.448 18.944 43.97 18.944 82.585z m-31.357 0c0-34.513-3.92-57.104-11.759-67.793-7.84-10.67-17.435-16.024-28.745-16.024-11.33 0-21.129 5.354-29.397 16.024-8.288 10.689-12.412 33.28-12.412 67.793 0 34.514 4.124 57.316 12.412 68.41 8.269 11.094 18.067 16.641 29.397 16.641 11.311 0 20.905-5.547 28.745-16.641 7.839-11.093 11.759-33.896 11.759-68.41z" p-id="3851"></path><path d="M939.766 727.858H84.235V344.949h855.53v382.909zM896.005 388.71H127.997v295.388h768.008V388.71z" fill="#1E1E1E" p-id="3852"></path></svg>
+          <svg
+            t="1604055294598"
+            class="icon"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="3850"
+            width="40"
+            height="40"
+          >
+            <path
+              d="M338.226 641.175h-31.357l-18.292-65.328h-57.489l-18.292 65.328h-31.357l65.328-213.242h26.131l65.328 213.242z m-56.183-88.748l-20.905-75.189h-2.613l-20.905 75.189h44.423zM495.015 579.544c0 19.722-5.451 35.342-16.332 46.84-10.901 11.517-28.091 17.256-51.609 17.256s-40.729-5.739-51.609-17.256c-10.902-11.498-16.333-27.118-16.333-46.84V430.398h30.051v149.146c0 13.982 3.471 24.248 10.453 30.815 6.961 6.587 16.107 9.861 27.438 9.861 11.31 0 20.456-3.274 27.438-9.861 6.961-6.567 10.453-16.833 10.453-30.815V430.398h30.051v149.146zM660.949 453.818h-52.263v187.357h-30.052V453.818h-52.263v-23.419h134.577v23.419zM833.416 535.17c0 38.635-6.328 66.369-18.944 83.201-12.638 16.853-30.276 25.269-52.917 25.269-22.66 0-40.503-8.416-53.569-25.269-13.065-16.832-19.599-44.566-19.599-83.201 0-38.615 6.533-66.137 19.599-82.585 13.066-16.428 30.909-24.652 53.569-24.652 22.641 0 40.279 8.224 52.917 24.652 12.616 16.448 18.944 43.97 18.944 82.585z m-31.357 0c0-34.513-3.92-57.104-11.759-67.793-7.84-10.67-17.435-16.024-28.745-16.024-11.33 0-21.129 5.354-29.397 16.024-8.288 10.689-12.412 33.28-12.412 67.793 0 34.514 4.124 57.316 12.412 68.41 8.269 11.094 18.067 16.641 29.397 16.641 11.311 0 20.905-5.547 28.745-16.641 7.839-11.093 11.759-33.896 11.759-68.41z"
+              p-id="3851"
+            ></path>
+            <path
+              d="M939.766 727.858H84.235V344.949h855.53v382.909zM896.005 388.71H127.997v295.388h768.008V388.71z"
+              fill="#1E1E1E"
+              p-id="3852"
+            ></path>
+          </svg>
         </div>
       </div>
       <textarea
@@ -64,11 +83,7 @@
     </div>
 
     <!-- 聊天模板添加 -->
-    <Modal
-      v-model="addModel"
-      title="设置自动发送模板"
-      @on-ok="setAuto"
-    >
+    <Modal v-model="addModel" title="设置自动发送模板" @on-ok="setAuto">
       <input type="text" class="add-model" v-model="newModel" />
     </Modal>
   </div>
@@ -277,7 +292,7 @@ export default {
       formdata.append("content", this.content);
       this.$http
         .post(
-          `http://39.98.41.126:30004/chat/${this.serverId}/sendTo/${this.clientId}`,
+          `http://39.98.41.126:30001/chat/${this.serverId}/sendTo/${this.clientId}`,
           formdata
         )
         .then((res) => {
@@ -287,7 +302,9 @@ export default {
       document.getElementById("chat-area").focus();
       setTimeout(() => {
         let chat = document.getElementById("chat-history");
-        chat.scrollTop = chat.scrollHeight;
+        if (chat) {
+          chat.scrollTop = chat.scrollHeight;
+        }
       });
     },
     // 获取聊天id
@@ -295,9 +312,9 @@ export default {
       let data = new FormData();
       data.append("chat", sessionStorage.getItem("chat"));
       this.$http
-        .post("http://39.98.41.126:30004/chat/chatId", data, {
+        .post("http://39.98.41.126:30001/chat/chatId", data, {
           headers: {
-            token: sessionStorage.getItem("token")
+            token: sessionStorage.getItem("token"),
           },
         })
         .then((res) => {
@@ -318,7 +335,7 @@ export default {
       if (this.serverId) {
         this.$http
           .post(
-            `http://39.98.41.126:30004/chat/admin/${this.serverId}/onlineUser`,
+            `http://39.98.41.126:30001/chat/admin/${this.serverId}/onlineUser`,
             {
               pageNum: "1",
               pageSize: "10",
@@ -332,7 +349,7 @@ export default {
 
         this.$http
           .post(
-            `http://39.98.41.126:30004/chat/admin/${this.serverId}/offlineUser`,
+            `http://39.98.41.126:30001/chat/admin/${this.serverId}/offlineUser`,
             {
               pageNum: "1",
               pageSize: "10",
@@ -340,7 +357,7 @@ export default {
           )
           .then((res) => {
             if (res.data.code == 1) {
-              this.on_users = res.data.data.users;
+              this.off_users = res.data.data.users;
             }
           });
       }
@@ -351,7 +368,7 @@ export default {
       if (this.serverId) {
         this.$http
           .post(
-            `http://39.98.41.126:30004/chat/${this.clientId}/history/${this.serverId}`
+            `http://39.98.41.126:30001/chat/${this.clientId}/history/${this.serverId}`
           )
           .then((res) => {
             console.log(res.data);
@@ -379,8 +396,10 @@ export default {
           .then(() => {
             setTimeout(() => {
               let chat = document.getElementById("chat-history");
-              chat.scrollTop = chat.scrollHeight;
-            }, 1000);
+              if (chat) {
+                chat.scrollTop = chat.scrollHeight;
+              }
+            });
           });
       }
     },
@@ -390,15 +409,35 @@ export default {
       this.clientId = id;
       this.customerName = "游客" + id;
       this.getHistory();
+      // 发送自动问候语
+      // if (this.newModel) {
+      //   let formdata = new FormData();
+      //   formdata.append("content", this.newModel);
+      //   this.$http
+      //     .post(
+      //       `http://39.98.41.126:30001/chat/${this.serverId}/sendTo/${this.clientId}`,
+      //       formdata
+      //     )
+      //     .then((res) => {
+      //       console.log("发送成功！");
+      //     });
+      // }
+      //接收用户消息
       window.socket.subscribe("/user/queue/chat/" + this.clientId, (res) => {
         let data = JSON.parse(res.body);
-        console.log(data);
+        that.$Message.info(data.sender.username + "发来消息");
         that.history.push({
           type: 1,
-          name: that.serverName,
+          name: data.sender.username,
           date: data.time.slice(0, 10),
           time: data.time.slice(11, 19),
           content: data.content,
+        });
+        setTimeout(() => {
+          let chat = document.getElementById("chat-history");
+          if (chat) {
+            chat.scrollTop = chat.scrollHeight;
+          }
         });
       });
     },
@@ -407,7 +446,7 @@ export default {
       if (!window.socket) {
         let that = this;
         let socket = new SockJs(
-          "http://39.98.41.126:30004/ws-websocket?" + this.serverId
+          "http://39.98.41.126:30001/ws-websocket?" + this.serverId
         );
         // 获取Stomp子协议的客户端对象
         window.socket = Stomp.over(socket);
@@ -415,10 +454,13 @@ export default {
         window.socket.connect({}, function (res) {
           console.log("连接成功！");
           that.getUsers();
+          // 当有新游客进来时
           window.socket.subscribe("/user/queue/chat/newUserIn", (res) => {
             that.getUsers();
           });
-          window.socket.subscribe("/user/queue/chat/useroff", (res) => {
+          // 当有游客下线
+          window.socket.subscribe("/user/queue/chat/userOff", (res) => {
+            console.log('下线')
             that.getUsers();
           });
         });
@@ -433,36 +475,44 @@ export default {
     },
     //   添加模板
     setAuto() {
-      if(this.newModel){
+      if (this.newModel) {
         let data = new FormData();
-        data.append("auto",this.newModel)
-        this.$http.post("http://39.98.41.126:30004/chat/admin/setAutoSend",data)
-        .then(res=>{
-          if(res.data.code == 1){
-            console.log(res.data)
-          }
-        })
+        data.append("auto", this.newModel);
+        this.$http
+          .post("http://39.98.41.126:30001/chat/admin/setAutoSend", data, {
+            headers: {
+              token: sessionStorage.getItem("token"),
+            },
+          })
+          .then((res) => {
+            if (res.data.code == 1) {
+              console.log(res.data);
+            }
+          });
       }
     },
     // 获取自动回复模板
-    getAuto(){
-      this.$http.post(`http://39.98.41.126:30004/chat/admin/${this.serverId}/getAutoSend`)
-      .then(res=>{
-        if(res.data.code === 1){
-          this.newModel = res.data.data;
-        }else{
-          this.$Message.warning(res.data.msg);
-        }
-      })
-    }
+    getAuto() {
+      this.$http
+        .post(
+          `http://39.98.41.126:30001/chat/admin/${this.serverId}/getAutoSend`
+        )
+        .then((res) => {
+          if (res.data.code === 1) {
+            this.newModel = res.data.data;
+          } else {
+            this.$Message.warning(res.data.msg);
+          }
+        });
+    },
   },
   created() {
     this.getServerId();
     // 浏览器离开，断开连接
-    window.addEventListener('beforeunload',e=>{
+    window.addEventListener("beforeunload", (e) => {
       this.closeSocket();
-    })
-  }
+    });
+  },
 };
 </script>
 <style lang="scss" scoped>

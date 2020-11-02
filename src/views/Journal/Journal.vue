@@ -138,7 +138,7 @@ export default {
       formdata.append("pageNum", this.realLabels.pageNum);
       formdata.append("pageSize", this.realLabels.pageSize);
       this.$http
-        .post("http://39.98.41.126:30004/journal/searchJournal", formdata)
+        .post("http://39.98.41.126:30001/journal/searchJournal", formdata)
         .then((res) => {
           if (res.data.code == 1) {
             this.dataList = res.data.data.list;

@@ -74,7 +74,7 @@ export default {
         this.modal = false;
         if (this.nickname && this.oldPwd && this.newPwd2) {
           if (this.newPwd == this.newPwd2) {
-            this.$http.post("http://39.98.41.126:30004/user/ed").then((res) => {
+            this.$http.post("http://39.98.41.126:30001/user/ed").then((res) => {
               if (res.data.code == 1) {
                 this.$Message.success("修改成功！");
               } else {
@@ -93,7 +93,7 @@ export default {
     exit() {
       let flag = confirm("确定退出登录吗？");
       if (flag) {
-        this.$http.get("http://39.98.41.126:30004/user/logout").then((res) => {
+        this.$http.get("http://39.98.41.126:30001/user/logout").then((res) => {
           this.$Message.success("退出成功！");
           setTimeout(() => {
             window.location.href = "/";

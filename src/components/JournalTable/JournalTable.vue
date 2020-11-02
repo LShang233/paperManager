@@ -63,7 +63,7 @@ export default {
         let formdata = new FormData();
         formdata.append("id", this.journalList[index].id);
         this.$http
-          .post("http://39.98.41.126:30004/journal/deleteJournal", formdata)
+          .post("http://39.98.41.126:30001/journal/deleteJournal", formdata)
           .then((res) => {
             if (res.data.code == 1) {
               alert("删除成功");
