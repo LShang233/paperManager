@@ -8,6 +8,8 @@ import CustomerService from '@/views/CustomerService/CustomerService'
 import ServiceManager from '@/views/ServiceManager/ServiceManager'
 import JournalDetail from '@/views/JournalDetail/JournalDetail'
 import Login from "@/views/Login/Login"
+import LiteratureDetail from '@/views/LiteratureDetail/LiteratureDetail'
+
 Vue.use(Router)
 
 export default new Router({
@@ -53,6 +55,11 @@ export default new Router({
           path: 'JournalDetail/:jid',
           name: 'JournalDetail',
           component: JournalDetail
+        },
+        {
+          path: 'LiteratureDetail',
+          name: 'LiteratureDetail',
+          component: LiteratureDetail
         }
       ]
     }
