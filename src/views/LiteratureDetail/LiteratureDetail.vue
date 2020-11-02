@@ -114,7 +114,7 @@ export default {
 
     //查看文件
     look() {
-      this.$axios
+      this.$http
         .get("http://39.98.41.126:30001/con/" + this.doc.title)
         .then((res) => {
           console.log(res);
@@ -128,7 +128,7 @@ export default {
       let id = this.$route.params.id;
       //   console.log(id);
 
-      this.$axios.get(`http://39.98.41.126:30001/doc/${id}`).then((res) => {
+      this.$http.get(`http://39.98.41.126:30001/doc/${id}`).then((res) => {
         console.log(res.data);
         this.doc = res.data.data;
       });
@@ -141,7 +141,7 @@ export default {
 
     //提交并修改文献
     publishDoc() {
-      this.$axios
+      this.$http
         .put(
           `http://39.98.41.126:30001/doc?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}`
         )

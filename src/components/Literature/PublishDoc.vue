@@ -186,7 +186,7 @@ export default {
   methods: {
     //获取已发布文献
     getPublishDoc(pageNum) {
-      this.$axios
+      this.$http
         .get("http://39.98.41.126:30001/doc", {
           params: {
             pageNum: parseInt(pageNum),
@@ -212,7 +212,7 @@ export default {
           //删除文献
           this.docList.splice(index, 1);
           this.$Message.success("已删除");
-          this.$axios
+          this.$http
             .delete(`http://39.98.41.126:30001/doc?${this.docList[index].id}`)
             .then((res) => {
               console.log(res);
@@ -238,7 +238,7 @@ export default {
       this.editPanelModal = true;
       this.theDoc = this.newDoc[index];
       // this.theDoc = this.newDoc = this.docList[index];
-      this.$axios
+      this.$http
         .get(`http://39.98.41.126:30007/doc/${this.docList[index].id}`)
         .then((res) => {
           this.theDoc = res.data.data;
@@ -262,7 +262,7 @@ export default {
       console.log(this.docList[this.DocIndex], this.theDoc, "修改前");
       this.docList[this.DocIndex] = this.theDoc;
       console.log(this.docList[this.DocIndex], this.theDoc, "修改后");
-      this.$axios
+      this.$http
         .put("http://39.98.41.126:30001/doc", {
           id: this.theDoc.id,
           title: this.theDoc.title,

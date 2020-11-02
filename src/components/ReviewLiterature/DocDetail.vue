@@ -205,7 +205,7 @@ export default {
         this.docModal = false;
       }
 
-      this.$axios
+      this.$http
         .post(
           `http://39.98.41.126:30001/con/${status}/${this.docMessage.title}/${this.docMessage.email}`
         )
@@ -228,7 +228,7 @@ export default {
 
     //查看文件
     look() {
-      this.$axios
+      this.$http
         .get("http://39.98.41.126:30001/con/" + this.docMessage.title)
         .then((res) => {
           console.log(res);
@@ -260,7 +260,7 @@ export default {
       data.append("publishTime", this.time); //刊期
       data.append("fromJournal", this.fromJournal); //收录
       data.append("paperType", this.paperType); //类别
-      this.$axios
+      this.$http
         .post("http://39.98.41.126:30001/doc", data)
         .then((res) => {
           console.log(res.data);

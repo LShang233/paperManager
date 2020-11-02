@@ -43,7 +43,7 @@ export default {
     methods: {
         //获取审核消息
         getDocMessage(){
-            this.$axios.get('http://39.98.41.126:30001/con').then(res=>{
+            this.$http.get('http://39.98.41.126:30001/con').then(res=>{
                 
                 this.docMessage = res.data.data;
                 console.log(this.docMessage);

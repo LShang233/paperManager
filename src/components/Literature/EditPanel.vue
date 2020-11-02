@@ -54,7 +54,7 @@ export default {
         look(){
             this.$Message.success('查看文献');
             /*
-            this.$axios.get('http://39.98.41.126:30001/con/' + this.docMessage.title).then(res=>{
+            this.$http.get('http://39.98.41.126:30001/con/' + this.docMessage.title).then(res=>{
                 console.log(res);
                 window.location.href = res.request.responseURL;
                 // console.log(res.request.responseURL);
