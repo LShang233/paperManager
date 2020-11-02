@@ -79,13 +79,23 @@ export default {
   methods: {
     // 删除客服
     remove(index) {
-      alert(this.dataList[index].id);
       if (confirm("是否确认删除？")) {
         // 未完成，未测试接口，默认密码，header权限
-        let formdata = new FormData();
+        /* let formdata = new FormData();
         formdata.append("id", this.dataList[index].id);
         this.$http
-          .post("http://39.98.41.126:30004/user/delete", formdata)
+          .delete("http://39.98.41.126:30001/user/delete", formdata)
+          .then((res) => {
+            if (res.data.code == 1) {
+              alert("删除成功！");
+            } else {
+              alert(res.data.msg);
+            }
+          }); */
+
+        var param = { id: this.dataList[index].id };
+        this.$http
+          .delete("http://39.98.41.126:30001/user/delete", { data: param })
           .then((res) => {
             if (res.data.code == 1) {
               alert("删除成功！");
@@ -121,7 +131,7 @@ export default {
       formdata.append("username", this.username);
       formdata.append("nickname", this.nickname);
       this.$http
-        .post("http://39.98.41.126:30001/user/addServer", formdata)
+        .post("http://39.98.41.126:30001/user/re", formdata)
         .then((res) => {
           if (res.data.code == 1) {
             alert("注册成功，初始密码为 000000");
@@ -135,7 +145,7 @@ export default {
 
     // 获取客服信息
     getServiceList() {
-      this.$http.get("http://39.98.41.126:30004/user/getList").then((res) => {
+      this.$http.get("http://39.98.41.126:30001/user/getList").then((res) => {
         if (res.data.code == 1) {
           let list = res.data.data;
           for (let item in list) {

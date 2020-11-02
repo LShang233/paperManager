@@ -3,7 +3,7 @@
     <Banner :title="title" :icon="'md-list'"></Banner>
     <div class="JD-main">
       <div>
-        <div>
+        <div :style="'background-image: url(' + dataList.journalPhoto + ');'">
           <input
             class="img-input"
             name="file"
@@ -75,6 +75,7 @@
         总被引频次：
         <Input
           v-model="dataList.totalUsed"
+          type="number"
           size="large"
           placeholder="请输入……"
         />
@@ -166,6 +167,7 @@ export default {
           "不限",
           "核心（南大）",
           "国家级",
+          "国际级",
           "省级",
           "核心（北大）",
           "核心（北大.南大）",
@@ -200,9 +202,10 @@ export default {
         receiveWebsite: "",
         releaseCycle: "",
         journalType: "请选择期刊类型",
-        journalPhoto: "",
+        journalPhoto: "/static/img/photo.4f7a60a.jpg",
         subscriptionPrice: "",
       },
+      myPhoto: "",
     };
   },
   methods: {
@@ -227,10 +230,11 @@ export default {
       data.append("id", id);
       // 未完成  未测试
       this.$http
-        .post("http://39.98.41.126:30004/journal/getJournalById", data)
+        .post("http://39.98.41.126:30001/journal/getJournalById", data)
         .then((res) => {
           if (res.data.code == 1) {
-            console.log(res.data.data);
+            this.dataList = res.data.data;
+            // console.log(this.dataList);
           } else {
             alert(res.data.msg);
           }
@@ -239,7 +243,17 @@ export default {
 
     // 写入图片
     update(e) {
-      this.dataList.journalPhoto = e.target.files[0];
+      // 显示
+      let _this = this;
+      let files = e.target.files[0];
+      if (!e || !window.FileReader) return; // 看支持不支持FileReader
+      let reader = new FileReader();
+      reader.readAsDataURL(files); // 这里是最关键的一步，转换就在这里
+      reader.onloadend = function () {
+        _this.dataList.journalPhoto = this.result;
+      };
+      // 写入
+      this.myPhoto = e.target.files[0];
     },
 
     // 点击提交
@@ -248,8 +262,8 @@ export default {
       let url;
       // 判断是新建还是更新
       let id = this.$route.params.jid;
-      if (id == 0) url = "http://39.98.41.126:30004/journal/addJournal";
-      else url = "http://39.98.41.126:30004/journal/updateJournal";
+      if (id == 0) url = "http://39.98.41.126:30001/journal/addJournal";
+      else url = "http://39.98.41.126:30001/journal/updateJournal";
       // 写入数据
       var data = new FormData();
       data.append("name", this.dataList.name);
@@ -267,7 +281,7 @@ export default {
       data.append("receiveWebsite", this.dataList.receiveWebsite);
       data.append("releaseCycle", this.dataList.releaseCycle);
       data.append("journalType", this.dataList.journalType);
-      data.append("journalPhoto", this.dataList.journalPhoto);
+      data.append("journalPhoto", this.myPhoto);
       data.append("subscriptionPrice", this.dataList.subscriptionPrice);
       if (id != 0) data.append("id", id);
       // 未完成
@@ -304,7 +318,8 @@ export default {
       if (this.tips) {
         this.tips = "请输入" + this.tips.slice(0, this.tips.length - 1) + "！";
       }
-      if (!this.dataList.journalPhoto) this.tips = "请选择图片！" + this.tips;
+      // 新建时未上传图片
+      if (!this.myPhoto && this.$route.params.jid == 0) this.tips = "请选择图片！" + this.tips;
 
       // 判断
       if (this.tips == "") return 0;

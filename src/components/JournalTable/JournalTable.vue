@@ -10,7 +10,7 @@
         style="margin-right: 5px"
         :to="'/JournalDetail/' + row.id"
         >修改
-        </Button>
+      </Button>
       <Button type="error" size="small" @click="remove(index)">删除</Button>
     </template>
   </Table>
@@ -60,21 +60,30 @@ export default {
     remove(index) {
       // 未完成 未测试
       if (confirm("是否确认删除？")) {
-        let formdata = new FormData();
+        /* let formdata = new FormData();
         formdata.append("id", this.journalList[index].id);
         this.$http
-          .post("http://39.98.41.126:30004/journal/deleteJournal", formdata)
+          .delete("http://39.98.41.126:30001/journal/deleteJournal", formdata)
           .then((res) => {
             if (res.data.code == 1) {
               alert("删除成功");
+            }
+          }); */
+        var param = { id: this.journalList[index].id };
+        this.$http
+          .delete("http://39.98.41.126:30001/journal/deleteJournal", { data: param })
+          .then((res) => {
+            if (res.data.code == 1) {
+              alert("删除成功！");
+            } else {
+              alert(res.data.msg);
             }
           });
       }
     },
   },
 
-  mounted() {
-  },
+  mounted() {},
 };
 </script>
 
