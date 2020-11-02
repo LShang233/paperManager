@@ -6,6 +6,7 @@ import Literature from '@/views/Literature/Literature'
 import ReviewLiterature from '@/views/ReviewLiterature/ReviewLiterature'
 import CustomerServiceChat from '@/views/CustomerServiceChat/CustomerServiceChat'
 import ServiceManager from '@/views/ServiceManager/ServiceManager'
+import LiteratureDetail from '@/views/LiteratureDetail/LiteratureDetail'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ export default new Router({
           name: 'ServiceManager',
           component: ServiceManager
         },
+        {
+          path: 'LiteratureDetail',
+          name: 'LiteratureDetail',
+          component: LiteratureDetail
+        }
       ]
     }
   ]
