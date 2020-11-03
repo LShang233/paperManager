@@ -14,7 +14,7 @@
       <li>
         <router-link to="/CustomerService">客服聊天</router-link>
       </li>
-      <li>
+      <li v-if="isMainManager == 1">
         <router-link to="/ServiceManager">客服管理</router-link>
       </li>
     </ul>
@@ -27,6 +27,15 @@ export default {
   name: "Header",
   components : {
     Setting
+  },
+  methods: {
+    isMainManager() {
+      if(sessionStorage.getItem("email") == "429075156@qq.com") return 1;
+      else return 0;
+    }
+  },
+  mounted() {
+this.isMainManager();
   }
 };
 </script>

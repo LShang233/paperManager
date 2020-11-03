@@ -77,6 +77,15 @@ export default {
     };
   },
   methods: {
+    // 判断最高管理员
+    isMainManager() {
+      if (sessionStorage.getItem("email") == "429075156@qq.com") return;
+      else {
+        alert("请登录！");
+        window.location.replace("/Journal");
+      }
+    },
+
     // 删除客服
     remove(index) {
       if (confirm("是否确认删除？")) {
@@ -148,6 +157,7 @@ export default {
   },
   mounted() {
     this.getServiceList();
+    this.isMainManager();
   },
 };
 </script>
