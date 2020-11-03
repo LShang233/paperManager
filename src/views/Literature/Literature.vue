@@ -67,7 +67,7 @@ export default {
     //获取已发布文献
     getPublishDoc(pageNum) {
       this.$http
-        .get("http://39.98.41.126:30001/doc", {
+        .get("http://39.98.41.126:30007/doc", {
           params: {
             pageNum: parseInt(pageNum),
             pageSize: 9,
@@ -91,7 +91,7 @@ export default {
         onOk: () => {
           //删除文献
           this.$http
-            .delete(`http://39.98.41.126:30001/doc/${this.docList[index].id}`)
+            .delete(`http://39.98.41.126:30004/docs/${this.docList[index].id}`)
             .then((res) => {
               console.log(res);
               this.docList.splice(index, 1);
