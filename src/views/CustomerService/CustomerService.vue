@@ -292,7 +292,7 @@ export default {
       formdata.append("content", this.content);
       this.$http
         .post(
-          `http://39.98.41.126:30007/chat/${this.serverId}/sendTo/${this.clientId}`,
+          `http://39.98.41.126:30004/chat/${this.serverId}/sendTo/${this.clientId}`,
           formdata
         )
         .then((res) => {
@@ -312,7 +312,7 @@ export default {
       let data = new FormData();
       data.append("chat", sessionStorage.getItem("chat"));
       this.$http
-        .post("http://39.98.41.126:30007/chat/chatId", data, {
+        .post("http://39.98.41.126:30004/chat/chatId", data, {
           headers: {
             token: sessionStorage.getItem("token"),
           },
@@ -335,7 +335,7 @@ export default {
       if (this.serverId) {
         this.$http
           .post(
-            `http://39.98.41.126:30007/chat/admin/${this.serverId}/onlineUser`,
+            `http://39.98.41.126:30004/chat/admin/${this.serverId}/onlineUser`,
             {
               pageNum: "1",
               pageSize: "10",
@@ -349,7 +349,7 @@ export default {
 
         this.$http
           .post(
-            `http://39.98.41.126:30007/chat/admin/${this.serverId}/offlineUser`,
+            `http://39.98.41.126:30004/chat/admin/${this.serverId}/offlineUser`,
             {
               pageNum: "1",
               pageSize: "10",
@@ -368,7 +368,7 @@ export default {
       if (this.serverId) {
         this.$http
           .post(
-            `http://39.98.41.126:30007/chat/${this.clientId}/history/${this.serverId}`
+            `http://39.98.41.126:30004/chat/${this.clientId}/history/${this.serverId}`
           )
           .then((res) => {
             console.log(res.data);
@@ -415,7 +415,7 @@ export default {
       //   formdata.append("content", this.newModel);
       //   this.$http
       //     .post(
-      //       `http://39.98.41.126:30007/chat/${this.serverId}/sendTo/${this.clientId}`,
+      //       `http://39.98.41.126:30004/chat/${this.serverId}/sendTo/${this.clientId}`,
       //       formdata
       //     )
       //     .then((res) => {
@@ -446,7 +446,7 @@ export default {
       if (!window.socket) {
         let that = this;
         let socket = new SockJs(
-          "http://39.98.41.126:30007/ws-websocket?" + this.serverId
+          "http://39.98.41.126:30004/ws-websocket?" + this.serverId
         );
         // 获取Stomp子协议的客户端对象
         window.socket = Stomp.over(socket);
@@ -479,7 +479,7 @@ export default {
         let data = new FormData();
         data.append("auto", this.newModel);
         this.$http
-          .post("http://39.98.41.126:30007/chat/admin/setAutoSend", data, {
+          .post("http://39.98.41.126:30004/chat/admin/setAutoSend", data, {
             headers: {
               token: sessionStorage.getItem("token"),
             },
@@ -495,7 +495,7 @@ export default {
     getAuto() {
       this.$http
         .post(
-          `http://39.98.41.126:30007/chat/admin/${this.serverId}/getAutoSend`
+          `http://39.98.41.126:30004/chat/admin/${this.serverId}/getAutoSend`
         )
         .then((res) => {
           if (res.data.code === 1) {

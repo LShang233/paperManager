@@ -71,23 +71,27 @@ export default {
     changeInfos() {
       let flag = confirm("确定修改个人信息吗？");
       if (flag) {
-        this.modal = false;
         if (this.nickname) {
           if (this.oldPwd) {
-            if (this.newPwd && this.newPwd2) {
-              if (this.newPwd == this.newPwd2) {
+            if (this.newPwd) {
+              if (this.newPwd === this.newPwd2) {
                 let formdata = new FormData();
                 formdata.append("mail", sessionStorage.getItem("email"));
                 formdata.append("nickname", this.nickname);
                 formdata.append("oldPassword", this.oldPwd);
                 formdata.append("newPassword", this.newPwd2);
                 this.$http
-                  .post("http://39.98.41.126:30007/user/ed")
+                  .post("http://39.98.41.126:30004/user/ed", formdata)
                   .then((res) => {
                     if (res.data.code == 1) {
                       this.$Message.success("修改成功！");
+                      this.modal = false;
+                      this.oldPwd = '';
+                      this.newPwd = '';
+                      this.newPwd2 = '';
+                      sessionStorage.setItem('nickname',this.nickname)
                     } else {
-                      this.$Message.success(res.data.msg);
+                      this.$Message.warning(res.data.msg);
                     }
                   });
               } else {
@@ -95,6 +99,35 @@ export default {
               }
             } else {
               this.$Message.warning("请填写新密码！");
+            }
+          } else if (this.newPwd) {
+            if (this.oldPwd) {
+              // 如果填写了旧密码但是没有填写新密码
+              if (this.newPwd === this.newPwd2) {
+                let formdata = new FormData();
+                formdata.append("mail", sessionStorage.getItem("email"));
+                formdata.append("nickname", this.nickname);
+                formdata.append("oldPassword", this.oldPwd);
+                formdata.append("newPassword", this.newPwd2);
+                this.$http
+                  .post("http://39.98.41.126:30004/user/ed", formdata)
+                  .then((res) => {
+                    if (res.data.code == 1) {
+                      this.$Message.success("修改成功！");
+                      this.modal = false;
+                      this.oldPwd = '';
+                      this.newPwd = '';
+                      this.newPwd2 = '';
+                      sessionStorage.setItem('nickname',this.nickname)
+                    } else {
+                      this.$Message.warning(res.data.msg);
+                    }
+                  });
+              } else {
+                this.$Message.warning("两次密码不一致！");
+              }
+            } else {
+              this.$Message.warning("请填写旧密码！");
             }
           }
         } else {
@@ -106,7 +139,7 @@ export default {
     exit() {
       let flag = confirm("确定退出登录吗？");
       if (flag) {
-        this.$http.get("http://39.98.41.126:30007/user/logout").then((res) => {
+        this.$http.get("http://39.98.41.126:30004/user/logout").then((res) => {
           this.$Message.success("退出成功！");
           setTimeout(() => {
             window.location.href = "/";

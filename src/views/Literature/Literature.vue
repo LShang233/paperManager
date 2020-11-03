@@ -113,7 +113,7 @@ export default {
         },
       });
       this.$http
-        .get(`http://39.98.41.126:30007/doc/${this.docList[index].id}`)
+        .get(`http://39.98.41.126:30004/doc/${this.docList[index].id}`)
         .then((res) => {
           this.theDoc = res.data.data;
         });

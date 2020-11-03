@@ -132,7 +132,7 @@ export default {
 
     // 获取客服信息
     getServiceList() {
-      this.$http.get("http://39.98.41.126:30007/user/getList").then((res) => {
+      this.$http.get("http://39.98.41.126:30004/user/getList").then((res) => {
         if (res.data.code == 1) {
           let list = res.data.data;
           for (let item in list) {
