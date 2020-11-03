@@ -52,7 +52,7 @@ export default {
     return {
       value: false,
       modal: false,
-      nickname: sessionStorage.getItem('nickname'),
+      nickname: sessionStorage.getItem("nickname"),
       oldPwd: "",
       newPwd: "",
       newPwd2: "",
@@ -72,20 +72,33 @@ export default {
       let flag = confirm("确定修改个人信息吗？");
       if (flag) {
         this.modal = false;
-        if (this.nickname && this.oldPwd && this.newPwd2) {
-          if (this.newPwd == this.newPwd2) {
-            this.$http.post("http://39.98.41.126:30001/user/ed").then((res) => {
-              if (res.data.code == 1) {
-                this.$Message.success("修改成功！");
+        if (this.nickname) {
+          if (this.oldPwd) {
+            if (this.newPwd && this.newPwd2) {
+              if (this.newPwd == this.newPwd2) {
+                let formdata = new FormData();
+                formdata.append("mail", sessionStorage.getItem("email"));
+                formdata.append("nickname", this.nickname);
+                formdata.append("oldPassword", this.oldPwd);
+                formdata.append("newPassword", this.newPwd2);
+                this.$http
+                  .post("http://39.98.41.126:30007/user/ed")
+                  .then((res) => {
+                    if (res.data.code == 1) {
+                      this.$Message.success("修改成功！");
+                    } else {
+                      this.$Message.success(res.data.msg);
+                    }
+                  });
               } else {
-                this.$Message.success(res.data.msg);
+                this.$Message.warning("两次密码不一致！");
               }
-            });
-          } else {
-            this.$Message.warning("两次密码不一致！");
+            } else {
+              this.$Message.warning("请填写新密码！");
+            }
           }
         } else {
-          this.$Message.warning("信息不能为空！");
+          this.$Message.warning("昵称不能为空!");
         }
       }
     },
@@ -93,7 +106,7 @@ export default {
     exit() {
       let flag = confirm("确定退出登录吗？");
       if (flag) {
-        this.$http.get("http://39.98.41.126:30001/user/logout").then((res) => {
+        this.$http.get("http://39.98.41.126:30007/user/logout").then((res) => {
           this.$Message.success("退出成功！");
           setTimeout(() => {
             window.location.href = "/";
