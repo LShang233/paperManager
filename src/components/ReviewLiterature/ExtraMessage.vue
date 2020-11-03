@@ -3,53 +3,74 @@
     <div>
       <div class="extra-name">刊期：</div>
       <Row>
-          <Col span="12">
-            <DatePicker
-              type="date"
-              placeholder="选择日期"
-              @on-change="findDate"
-              format="yyyy-MM-dd"
-              :style="lineProgress"
-              v-model="time"
-            ></DatePicker>
-          </Col>
-        </Row>
+        <Col span="12">
+          <DatePicker
+            type="date"
+            placeholder="选择日期"
+            @on-change="findDate"
+            format="yyyy-MM-dd"
+            :style="lineProgress"
+            v-model="time"
+          ></DatePicker>
+        </Col>
+      </Row>
     </div>
     <div>
       <div class="extra-name">类别：</div>
-      <Select v-model="paperType" @on-change="passToParent" :style="lineProgress">
-          <Option
-            v-for="item in paperTypes"
-            :value="item.value"
-            :key="item.value"
-          >
-            {{ item.label }}
-          </Option>
-        </Select>
+      <Select
+        v-model="paperType"
+        @on-change="passToParent"
+        :style="lineProgress"
+      >
+        <Option
+          v-for="item in paperTypes"
+          :value="item.value"
+          :key="item.value"
+        >
+          {{ item.label }}
+        </Option>
+      </Select>
     </div>
     <div>
       <div class="extra-name">收录：</div>
-      <Input
+      <div class="fromJournal-container">
+        <Input
           v-model="fromJournal"
           :style="lineProgress"
-          placeholder="请填写有效信息"
-          @on-change="passToParent"
+          placeholder="输入有效信息，自动搜索有关的收录期刊"
+          @on-change="delaySearch"
         />
+        <ul
+          v-show="journalShow"
+          :style="lineProgress"
+          class="fromJournal-panel"
+        >
+          <li
+            v-for="(item, index) in journal"
+            :key="item.index"
+            @click="addJournal(index)"
+          >
+          {{ item.name }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getDate, getTime } from "./util";
+import { getDate, getTime, debounce } from "./util";
 
 export default {
   name: "ExtraMessage",
-  props: ["extraMessage","Width"],
+  props: ["extraMessage", "Width"],
   data() {
     return {
+      journalShow: false, //搜索面板是否出现
       fromJournal: "", //收录
       time: "", //时间
       paperType: "", //类别
+      journal: [], //模糊搜索到的期刊
       paperTypes: [
         {
           label: "OA期刊",
@@ -131,6 +152,62 @@ export default {
           label: "建筑",
           value: "建筑",
         },
+        {
+          label: "交通",
+          value: "交通",
+        },
+        {
+          label: "油气",
+          value: "油气",
+        },
+        {
+          label: "天文",
+          value: "天文",
+        },
+        {
+          label: "军事",
+          value: "军事",
+        },
+        {
+          label: "航空",
+          value: "航空",
+        },
+        {
+          label: "金属",
+          value: "金属",
+        },
+        {
+          label: "冶金",
+          value: "冶金",
+        },
+        {
+          label: "矿业",
+          value: "矿业",
+        },
+        {
+          label: "电器",
+          value: "电器",
+        },
+        {
+          label: "水利",
+          value: "水利",
+        },
+        {
+          label: "动力",
+          value: "动力",
+        },
+        {
+          label: "计算机",
+          value: "计算机",
+        },
+        {
+          label: "电子",
+          value: "电子",
+        },
+        {
+          label: "语言",
+          value: "语言",
+        },
       ],
     };
   },
@@ -172,6 +249,30 @@ export default {
       this.paperType = "";
       // this.passToParent();
     },
+
+    //添加收录期刊
+    addJournal(index) {
+      this.fromJournal = this.journal[index].name;
+    },
+
+    //根据字段模糊搜索期刊
+    searchJournal() {
+      let data = new FormData();
+      data.append("name", this.fromJournal);
+      this.$http
+        .post("http://39.98.41.126:30004/journal/list", data)
+        .then((res) => {
+          console.log(res);
+          this.journal = res.data.data;
+          this.journalShow = true;
+          this.passToParent();
+        });
+    },
+
+    //防抖
+    delaySearch: debounce(function(){
+      this.searchJournal()
+    },1000),
   },
 
   mounted() {
@@ -190,7 +291,7 @@ export default {
       deep: true,
       immediate: true,
     },
-
+    fromJournal(val, oldVal) {},
 
     // fromJournal(val,oldVal){
 
@@ -204,7 +305,7 @@ export default {
     //     return val;
     // }
   },
-    computed: {
+  computed: {
     lineProgress() {
       let style = {};
       style.width = this.Width + "px";
@@ -243,6 +344,39 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .fromJournal-container {
+      position: relative;
+
+      .fromJournal-panel {
+        position: absolute;
+        left: 0;
+        top: 32px;
+        padding: 10px 0;
+        max-height: 110px;
+        // width: 400px;
+        font-size: 12px;
+        color: #515a6e;
+        background: rgb(255, 255, 255);
+        box-sizing: border-box;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+        overflow: auto;
+
+        li {
+          list-style: none;
+          height: 30px;
+          line-height: 30px;
+          text-indent: 10px;
+          cursor: pointer;
+          transition: all 0.2s;
+          user-select: none;
+
+          &:hover {
+            background: #f3f3f3;
+          }
+        }
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="doc-detail">
     <Button type="primary" @click="docModal = true">详细信息</Button>
-    <Modal v-model="docModal" width="50%">
+    <Modal v-model="docModal" width="40%">
       <p slot="header" style="font-weight: bold; font-size: 16px">
         《{{ docMessage.title }}》投稿的详细信息
       </p>
@@ -44,13 +44,14 @@
           title="添加文献额外信息"
           :closable="false"
           :mask-closable="false"
+          width="500"
         >
-          <div class="extra-message">
+          <div class="extra-message" @click="$refs.myChild.journalShow=false">
             <ExtraMessage
               :extraMessage="docMessage"
               @getMessageList="getExtraMessage"
               ref="myChild"
-              :Width="200"
+              :Width="250"
             />
             <!-- <div>
                         <strong>刊期：</strong>
@@ -207,7 +208,7 @@ export default {
 
       this.$http
         .post(
-          `http://39.98.41.126:30001/con/${status}/${this.docMessage.title}/${this.docMessage.email}`
+          `http://39.98.41.126:30004/con/${status}/${this.docMessage.title}/${this.docMessage.email}`
         )
         .then((res) => {
           console.log(res.data);
@@ -261,7 +262,7 @@ export default {
       data.append("fromJournal", this.fromJournal); //收录
       data.append("paperType", this.paperType); //类别
       this.$http
-        .post("http://39.98.41.126:30001/doc", data)
+        .post("http://39.98.41.126:30001/docs", data)
         .then((res) => {
           console.log(res.data);
           if (res.data.code == 1) {
@@ -370,7 +371,7 @@ export default {
   justify-content: center;
   align-items: center;
   margin: 20px;
-  padding: 0 40px;
+  padding: 0 30px;
   font-size: 16px;
 }
 </style>

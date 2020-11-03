@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="$refs.child.journalShow = false">
     <Banner :title="'修改文献'" />
     <div class="big-container">
       <div class="doc-container">
@@ -44,39 +44,6 @@
       </div>
     </div>
   </div>
-  <!-- <div class="doc-container">
-        <div>
-          <p>作者：</p>
-          <Input v-model="theDoc.author" style="width: 200px" />
-        </div>
-        <div class="doc-title">
-          <p
-            title="改文献名会导致无法查看文件"
-            style="color: red; cursor: default"
-          >
-            *文献名称：
-          </p>
-          <div>
-            <Button type="warning" size="small" ghost>查看文献</Button>
-            <Input
-              v-model="theDoc.title"
-              style="width: 200px; font-weight: bold"
-              disabled
-            />
-          </div>
-        </div>
-        <div>
-          <p>关键词：</p>
-          <Input v-model="theDoc.keyword" style="width: 200px" />
-        </div>
-        <div>
-          <EditMessage
-            :extraMessage="theDoc"
-            ref="child"
-            @getMessageList="getAllMessage"
-          />
-        </div>
-      </div> -->
 </template>
 
 <script>
@@ -115,7 +82,7 @@ export default {
     //查看文件
     look() {
       this.$http
-        .get("http://39.98.41.126:30001/con/" + this.doc.title)
+        .get("http://39.98.41.126:30004/con/" + this.doc.title)
         .then((res) => {
           console.log(res);
           window.location.href = res.request.responseURL;
@@ -128,7 +95,7 @@ export default {
       let id = this.$route.params.id;
       //   console.log(id);
 
-      this.$http.get(`http://39.98.41.126:30001/doc/${id}`).then((res) => {
+      this.$http.get(`http://39.98.41.126:30004/doc/${id}`).then((res) => {
         console.log(res.data);
         this.doc = res.data.data;
       });
@@ -141,17 +108,61 @@ export default {
 
     //提交并修改文献
     publishDoc() {
+      //检查参数
+      let state = this.checkParams();
+      if(!state){
+        return false;
+      }
       this.$http
         .put(
-          `http://39.98.41.126:30001/doc?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}`
+          `http://39.98.41.126:30007/docs?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}`
         )
         .then((res) => {
           console.log(res);
-          this.$Message.success("已成功");
+          if(res.status == 200){
+            this.$Message.success("修改成功");
+            this.doc = '';
+          } else {
+            this.$Message.error('修改失败');
+          }
+          
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    //检查参数
+    checkParams() {
+      let state = true;
+      let arr = []; //含错误字段的数组
+      if (!this.doc.author) {
+        arr.push("作者名");
+        state = false;
+      }
+      if (!this.doc.keyword) {
+        state = false;
+        arr.push("关键词");
+      }
+      if (!this.doc.fromJournal) {
+        arr.push("收录");
+        state = false;
+      }
+      if (!this.doc.paperType) {
+        arr.push("类别");
+        state = false;
+      }
+      if (!this.doc.publishTime) {
+        arr.push("刊期");
+        state = false;
+      }
+      let sum = "";
+      arr.forEach((item, index) => {
+        sum += `${item}、`;
+      });
+      if (!state) this.$Message.error(sum.slice(0, -1) + "为空"); //提示
+
+      return state;
     },
   },
 
