@@ -40,19 +40,21 @@
           placeholder="输入有效信息，自动搜索有关的收录期刊"
           @on-change="delaySearch"
         />
-        <ul
-          v-show="journalShow"
-          :style="lineProgress"
-          class="fromJournal-panel"
-        >
-          <li
-            v-for="(item, index) in journal"
-            :key="item.index"
-            @click="addJournal(index)"
+        <transition name="close">
+          <ul
+            v-show="journalShow"
+            :style="lineProgress"
+            class="fromJournal-panel"
           >
-          {{ item.name }}
-          </li>
-        </ul>
+            <li
+              v-for="(item, index) in journal"
+              :key="item.index"
+              @click="addJournal(index)"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+        </transition>
       </div>
     </div>
   </div>
@@ -271,9 +273,9 @@ export default {
     },
 
     //防抖
-    delaySearch: debounce(function(){
-      this.searchJournal()
-    },1000),
+    delaySearch: debounce(function () {
+      this.searchJournal();
+    }, 1000),
   },
 
   mounted() {
@@ -380,5 +382,14 @@ export default {
       }
     }
   }
+}
+
+.close-leave-active,
+.close-enter-active {
+  transition: all .5s;
+}
+.close-leave-to,
+.close-enter {
+  opacity: 0;
 }
 </style>
