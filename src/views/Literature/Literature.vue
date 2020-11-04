@@ -67,7 +67,7 @@ export default {
     //获取已发布文献
     getPublishDoc(pageNum) {
       this.$http
-        .get("http://39.98.41.126:30007/doc", {
+        .get("http://39.98.41.126:30004/doc", {
           params: {
             pageNum: parseInt(pageNum),
             pageSize: 9,
@@ -107,9 +107,10 @@ export default {
     //修改文献
     revise(index) {
       this.$router.push({
-        name: "LiteratureDetail",
-        params: {
+        path: "LiteratureDetail",
+        query: {
           id: this.docList[index].id,
+          title: this.docList[index].title
         },
       });
       this.$http

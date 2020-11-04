@@ -92,7 +92,7 @@ export default {
 
     //获取要修改的文献
     getTheDoc() {
-      let id = this.$route.params.id;
+      let id = this.$route.query.id;
       //   console.log(id);
 
       this.$http.get(`http://39.98.41.126:30004/doc/${id}`).then((res) => {
@@ -115,13 +115,16 @@ export default {
       }
       this.$http
         .put(
-          `http://39.98.41.126:30007/docs?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}`
+          `http://39.98.41.126:30004/doc?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}`
         )
         .then((res) => {
           console.log(res);
           if(res.status == 200){
             this.$Message.success("修改成功");
             this.doc = '';
+            setTimeout(()=>{
+              this.$router.replace("/Literature");
+            },1000);
           } else {
             this.$Message.error('修改失败');
           }

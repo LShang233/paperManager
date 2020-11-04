@@ -262,7 +262,7 @@ export default {
       data.append("fromJournal", this.fromJournal); //收录
       data.append("paperType", this.paperType); //类别
       this.$http
-        .post("http://39.98.41.126:30001/docs", data)
+        .post("http://39.98.41.126:30004/doc", data)
         .then((res) => {
           console.log(res.data);
           if (res.data.code == 1) {

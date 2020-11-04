@@ -253,6 +253,7 @@ export default {
     //添加收录期刊
     addJournal(index) {
       this.fromJournal = this.journal[index].name;
+      this.passToParent();
     },
 
     //根据字段模糊搜索期刊
