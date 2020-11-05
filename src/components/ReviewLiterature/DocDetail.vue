@@ -230,7 +230,7 @@ export default {
     //查看文件
     look() {
       this.$http
-        .get("http://39.98.41.126:30001/con/" + this.docMessage.title)
+        .get("http://39.98.41.126:30004/con/" + this.docMessage.title)
         .then((res) => {
           console.log(res);
           window.location.href = res.request.responseURL;

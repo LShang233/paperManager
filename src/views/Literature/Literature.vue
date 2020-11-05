@@ -91,7 +91,7 @@ export default {
         onOk: () => {
           //删除文献
           this.$http
-            .delete(`http://39.98.41.126:30004/docs/${this.docList[index].id}`)
+            .delete(`http://39.98.41.126:30004/doc/${this.docList[index].id}`)
             .then((res) => {
               console.log(res);
               this.docList.splice(index, 1);
