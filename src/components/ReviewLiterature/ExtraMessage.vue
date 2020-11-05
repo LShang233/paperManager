@@ -263,7 +263,7 @@ export default {
       let data = new FormData();
       data.append("name", this.fromJournal);
       this.$http
-        .post("http://39.98.41.126:30004/journal/list", data)
+        .post(this.domain + "journal/list", data)
         .then((res) => {
           console.log(res);
           this.journal = res.data.data;

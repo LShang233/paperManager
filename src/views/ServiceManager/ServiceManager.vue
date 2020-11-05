@@ -91,7 +91,7 @@ export default {
       if (confirm("是否确认删除？")) {
         this.$http
           .delete(
-            `http://39.98.41.126:30004/user/delete/${this.dataList[index].id}`
+            this.domain + `user/delete/${this.dataList[index].id}`
           )
           .then((res) => {
             if (res.data.code == 1) {
@@ -128,7 +128,7 @@ export default {
       formdata.append("mail", this.username);
       formdata.append("nickname", this.nickname);
       this.$http
-        .post("http://39.98.41.126:30004/user/re", formdata)
+        .post(this.domain + "user/re", formdata)
         .then((res) => {
           if (res.data.code == 1) {
             alert("注册成功，初始密码为 000000");
@@ -141,7 +141,7 @@ export default {
 
     // 获取客服信息
     getServiceList() {
-      this.$http.get("http://39.98.41.126:30004/user/getList").then((res) => {
+      this.$http.get(this.domain + "user/getList").then((res) => {
         if (res.data.code == 1) {
           let list = res.data.data;
           for (let item in list) {

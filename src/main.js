@@ -8,7 +8,8 @@ import 'iview/dist/styles/iview.css'
 import axios from 'axios'
 
 Vue.config.productionTip = false
-Vue.prototype.$http = axios
+Vue.prototype.$http = axios;
+Vue.prototype.domain = "http://39.98.41.126:30001/"
 Vue.use(iView)
 /* eslint-disable no-new */
 new Vue({

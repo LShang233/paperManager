@@ -54,7 +54,7 @@ export default {
         look(){
             this.$Message.success('查看文献');
             /*
-            this.$http.get('http://39.98.41.126:30004/con/' + this.docMessage.title).then(res=>{
+            this.$http.get(this.domain + "cons/" + this.docMessage.title).then(res=>{
                 console.log(res);
                 window.location.href = res.request.responseURL;
                 // console.log(res.request.responseURL);

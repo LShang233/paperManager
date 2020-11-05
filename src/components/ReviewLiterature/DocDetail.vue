@@ -208,7 +208,7 @@ export default {
 
       this.$http
         .post(
-          `http://39.98.41.126:30004/con/${status}/${this.docMessage.title}/${this.docMessage.email}`
+          this.domain + `cons/${status}/${this.docMessage.title}/${this.docMessage.email}`
         )
         .then((res) => {
           console.log(res.data);
@@ -230,7 +230,7 @@ export default {
     //查看文件
     look() {
       this.$http
-        .get("http://39.98.41.126:30004/con/" + this.docMessage.title)
+        .get(this.domain + "cons/" + this.docMessage.title)
         .then((res) => {
           console.log(res);
           window.location.href = res.request.responseURL;
@@ -262,7 +262,7 @@ export default {
       data.append("fromJournal", this.fromJournal); //收录
       data.append("paperType", this.paperType); //类别
       this.$http
-        .post("http://39.98.41.126:30004/doc", data)
+        .post(this.domain + "docs", data)
         .then((res) => {
           console.log(res.data);
           if (res.data.code == 1) {

@@ -59,7 +59,7 @@
     <div class="user-list">
       <Header :title="'游客列表'" :icon="'ios-people'"></Header>
       <Tabs value="name1">
-        <TabPane label="在线游客" name="name1">
+        <TabPane label="在线游客" name="name1"  class="user-tab">
           <ul id="on-users">
             <User
               v-for="(item, key) in on_users"
@@ -68,8 +68,9 @@
               @click.native="getClientId(item)"
             />
           </ul>
+          <Page :total="online_total" :page-size="pageSize" :current="currentPage1" @on-change="getOnlineUsers" class="user-page"/>
         </TabPane>
-        <TabPane label="离线游客" name="name2">
+        <TabPane label="离线游客" name="name2" class="user-tab">
           <ul id="off-users">
             <User
               v-for="(item, key) in off_users"
@@ -78,6 +79,7 @@
               @click.native="getClientId(item)"
             />
           </ul>
+          <Page :total="offline_total" :page-size="pageSize" :current="currentPage2" @on-change="getOfflineUsers" class="user-page"/>
         </TabPane>
       </Tabs>
     </div>
@@ -101,6 +103,14 @@ export default {
     return {
       on_users: [],
       off_users: [],
+      // 分页
+      online_total : 0,
+      offline_total : 0,
+      pageSize : 15,
+      // 在线游客列表当前页
+      currentPage1 : 1,
+      // 离线游客列表当前页
+      currentPage2 : 1,
       customerName: "请选择游客",
       alert: "发送成功！",
       content: "",
@@ -292,7 +302,7 @@ export default {
       formdata.append("content", this.content);
       this.$http
         .post(
-          `http://39.98.41.126:30004/chat/${this.serverId}/sendTo/${this.clientId}`,
+          this.domain + `chat/${this.serverId}/sendTo/${this.clientId}`,
           formdata
         )
         .then((res) => {
@@ -312,7 +322,7 @@ export default {
       let data = new FormData();
       data.append("chat", sessionStorage.getItem("chat"));
       this.$http
-        .post("http://39.98.41.126:30004/chat/chatId", data, {
+        .post(this.domain + "chat/chatId", data, {
           headers: {
             token: sessionStorage.getItem("token"),
           },
@@ -331,36 +341,51 @@ export default {
         });
     },
     // 获取用户列表
-    getUsers() {
+    getOnlineUsers(page){
       if (this.serverId) {
+        this.currentPage1 = page;
+        let formdata = new FormData();
+        formdata.append("pageNum",this.currentPage1);
+        formdata.append("pageSize",this.pageSize);
         this.$http
           .post(
-            `http://39.98.41.126:30004/chat/admin/${this.serverId}/onlineUser`,
-            {
-              pageNum: "1",
-              pageSize: "10",
-            }
+            this.domain + `chat/admin/${this.serverId}/onlineUser`,
+            formdata
           )
           .then((res) => {
             if (res.data.code == 1) {
               this.on_users = res.data.data.users;
+              this.online_total = res.data.data.total;
             }
           });
-
+      }else{
+        this.$Message.warning("请先登录！");
+      }
+    },
+    getOfflineUsers(page){
+      if (this.serverId) {
+      this.currentPage2 = page;
+      let formdata = new FormData();
+        formdata.append("pageNum",this.currentPage2);
+        formdata.append("pageSize",this.pageSize);
         this.$http
           .post(
-            `http://39.98.41.126:30004/chat/admin/${this.serverId}/offlineUser`,
-            {
-              pageNum: "1",
-              pageSize: "10",
-            }
+            this.domain + `chat/admin/${this.serverId}/offlineUser`,
+            formdata
           )
           .then((res) => {
             if (res.data.code == 1) {
               this.off_users = res.data.data.users;
+              this.offline_total = res.data.data.total;
             }
           });
+      }else{
+        this.$Message.warning("请先登录！");
       }
+    },
+    getUsers() {
+      this.getOnlineUsers(this.currentPage1);
+      this.getOfflineUsers(this.currentPage2);
     },
     // 获取历史记录
     getHistory() {
@@ -368,7 +393,7 @@ export default {
       if (this.serverId) {
         this.$http
           .post(
-            `http://39.98.41.126:30004/chat/${this.clientId}/history/${this.serverId}`
+            this.domain + `chat/${this.clientId}/history/${this.serverId}`
           )
           .then((res) => {
             console.log(res.data);
@@ -415,7 +440,7 @@ export default {
       //   formdata.append("content", this.newModel);
       //   this.$http
       //     .post(
-      //       `http://39.98.41.126:30004/chat/${this.serverId}/sendTo/${this.clientId}`,
+      //       this.domain + `chat/${this.serverId}/sendTo/${this.clientId}`,
       //       formdata
       //     )
       //     .then((res) => {
@@ -425,7 +450,7 @@ export default {
       //接收用户消息
       window.socket.subscribe("/user/queue/chat/" + this.clientId, (res) => {
         let data = JSON.parse(res.body);
-        that.$Message.info(data.sender.username + "发来消息");
+        that.$Message.info( data.sender.username + "发来消息");
         that.history.push({
           type: 1,
           name: data.sender.username,
@@ -446,7 +471,7 @@ export default {
       if (!window.socket) {
         let that = this;
         let socket = new SockJs(
-          "http://39.98.41.126:30004/ws-websocket?" + this.serverId
+          this.domain + "ws-websocket?" + this.serverId
         );
         // 获取Stomp子协议的客户端对象
         window.socket = Stomp.over(socket);
@@ -479,7 +504,7 @@ export default {
         let data = new FormData();
         data.append("auto", this.newModel);
         this.$http
-          .post("http://39.98.41.126:30004/chat/admin/setAutoSend", data, {
+          .post(this.domain + "chat/admin/setAutoSend", data, {
             headers: {
               token: sessionStorage.getItem("token"),
             },
@@ -495,7 +520,7 @@ export default {
     getAuto() {
       this.$http
         .post(
-          `http://39.98.41.126:30004/chat/admin/${this.serverId}/getAutoSend`
+          this.domain + `chat/admin/${this.serverId}/getAutoSend`
         )
         .then((res) => {
           if (res.data.code === 1) {

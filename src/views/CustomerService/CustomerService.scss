@@ -76,12 +76,20 @@
   .user-list {
     width: 40%;
     height: 100%;
+    .user-tab{
+      text-align: center;
+      .user-page{
+        margin-top: 50px
+      }
+    }
+
     #on-users {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
       background-color: aquamarine;
+      overflow-y: auto;
     }
 
     #off-users {
@@ -89,6 +97,8 @@
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
+      overflow-y: auto;
+
     }
   }
 }

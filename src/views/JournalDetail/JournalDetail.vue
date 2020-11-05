@@ -229,7 +229,7 @@ export default {
       var data = new FormData();
       data.append("id", id);
       this.$http
-        .post("http://39.98.41.126:30004/journal/getJournalById", data)
+        .post(this.domain + "journal/getJournalById", data)
         .then((res) => {
           if (res.data.code == 1) {
             this.dataList = res.data.data;
@@ -258,7 +258,7 @@ export default {
       var data = new FormData();
       data.append("file", this.myPhoto);
       this.$http
-        .post("http://39.98.41.126:30004/journal/upload", data)
+        .post(this.domain + "journal/upload", data)
         .then((res) => {
           if (res.data.code == 1) {
             this.myPhoto = res.data.data;
@@ -274,8 +274,8 @@ export default {
       let url;
       // 判断是新建还是更新
       let id = this.$route.params.jid;
-      if (id == 0) url = "http://39.98.41.126:30004/journal/addJournal";
-      else url = "http://39.98.41.126:30004/journal/updateJournal";
+      if (id == 0) url = this.domain + "journal/addJournal";
+      else url = this.domain + "journal/updateJournal";
       // 写入数据
       var data = new FormData();
       data.append("name", this.dataList.name);

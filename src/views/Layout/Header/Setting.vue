@@ -81,7 +81,7 @@ export default {
                 formdata.append("oldPassword", this.oldPwd);
                 formdata.append("newPassword", this.newPwd2);
                 this.$http
-                  .post("http://39.98.41.126:30004/user/ed", formdata)
+                  .post(this.domain + "user/ed", formdata)
                   .then((res) => {
                     if (res.data.code == 1) {
                       this.$Message.success("修改成功！");
@@ -110,7 +110,7 @@ export default {
                 formdata.append("oldPassword", this.oldPwd);
                 formdata.append("newPassword", this.newPwd2);
                 this.$http
-                  .post("http://39.98.41.126:30004/user/ed", formdata)
+                  .post(this.domain + "user/ed", formdata)
                   .then((res) => {
                     if (res.data.code == 1) {
                       this.$Message.success("修改成功！");
@@ -139,7 +139,7 @@ export default {
     exit() {
       let flag = confirm("确定退出登录吗？");
       if (flag) {
-        this.$http.get("http://39.98.41.126:30004/user/logout").then((res) => {
+        this.$http.get(this.domain + "user/logout").then((res) => {
           this.$Message.success("退出成功！");
           setTimeout(() => {
             window.location.href = "/";

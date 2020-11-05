@@ -82,7 +82,7 @@ export default {
     //查看文件
     look() {
       this.$http
-        .get("http://39.98.41.126:30004/con/" + this.doc.title)
+        .get(this.domain + "cons/" + this.doc.title)
         .then((res) => {
           console.log(res);
           window.location.href = res.request.responseURL;
@@ -95,7 +95,7 @@ export default {
       let id = this.$route.query.id;
       //   console.log(id);
 
-      this.$http.get(`http://39.98.41.126:30004/doc/${id}`).then((res) => {
+      this.$http.get(this.domain + `doc/${id}`).then((res) => {
         console.log(res.data);
         this.doc = res.data.data;
       });
@@ -115,7 +115,7 @@ export default {
       }
       this.$http
         .put(
-          `http://39.98.41.126:30004/doc?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}`
+          this.domain + `docs?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}`
         )
         .then((res) => {
           console.log(res);

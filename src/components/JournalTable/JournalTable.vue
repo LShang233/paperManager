@@ -60,7 +60,7 @@ export default {
     remove(index) {
       if (confirm("是否确认删除？")) {
         this.$http
-          .delete(`http://39.98.41.126:30004/journal/deleteJournal/${this.journalList[index].id}`)
+          .delete(this.domain + `journal/deleteJournal/${this.journalList[index].id}`)
           .then((res) => {
             if (res.data.code == 1) {
               alert("删除成功！");
