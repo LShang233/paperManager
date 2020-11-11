@@ -67,6 +67,7 @@
         影响因子：
         <Input
           v-model="dataList.impactFactor"
+          type="number"
           size="large"
           placeholder="请输入……"
         />
@@ -236,7 +237,7 @@ export default {
             this.myPhoto = res.data.data.journalPhoto;
             // console.log(this.dataList);
           } else {
-            alert(res.data.msg);
+            this.$Message.info(res.data.msg);
           }
         });
     },
@@ -258,12 +259,16 @@ export default {
       var data = new FormData();
       data.append("file", this.myPhoto);
       this.$http
-        .post(this.domain + "journal/upload", data)
+        .post(this.domain + "journal/upload", data,{
+          headers : {
+            "token" : sessionStorage.getItem("token")
+          }
+        })
         .then((res) => {
           if (res.data.code == 1) {
             this.myPhoto = res.data.data;
           } else {
-            alert(res.data.msg);
+            this.$Message.info(res.data.msg);
           }
         });
     },
@@ -274,8 +279,8 @@ export default {
       let url;
       // 判断是新建还是更新
       let id = this.$route.params.jid;
-      if (id == 0) url = this.domain + "journal/addJournal";
-      else url = this.domain + "journal/updateJournal";
+      if (id == 0) url = this.domain + "journals/addJournal";
+      else url = this.domain + "journals/updateJournal";
       // 写入数据
       var data = new FormData();
       data.append("name", this.dataList.name);
@@ -297,13 +302,17 @@ export default {
       data.append("subscriptionPrice", this.dataList.subscriptionPrice);
       if (id != 0) data.append("id", id);
 
-      this.$http.post(url, data).then((res) => {
+      this.$http.post(url, data,{
+        headers : {
+          'token' : sessionStorage.getItem('token')
+        }
+      }).then((res) => {
         if (res.data.code == 1) {
-          if (id == 0) alert("添加成功！");
-          else alert("修改成功！");
-          location.reload();
+          if (id == 0) this.$Message.info("添加成功！");
+          else this.$Message.info("修改成功！");
+          history.back();
         } else {
-          alert(res.data.msg);
+          this.$Message.info(res.data.msg);
         }
       });
     },

@@ -139,7 +139,10 @@ export default {
       formdata.append("pageNum", this.realLabels.pageNum);
       formdata.append("pageSize", this.realLabels.pageSize);
       this.$http
-        .post(this.domain + "journal/searchJournal", formdata)
+        .post(this.domain + "journal/searchJournal", formdata,{
+          headers : {
+            "token" : sessionStorage.getItem("token")
+          }})
         .then((res) => {
           if (res.data.code == 1) {
             this.dataList = res.data.data.list;

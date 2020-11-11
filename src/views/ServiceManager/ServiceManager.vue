@@ -81,7 +81,7 @@ export default {
     isMainManager() {
       if (sessionStorage.getItem("email") == "429075156@qq.com") return;
       else {
-        alert("请登录！");
+        this.$Message.info("请登录！");
         window.location.replace("/Journal");
       }
     },
@@ -90,15 +90,17 @@ export default {
     remove(index) {
       if (confirm("是否确认删除？")) {
         this.$http
-          .delete(
-            this.domain + `user/delete/${this.dataList[index].id}`
-          )
+          .delete(this.domain + `user/delete/${this.dataList[index].id}`, {
+            headers: {
+              token: sessionStorage.getItem("token"),
+            },
+          })
           .then((res) => {
             if (res.data.code == 1) {
-              alert("删除成功！");
+              this.$Message.info("删除成功！");
               location.reload();
             } else {
-              alert(res.data.msg);
+              this.$Message.info(res.data.msg);
             }
           });
       }
@@ -128,13 +130,17 @@ export default {
       formdata.append("mail", this.username);
       formdata.append("nickname", this.nickname);
       this.$http
-        .post(this.domain + "user/re", formdata)
+        .post(this.domain + "user/re", formdata, {
+          headers: {
+            token: sessionStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           if (res.data.code == 1) {
-            alert("注册成功，初始密码为 000000");
+            this.$Message.info("注册成功，初始密码为 000000");
             location.reload();
           } else {
-            alert(res.data.msg);
+            this.$Message.info(res.data.msg);
           }
         });
     },

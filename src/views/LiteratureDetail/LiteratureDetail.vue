@@ -116,7 +116,11 @@ export default {
       this.$http
         .put(
           this.domain + `docs?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}`
-        )
+        ,{},{
+          headers : {
+            "token" : sessionStorage.getItem("token")
+          }
+        })
         .then((res) => {
           console.log(res);
           if(res.status == 200){

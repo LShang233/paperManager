@@ -210,12 +210,21 @@ export default {
         content: `<p>确定删除《${this.docList[index].title}》</p>`,
         onOk: () => {
           //删除文献
-          this.docList.splice(index, 1);
-          this.$Message.success("已删除");
+
           this.$http
-            .delete(this.domain + `docs?${this.docList[index].id}`)
+            .delete(this.domain + `docs?${this.docList[index].id}`, {
+              headers: {
+                token: sessionStorage.getItem("token"),
+              },
+            })
             .then((res) => {
-              console.log(res);
+              if (res.data.code == 1) {
+                console.log(res.data.code);
+                this.docList.splice(index, 1); 
+                this.$Message.success("已删除");
+              }else{
+                this.$Message.error("删除失败！")
+              }
             });
         },
         onCancel: () => {
@@ -229,11 +238,11 @@ export default {
       // console.log(index);
       // this.$router.replace('/LiteratureDetail');
       this.$router.push({
-        name: 'LiteratureDetail',
+        name: "LiteratureDetail",
         params: {
-          id: this.docList[index].id
-        }
-      })
+          id: this.docList[index].id,
+        },
+      });
       this.DocIndex = index;
       this.editPanelModal = true;
       this.theDoc = this.newDoc[index];
@@ -271,6 +280,10 @@ export default {
           publishTime: this.theDoc.publishTime,
           fromJournal: this.theDoc.fromJournal,
           paperType: this.theDoc.paperType,
+        },{
+          headers : {
+            "token" : sessionStorage.getItem("token")
+          }
         })
         .then((res) => {
           console.log(res);

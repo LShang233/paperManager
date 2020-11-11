@@ -91,7 +91,11 @@ export default {
         onOk: () => {
           //删除文献
           this.$http
-            .delete(this.domain + `docs/${this.docList[index].id}`)
+            .delete(this.domain + `docs/${this.docList[index].id}`,{
+              headers : {
+                "token" : sessionStorage.getItem('token')
+              }
+            })
             .then((res) => {
               console.log(res);
               this.docList.splice(index, 1);

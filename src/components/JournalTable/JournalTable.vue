@@ -60,13 +60,17 @@ export default {
     remove(index) {
       if (confirm("是否确认删除？")) {
         this.$http
-          .delete(this.domain + `journal/deleteJournal/${this.journalList[index].id}`)
+          .delete(this.domain + `journals/deleteJournal/${this.journalList[index].id}`,{
+            headers : {
+              "token" : sessionStorage.getItem('token')
+            }
+          })
           .then((res) => {
             if (res.data.code == 1) {
-              alert("删除成功！");
+              this.$Message.info("删除成功！");
               location.reload();
             } else {
-              alert(res.data.msg);
+              this.$Message.info(res.data.msg);
             }
           });
       }

@@ -81,15 +81,19 @@ export default {
                 formdata.append("oldPassword", this.oldPwd);
                 formdata.append("newPassword", this.newPwd2);
                 this.$http
-                  .post(this.domain + "user/ed", formdata)
+                  .post(this.domain + "user/ed", formdata, {
+                    headers: {
+                      token: sessionStorage.getItem("token"),
+                    },
+                  })
                   .then((res) => {
                     if (res.data.code == 1) {
                       this.$Message.success("修改成功！");
                       this.modal = false;
-                      this.oldPwd = '';
-                      this.newPwd = '';
-                      this.newPwd2 = '';
-                      sessionStorage.setItem('nickname',this.nickname)
+                      this.oldPwd = "";
+                      this.newPwd = "";
+                      this.newPwd2 = "";
+                      sessionStorage.setItem("nickname", this.nickname);
                     } else {
                       this.$Message.warning(res.data.msg);
                     }
@@ -110,15 +114,19 @@ export default {
                 formdata.append("oldPassword", this.oldPwd);
                 formdata.append("newPassword", this.newPwd2);
                 this.$http
-                  .post(this.domain + "user/ed", formdata)
+                  .post(this.domain + "user/ed", formdata, {
+                    headers: {
+                      token: sessionStorage.getItem("token"),
+                    },
+                  })
                   .then((res) => {
                     if (res.data.code == 1) {
                       this.$Message.success("修改成功！");
                       this.modal = false;
-                      this.oldPwd = '';
-                      this.newPwd = '';
-                      this.newPwd2 = '';
-                      sessionStorage.setItem('nickname',this.nickname)
+                      this.oldPwd = "";
+                      this.newPwd = "";
+                      this.newPwd2 = "";
+                      sessionStorage.setItem("nickname", this.nickname);
                     } else {
                       this.$Message.warning(res.data.msg);
                     }

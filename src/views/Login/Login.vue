@@ -110,7 +110,7 @@ export default {
               sessionStorage.setItem("nickname",res.data.data.nickname);
               sessionStorage.setItem("email",this.email);
               setTimeout(() => {
-                window.location.href = "/Journal";
+                window.location.href = "/paperhub/manager/Journal";
               }, 1000);
             } else {
               this.$Message.warning("邮箱与密码不匹配，请检查后重试");

@@ -9,8 +9,12 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
-Vue.prototype.domain = "http://39.98.41.126:30001/"
+Vue.prototype.domain = "http://119.3.228.123:80/article/"
 Vue.use(iView)
+
+//  忽略警告
+Vue.config.silent = true;
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

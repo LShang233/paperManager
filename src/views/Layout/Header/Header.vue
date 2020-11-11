@@ -14,7 +14,7 @@
       <li>
         <router-link to="/CustomerService">客服聊天</router-link>
       </li>
-      <li v-if="isMainManager == 1">
+      <li v-if="isMainManager() == 1">
         <router-link to="/ServiceManager">客服管理</router-link>
       </li>
     </ul>

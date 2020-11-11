@@ -9,11 +9,12 @@ import ServiceManager from '@/views/ServiceManager/ServiceManager'
 import JournalDetail from '@/views/JournalDetail/JournalDetail'
 import Login from "@/views/Login/Login"
 import LiteratureDetail from '@/views/LiteratureDetail/LiteratureDetail'
-
+import Errors from '@/views/Error/Error'
 Vue.use(Router)
 
 export default new Router({
   mode: "history",
+  base : "/paperhub/manager/",
   routes: [
     {
       path : "/",
@@ -62,6 +63,11 @@ export default new Router({
           component: LiteratureDetail
         }
       ]
+    },
+    {
+      path: '*',
+      name : 'Error',
+      component : Errors
     }
   ]
 })
