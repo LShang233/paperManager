@@ -73,6 +73,7 @@ export default {
       time: "", //时间
       paperType: "", //类别
       journal: [], //模糊搜索到的期刊
+      periodicalId: this.extraMessage.periodicalId, //期刊id
       paperTypes: [
         {
           label: "OA期刊",
@@ -228,7 +229,7 @@ export default {
         this.time,
         this.fromJournal,
         this.paperType,
-        this.DocIndex
+        this.periodicalId
       );
     },
 
@@ -255,6 +256,7 @@ export default {
     //添加收录期刊
     addJournal(index) {
       this.fromJournal = this.journal[index].name;
+      this.periodicalId = this.journal[index].id;
       this.passToParent();
     },
 
@@ -290,11 +292,11 @@ export default {
         this.time = this.extraMessage.publishTime;
         this.paperType = this.extraMessage.paperType;
         this.fromJournal = this.extraMessage.fromJournal;
+        this.periodicalId = this.extraMessage.periodicalId;
       },
       deep: true,
       immediate: true,
     },
-    fromJournal(val, oldVal) {},
 
     // fromJournal(val,oldVal){
 
@@ -365,6 +367,7 @@ export default {
         box-sizing: border-box;
         box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
         overflow: auto;
+        z-index: 10;
 
         li {
           list-style: none;

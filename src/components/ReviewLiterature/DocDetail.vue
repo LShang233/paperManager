@@ -32,7 +32,7 @@
           </div>
           <div class="text-content">
             <strong>摘要：</strong>
-            <div>{{ docMessage.abstractText }}</div>
+            <span>{{docMessage.abstractText}}</span>
           </div>
         </div>
       </div>

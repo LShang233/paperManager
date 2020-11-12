@@ -38,6 +38,15 @@
           />
         </div>
         <div>
+          <p>摘要</p>
+          <Input
+            style="width: 400px"
+            type="textarea"
+            :autosize="{ maxRows: 5, minRows: 5 }"
+            v-model="doc.abstractText"
+          ></Input>
+        </div>
+        <div>
           <Button @click="returnBack" style="margin-right: 20px">返回</Button>
           <Button @click="publishDoc" type="primary">确认</Button>
         </div>
@@ -64,30 +73,31 @@ export default {
         paperType: "",
         keyword: "",
         title: "",
+        abstractText: "",
+        periodicalId: ""
       },
     };
   },
 
   methods: {
     //得到所有的信息
-    getAllMessage(time, fromJournal, paperType, DocIndex) {
+    getAllMessage(time, fromJournal, paperType, periodicalId) {
       if (time) {
-        // console.log(time, fromJournal, paperType, DocIndex);
+        console.log(time, fromJournal, paperType, periodicalId);
         this.doc.publishTime = time;
         this.doc.fromJournal = fromJournal;
         this.doc.paperType = paperType;
+        this.periodicalId = periodicalId;
       }
     },
 
     //查看文件
     look() {
-      this.$http
-        .get(this.domain + "cons/" + this.doc.title)
-        .then((res) => {
-          console.log(res);
-          window.location.href = res.request.responseURL;
-          // console.log(res.request.responseURL);
-        });
+      this.$http.get(this.domain + "cons/" + this.doc.title).then((res) => {
+        console.log(res);
+        window.location.href = res.request.responseURL;
+        // console.log(res.request.responseURL);
+      });
     },
 
     //获取要修改的文献
@@ -110,29 +120,31 @@ export default {
     publishDoc() {
       //检查参数
       let state = this.checkParams();
-      if(!state){
+      if (!state) {
         return false;
       }
       this.$http
         .put(
-          this.domain + `docs?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}`
-        ,{},{
-          headers : {
-            "token" : sessionStorage.getItem("token")
+          this.domain +
+            `docs?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}&periodicalId=${this.periodicalId}&abstractText=${this.doc.abstractText}`,
+          {},
+          {
+            headers: {
+              token: sessionStorage.getItem("token"),
+            },
           }
-        })
+        )
         .then((res) => {
           console.log(res);
-          if(res.status == 200){
+          if (res.status == 200) {
             this.$Message.success("修改成功");
-            this.doc = '';
-            setTimeout(()=>{
+            this.doc = "";
+            setTimeout(() => {
               this.$router.replace("/Literature");
-            },1000);
+            }, 1000);
           } else {
-            this.$Message.error('修改失败');
+            this.$Message.error("修改失败");
           }
-          
         })
         .catch((err) => {
           console.log(err);
@@ -161,6 +173,10 @@ export default {
       }
       if (!this.doc.publishTime) {
         arr.push("刊期");
+        state = false;
+      }
+      if(!this.doc.abstractText) {
+        arr.push("摘要");
         state = false;
       }
       let sum = "";

@@ -320,7 +320,7 @@ export default {
     // 获取聊天id
     getServerId() {
       let data = new FormData();
-      data.append("chat", sessionStorage.getItem("chat"));
+      data.append("chat", sessionStorage.getItem("server_chat"));
       this.$http
         .post(this.domain + "chat/chatId", data, {
           headers: {
@@ -331,7 +331,7 @@ export default {
           if (res.data.code == 1) {
             console.log(res.data);
             this.serverId = res.data.data;
-            sessionStorage.setItem("chat", res.data.data);
+            sessionStorage.setItem("server_chat", res.data.data);
             console.log("获取客服id成功!");
           }
         })
