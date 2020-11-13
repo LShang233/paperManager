@@ -87,7 +87,7 @@ export default {
         this.doc.publishTime = time;
         this.doc.fromJournal = fromJournal;
         this.doc.paperType = paperType;
-        this.periodicalId = periodicalId;
+        this.doc.periodicalId = periodicalId;
       }
     },
 
@@ -126,7 +126,7 @@ export default {
       this.$http
         .put(
           this.domain +
-            `docs?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}&periodicalId=${this.periodicalId}&abstractText=${this.doc.abstractText}`,
+            `docs?id=${this.doc.id}&title=${this.doc.title}&keyword=${this.doc.keyword}&author=${this.doc.author}&publishTime=${this.doc.publishTime}&fromJournal=${this.doc.fromJournal}&paperType=${this.doc.paperType}&periodicalId=${this.doc.periodicalId}&abstractText=${this.doc.abstractText}`,
           {},
           {
             headers: {
