@@ -138,22 +138,34 @@ export default {
       );
       formdata.append("pageNum", this.realLabels.pageNum);
       formdata.append("pageSize", this.realLabels.pageSize);
+      const loadingMsg = this.$Message.loading({
+        content: "Loading...",
+        duration: 0,
+      });
       this.$http
-        .post(this.domain + "journal/searchJournal", formdata,{
-          headers : {
-            "token" : sessionStorage.getItem("token")
-          }})
+        .post(this.domain + "journal/searchJournal", formdata, {
+          headers: {
+            token: sessionStorage.getItem("token"),
+          },
+        })
         .then((res) => {
+          setTimeout(loadingMsg, 0);
           if (res.data.code == 1) {
+            this.$Message.success("获取成功");
             this.dataList = res.data.data.list;
             this.total = res.data.data.total;
+          } else {
+            this.$Message.error("数据加载失败");
           }
         });
     },
 
     // 处理子组件传来的期刊类别
     getSearchNavMsg(data) {
-      if (data) this.realLabels.journalType = data;
+      if (data) {
+        this.realLabels.journalType = data;
+        this.toggSearchNav();
+      }
     },
 
     // 期刊类型组件隐藏与显示

@@ -65,19 +65,24 @@
       </div>
       <div>
         影响因子：
-        <Input
+        <InputNumber
           v-model="dataList.impactFactor"
           type="number"
+          :active-change="false"
+          min="0"
+          max="10"
           size="large"
           placeholder="请输入……"
         />
       </div>
       <div>
         总被引频次：
-        <Input
+        <InputNumber
           v-model="dataList.totalUsed"
           type="number"
           size="large"
+          :active-change="false"
+          min="0"
           placeholder="请输入……"
         />
       </div>
@@ -121,10 +126,12 @@
       </div>
       <div>
         订阅价格（每年）：
-        <Input
+        <InputNumber
           v-model="dataList.subscriptionPrice"
           size="large"
           type="number"
+          :active-change="false"
+          min="0"
           placeholder="请输入……"
         />
       </div>
@@ -132,8 +139,11 @@
         期刊荣誉：
         <Input
           v-model="dataList.journalHonors"
+          :rows="4"
           type="textarea"
           placeholder="请输入……"
+          show-word-limit
+          maxlength="255"
         />
       </div>
       <div>
@@ -143,11 +153,12 @@
           type="textarea"
           :rows="4"
           placeholder="请输入……"
+          show-word-limit
+          maxlength="255"
         />
       </div>
     </div>
     <div class="JD-btn">
-      <p class="jd-tips">{{ tips }}</p>
       <Button type="primary" @click="submitList">提 交</Button>
     </div>
   </div>
@@ -162,7 +173,6 @@ export default {
   data() {
     return {
       title: "期刊详细信息",
-      tips: "",
       journalOption: [
         [
           "不限",
@@ -203,10 +213,10 @@ export default {
         receiveWebsite: "",
         releaseCycle: "",
         journalType: "请选择期刊类型",
-        journalPhoto: "/static/img/photo.4f7a60a.jpg",// 数据回写，页面显示
+        journalPhoto: "/photo/286897d69191493f94f1cc3b9253d215.jpg", // 数据回写，页面显示
         subscriptionPrice: "",
       },
-      myPhoto: "",// 图片文件，真实路径
+      myPhoto: "", // 图片文件，真实路径
     };
   },
   methods: {
@@ -219,7 +229,10 @@ export default {
 
     // 处理子组件传来的期刊类别
     getSearchNavMsg(data) {
-      if (data) this.dataList.journalType = data;
+      if (data) {
+        this.dataList.journalType = data;
+        this.toggSearchNav();
+      }
     },
 
     // 回写
@@ -227,17 +240,23 @@ export default {
       let id = this.$route.params.jid;
       // 判断是否需要回写
       if (id == 0) return;
+      const loadingMsg = this.$Message.loading({
+        content: "Loading...",
+        duration: 0,
+      });
       var data = new FormData();
       data.append("id", id);
       this.$http
         .post(this.domain + "journal/getJournalById", data)
         .then((res) => {
+          setTimeout(loadingMsg, 0);
           if (res.data.code == 1) {
             this.dataList = res.data.data;
             this.myPhoto = res.data.data.journalPhoto;
+            this.$Message.success("获取成功");
             // console.log(this.dataList);
           } else {
-            this.$Message.info(res.data.msg);
+            this.$Message.error(res.data.msg);
           }
         });
     },
@@ -259,10 +278,10 @@ export default {
       var data = new FormData();
       data.append("file", this.myPhoto);
       this.$http
-        .post(this.domain + "journal/upload", data,{
-          headers : {
-            "token" : sessionStorage.getItem("token")
-          }
+        .post(this.domain + "journal/upload", data, {
+          headers: {
+            token: sessionStorage.getItem("token"),
+          },
         })
         .then((res) => {
           if (res.data.code == 1) {
@@ -302,49 +321,77 @@ export default {
       data.append("subscriptionPrice", this.dataList.subscriptionPrice);
       if (id != 0) data.append("id", id);
 
-      this.$http.post(url, data,{
-        headers : {
-          'token' : sessionStorage.getItem('token')
-        }
-      }).then((res) => {
-        if (res.data.code == 1) {
-          if (id == 0) this.$Message.info("添加成功！");
-          else this.$Message.info("修改成功！");
-          history.back();
-        } else {
-          this.$Message.info(res.data.msg);
-        }
-      });
+      this.$http
+        .post(url, data, {
+          headers: {
+            token: sessionStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          if (res.data.code == 1) {
+            if (id == 0) this.$Message.info("添加成功！");
+            else this.$Message.info("修改成功！");
+            history.back();
+          } else {
+            this.$Message.info(res.data.msg);
+          }
+        });
     },
 
-    // 提示框
+    // 提示框 1有问题
     getTips() {
-      this.tips = "";
-      if (!this.dataList.name) this.tips += "期刊名称、";
-      if (!this.dataList.competentAuthority) this.tips += "主管单位、";
-      if (!this.dataList.sponsor) this.tips += "主办单位、";
-      if (!this.dataList.homeNumber) this.tips += "国内刊号、";
-      if (!this.dataList.interNumber) this.tips += "国际刊号、";
-      if (this.dataList.journalType == "请选择期刊类型")
-        this.tips += "期刊类型、";
-      if (!this.dataList.mainSection) this.tips += "主要栏目、";
-      if (!this.dataList.impactFactor) this.tips += "影响因子、";
-      if (!this.dataList.reviewCycle) this.tips += "审稿周期、";
-      if (!this.dataList.releaseCycle) this.tips += "发行周期、";
-      if (!this.dataList.journalLevel) this.tips += "期刊级别、";
-      if (!this.dataList.receiveWebsite) this.tips += "收录网站、";
-      if (!this.dataList.journalHonors) this.tips += "期刊荣誉、";
-      if (!this.dataList.journalIntroduction) this.tips += "期刊简介、";
-      if (this.tips) {
-        this.tips = "请输入" + this.tips.slice(0, this.tips.length - 1) + "！";
+      if (this.isError(this.dataList.name.length, 255, "期刊名称")) return 1;
+      if (
+        this.isError(this.dataList.competentAuthority.length, 255, "主管单位")
+      )
+        return 1;
+      if (this.isError(this.dataList.sponsor.length, 255, "主办单位")) return 1;
+      if (this.isError(this.dataList.homeNumber.length, 100, "国内刊号"))
+        return 1;
+      if (this.isError(this.dataList.interNumber.length, 100, "国际刊号"))
+        return 1;
+      if (this.isError(this.dataList.journalType.length, 50, "期刊类型")) {
+        return 1;
+      } else if (this.dataList.journalType == "请选择期刊类型") {
+        this.$Message.error("期刊类型不能为空！");
+        return 1;
       }
+      if (this.isError(this.dataList.mainSection.length, 255, "主要栏目"))
+        return 1;
+      if (this.isError(this.dataList.impactFactor.length, 5, "影响因子"))
+        return 1;
+      if (this.isError(this.dataList.reviewCycle.length, 100, "审稿周期"))
+        return 1;
+      if (this.isError(this.dataList.releaseCycle.length, 50, "发行周期"))
+        return 1;
+      if (this.isError(this.dataList.journalLevel.length, 255, "期刊级别"))
+        return 1;
+      if (this.isError(this.dataList.receiveWebsite.length, 255, "收录网站"))
+        return 1;
+      if (this.isError(this.dataList.journalHonors.length, 255, "期刊荣誉"))
+        return 1;
+      if (
+        this.isError(this.dataList.journalIntroduction.length, 255, "期刊简介")
+      )
+        return 1;
       // 新建时未上传图片
-      if (!this.myPhoto && this.$route.params.jid == 0)
-        this.tips = "请选择图片！" + this.tips;
+      if (!this.myPhoto && this.$route.params.jid == 0) {
+        this.$Message.error("请选择图片！");
+        return 1;
+      }
+    },
 
-      // 判断
-      if (this.tips == "") return 0;
-      else return 1;
+    // 判断字符串长度函数 有问题返回1
+    isError(l, n, tips) {
+      if (l == 0) {
+        this.$Message.error(tips + "不能为空！");
+        return 1;
+      }
+      if (l >= n) {
+        this.$Message.error(tips + "最大长度为" + n);
+        return 1;
+      }
+      return 0;
     },
   },
   mounted() {

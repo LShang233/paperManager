@@ -34,7 +34,6 @@
           class="add-input"
           type="email"
         />
-        <p>{{ tips }}</p>
         <Button type="primary" class="add-button" @click="addNewService">
           注 册
         </Button>
@@ -73,7 +72,6 @@ export default {
       dataList: [],
       nickname: "",
       username: "",
-      tips: "",
     };
   },
   methods: {
@@ -117,11 +115,11 @@ export default {
     // 添加客服
     addNewService() {
       if (this.username == "") {
-        this.tips = "请输入用户邮箱！";
+        this.$Message.error("请输入用户邮箱！")
         return;
       }
       if (this.nickname == "") {
-        this.tips = "请输入用户昵称！";
+        this.$Message.error("请输入用户昵称！")
         return;
       }
       this.tips = "";
@@ -147,8 +145,14 @@ export default {
 
     // 获取客服信息
     getServiceList() {
+      const getServiceListMsg = this.$Message.loading({
+        content: "Loading...",
+        duration: 0,
+      });
       this.$http.get(this.domain + "user/getList").then((res) => {
         if (res.data.code == 1) {
+          setTimeout(getServiceListMsg, 0);
+          this.$Message.success("获取成功");
           let list = res.data.data;
           for (let item in list) {
             this.dataList.push({
@@ -239,11 +243,6 @@ export default {
     .add-button {
       font-size: 14px;
       margin-bottom: 12px;
-    }
-    p {
-      margin-bottom: 12px;
-      color: red;
-      font-size: 14px;
     }
   }
 }
