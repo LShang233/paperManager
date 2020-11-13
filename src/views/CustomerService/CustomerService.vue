@@ -59,7 +59,7 @@
     <div class="user-list">
       <Header :title="'游客列表'" :icon="'ios-people'"></Header>
       <Tabs value="name1">
-        <TabPane label="在线游客" name="name1"  class="user-tab">
+        <TabPane label="在线游客" name="name1" class="user-tab">
           <ul id="on-users">
             <User
               v-for="(item, key) in on_users"
@@ -68,7 +68,13 @@
               @click.native="getClientId(item)"
             />
           </ul>
-          <Page :total="online_total" :page-size="pageSize" :current="currentPage1" @on-change="getOnlineUsers" class="user-page"/>
+          <Page
+            :total="online_total"
+            :page-size="pageSize"
+            :current="currentPage1"
+            @on-change="getOnlineUsers"
+            class="user-page"
+          />
         </TabPane>
         <TabPane label="离线游客" name="name2" class="user-tab">
           <ul id="off-users">
@@ -79,7 +85,13 @@
               @click.native="getClientId(item)"
             />
           </ul>
-          <Page :total="offline_total" :page-size="pageSize" :current="currentPage2" @on-change="getOfflineUsers" class="user-page"/>
+          <Page
+            :total="offline_total"
+            :page-size="pageSize"
+            :current="currentPage2"
+            @on-change="getOfflineUsers"
+            class="user-page"
+          />
         </TabPane>
       </Tabs>
     </div>
@@ -104,13 +116,13 @@ export default {
       on_users: [],
       off_users: [],
       // 分页
-      online_total : 0,
-      offline_total : 0,
-      pageSize : 15,
+      online_total: 0,
+      offline_total: 0,
+      pageSize: 15,
       // 在线游客列表当前页
-      currentPage1 : 1,
+      currentPage1: 1,
       // 离线游客列表当前页
-      currentPage2 : 1,
+      currentPage2: 1,
       customerName: "请选择游客",
       alert: "发送成功！",
       content: "",
@@ -341,45 +353,55 @@ export default {
         });
     },
     // 获取用户列表
-    getOnlineUsers(page){
+    getOnlineUsers(page) {
       if (this.serverId) {
         this.currentPage1 = page;
         let formdata = new FormData();
-        formdata.append("pageNum",this.currentPage1);
-        formdata.append("pageSize",this.pageSize);
+        formdata.append("pageNum", this.currentPage1);
+        formdata.append("pageSize", this.pageSize);
+        const cmsg = this.$Message.loading({
+          content: "Loading...",
+          duration: 0,
+        });
         this.$http
           .post(
             this.domain + `chat/admin/${this.serverId}/onlineUser`,
             formdata
           )
           .then((res) => {
+            setTimeout(cmsg, 0);
             if (res.data.code == 1) {
               this.on_users = res.data.data.users;
               this.online_total = res.data.data.total;
             }
           });
-      }else{
+      } else {
         this.$Message.warning("请先登录！");
       }
     },
-    getOfflineUsers(page){
+    getOfflineUsers(page) {
       if (this.serverId) {
-      this.currentPage2 = page;
-      let formdata = new FormData();
-        formdata.append("pageNum",this.currentPage2);
-        formdata.append("pageSize",this.pageSize);
+        this.currentPage2 = page;
+        let formdata = new FormData();
+        formdata.append("pageNum", this.currentPage2);
+        formdata.append("pageSize", this.pageSize);
+        const omsg = this.$Message.loading({
+          content: "Loading...",
+          duration: 0,
+        });
         this.$http
           .post(
             this.domain + `chat/admin/${this.serverId}/offlineUser`,
             formdata
           )
           .then((res) => {
+            setTimeout(omsg, 0);
             if (res.data.code == 1) {
               this.off_users = res.data.data.users;
               this.offline_total = res.data.data.total;
             }
           });
-      }else{
+      } else {
         this.$Message.warning("请先登录！");
       }
     },
@@ -392,9 +414,7 @@ export default {
       this.history = [];
       if (this.serverId) {
         this.$http
-          .post(
-            this.domain + `chat/${this.clientId}/history/${this.serverId}`
-          )
+          .post(this.domain + `chat/${this.clientId}/history/${this.serverId}`)
           .then((res) => {
             console.log(res.data);
             let data = res.data.data;
@@ -450,7 +470,7 @@ export default {
       //接收用户消息
       window.socket.subscribe("/user/queue/chat/" + this.clientId, (res) => {
         let data = JSON.parse(res.body);
-        that.$Message.info( data.sender.username + "发来消息");
+        that.$Message.info(data.sender.username + "发来消息");
         that.history.push({
           type: 1,
           name: data.sender.username,
@@ -470,9 +490,7 @@ export default {
     initWebSocket() {
       if (!window.socket) {
         let that = this;
-        let socket = new SockJs(
-          this.domain + "ws-websocket?" + this.serverId
-        );
+        let socket = new SockJs(this.domain + "ws-websocket?" + this.serverId);
         // 获取Stomp子协议的客户端对象
         window.socket = Stomp.over(socket);
         // 发起websocket连接
@@ -485,7 +503,7 @@ export default {
           });
           // 当有游客下线
           window.socket.subscribe("/user/queue/chat/userOff", (res) => {
-            console.log('下线')
+            console.log("下线");
             that.getUsers();
           });
         });
@@ -519,9 +537,7 @@ export default {
     // 获取自动回复模板
     getAuto() {
       this.$http
-        .post(
-          this.domain + `chat/admin/${this.serverId}/getAutoSend`
-        )
+        .post(this.domain + `chat/admin/${this.serverId}/getAutoSend`)
         .then((res) => {
           if (res.data.code === 1) {
             this.newModel = res.data.data;
