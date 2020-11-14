@@ -3,6 +3,15 @@
     <Banner :title="title" :icon="'md-list'" />
     <div class="journal-main">
       <div class="jm-buttom">
+        <div class="dropdown">
+          <Input
+            placeholder="输入期刊名称..."
+            clearable
+            class="dd-Input"
+            v-model="inputName"
+            @keyup.enter.native="searchInput()"
+          />
+        </div>
         <div class="dropdown" @click="toggSearchNav">
           {{ realLabels.journalType }}
           <span @click="deleteRealLabel">x</span>
@@ -114,6 +123,7 @@ export default {
         pageNum: 1,
         pageSize: 20,
       },
+      inputName: "",
     };
   },
   methods: {
@@ -160,6 +170,38 @@ export default {
         });
     },
 
+    // 搜索框搜索
+    searchInput() {
+      let formdata = new FormData();
+      formdata.append("name", this.inputName);
+      formdata.append("pageNum", this.realLabels.pageNum);
+      formdata.append("pageSize", this.realLabels.pageSize);
+      formdata.append(
+        "journalType",
+        this.getRealData(this.realLabels.journalType)
+      );
+      const loadingMsg = this.$Message.loading({
+        content: "Loading...",
+        duration: 0,
+      });
+      this.$http
+        .post(this.domain + "journal/searchRecommendJournal", formdata, {
+          headers: {
+            token: sessionStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          setTimeout(loadingMsg, 0);
+          if (res.data.code == 1) {
+            this.$Message.success("获取成功");
+            this.dataList = res.data.data.list;
+            this.total = res.data.data.total;
+          } else {
+            this.$Message.error("数据加载失败");
+          }
+        });
+    },
+
     // 处理子组件传来的期刊类别
     getSearchNavMsg(data) {
       if (data) {
@@ -178,7 +220,7 @@ export default {
     // 期刊类别点击x清空
     deleteRealLabel() {
       this.realLabels.journalType = "期刊类别";
-      this.hideSearchNav();
+      this.toggSearchNav();
     },
 
     // 处理筛选数据
