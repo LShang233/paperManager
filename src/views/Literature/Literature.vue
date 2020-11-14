@@ -88,11 +88,15 @@ export default {
           key: "keyword",
         },
         {
-          title: "时间",
+          title: "刊期",
           key: "publishTime",
           //   render: (h, params) => {
           //     return h("div", getDate("yyyy-MM-dd", params.row.publishTime));
           //   },
+        },
+        {
+          title: "收录期刊",
+          key: "fromJournal"
         },
         {
           title: "操作",
