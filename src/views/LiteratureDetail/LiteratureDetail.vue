@@ -95,7 +95,11 @@ export default {
 
     //查看文件
     look() {
-      this.$http.get(this.domain + "cons/" + this.doc.title).then((res) => {
+      this.$http.get(this.domain + "cons/" + this.doc.title,{
+        headers : {
+          'token' : sessionStorage.getItem('token')
+        }
+      }).then((res) => {
         console.log(res);
         // window.location.href = res.request.responseURL;
         window.open(res.request.responseURL,'top');

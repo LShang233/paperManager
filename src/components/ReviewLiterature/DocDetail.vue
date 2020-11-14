@@ -206,11 +206,17 @@ export default {
       } else {
         this.publishModal = true;
       }
-      
+
       this.$http
         .post(
           this.domain +
-            `cons/${status}/${this.docMessage.title}/${this.docMessage.email}`
+            `cons/${status}/${this.docMessage.title}/${this.docMessage.email}`,
+          {},
+          {
+            headers: {
+              token: sessionStorage.getItem("token"),
+            },
+          }
         )
         .then((res) => {
           console.log(res.data);
@@ -220,7 +226,7 @@ export default {
             if (!status) {
               this.$Message.info("已拒绝");
               //删除对应的项
-            this.$parent.deleteDoc(this.docMessage.title);
+              this.$parent.deleteDoc(this.docMessage.title);
             }
           }
         })
@@ -232,12 +238,16 @@ export default {
     //查看文件
     look() {
       this.$http
-        .get(this.domain + "cons/" + this.docMessage.title)
+        .get(this.domain + "cons/" + this.docMessage.title, {
+          headers: {
+            token: sessionStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           console.log(res);
           // window.location.href = res.request.responseURL;
 
-          window.open(res.request.responseURL,'top');
+          window.open(res.request.responseURL, "top");
           // console.log(res.request.responseURL);
         });
     },
@@ -264,8 +274,8 @@ export default {
       data.append("publishTime", this.time); //刊期
       data.append("fromJournal", this.fromJournal); //收录
       data.append("paperType", this.paperType); //类别
-      data.append("abstractText",this.docMessage.abstractText); //摘要
-      data.append("periodicalId",this.periodicalId); //期刊id
+      data.append("abstractText", this.docMessage.abstractText); //摘要
+      data.append("periodicalId", this.periodicalId); //期刊id
       this.$http
         .post(this.domain + "docs", data)
         .then((res) => {
@@ -285,7 +295,7 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          this.$Message.error('服务器错误\|请检查字段是否有效');
+          this.$Message.error("服务器错误|请检查字段是否有效");
         });
     },
 

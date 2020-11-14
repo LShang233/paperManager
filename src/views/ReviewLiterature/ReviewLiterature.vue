@@ -52,7 +52,11 @@ export default {
         content: "Loading...",
         duration: 0,
       });
-      this.$http.get(this.domain + "cons").then((res) => {
+      this.$http.get(this.domain + "cons",{
+        headers : {
+          'token' : sessionStorage.getItem('token')
+        }
+      }).then((res) => {
           setTimeout(docsmsg,0);
         this.docMessage = res.data.data;
         console.log(this.docMessage);

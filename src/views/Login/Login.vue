@@ -101,9 +101,14 @@ export default {
         let data = new FormData();
         data.append("username", this.email);
         data.append("password", this.l_pwd);
+        const lmsg = this.$Message.loading({
+          content : "登录中...",
+          duration : 0
+        })
         this.$http
           .post(this.domain + "user/login", data)
           .then((res) => {
+            setTimeout(lmsg, 0);
             if (res.data.code === 1) {
               this.$Message.success("登录成功！");
               sessionStorage.setItem("token", res.data.data.token);
@@ -140,8 +145,13 @@ export default {
 
         let formdata = new FormData();
         formdata.append("email",this.email);
+        const vmsg = this.$Message.loading({
+          content : "登录中...",
+          duration : 0
+        })
         this.$http.post(this.domain + "user/getCode",formdata)
         .then(res=>{
+            setTimeout(vmsg, 0);
             this.$Message.success("验证码已发送，请查收(两分钟内有效)");  
         })
         .catch((err) => {
@@ -159,8 +169,13 @@ export default {
           data.append('email',this.email);
           data.append('code',this.verify);
           data.append('password',this.r_pwd2);
+          const cmsg = this.$Message.loading({
+          content : "登录中...",
+          duration : 0
+        })
           this.$http.post(this.domain + "user/fp",data)
           .then(res=>{
+            setTimeout(cmsg, 0);
             if(res.data.code == 1){
               this.$Message.success("修改密码成功！"); 
               this.flag = false;
