@@ -46,6 +46,18 @@
   vertical-align: middle;
   cursor: pointer;
 
+  &:first-child {
+    padding: 0;
+    border: none;
+    width: 240px;
+    margin-top: -2px;
+  }
+
+  .dd-Input {
+    width: 100%;
+    background-color: transparent;
+  }
+
   .drop-down {
     width: 100%;
     vertical-align: middle;
