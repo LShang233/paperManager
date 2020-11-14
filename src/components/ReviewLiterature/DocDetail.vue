@@ -235,7 +235,9 @@ export default {
         .get(this.domain + "cons/" + this.docMessage.title)
         .then((res) => {
           console.log(res);
-          window.location.href = res.request.responseURL;
+          // window.location.href = res.request.responseURL;
+
+          window.open(res.request.responseURL,'top');
           // console.log(res.request.responseURL);
         });
     },

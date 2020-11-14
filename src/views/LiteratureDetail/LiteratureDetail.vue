@@ -5,7 +5,7 @@
       <div class="doc-container">
         <div>
           <p>作者：</p>
-          <Input v-model="doc.author" style="width: 400px" />
+          <Input v-model="doc.author" maxlength="100" style="width: 400px" />
         </div>
         <div class="doc-title">
           <p
@@ -27,7 +27,7 @@
         </div>
         <div>
           <p>关键词：</p>
-          <Input v-model="doc.keyword" style="width: 400px" />
+          <Input v-model="doc.keyword" style="width: 400px" maxlength="255"/>
         </div>
         <div>
           <EditMessage
@@ -42,6 +42,8 @@
           <Input
             style="width: 400px"
             type="textarea"
+            maxlength="300" 
+            show-word-limit
             :autosize="{ maxRows: 5, minRows: 5 }"
             v-model="doc.abstractText"
           />
@@ -95,7 +97,8 @@ export default {
     look() {
       this.$http.get(this.domain + "cons/" + this.doc.title).then((res) => {
         console.log(res);
-        window.location.href = res.request.responseURL;
+        // window.location.href = res.request.responseURL;
+        window.open(res.request.responseURL,'top');
         // console.log(res.request.responseURL);
       });
     },

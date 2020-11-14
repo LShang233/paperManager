@@ -37,6 +37,7 @@
         <Input
           v-model="fromJournal"
           :style="lineProgress"
+          maxlength="255"
           placeholder="输入有效信息，自动搜索有关的收录期刊"
           @on-change="delaySearch"
         />

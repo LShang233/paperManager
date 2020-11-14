@@ -5,13 +5,14 @@
       <div class="doc-container">
         <div>
           <p>作者：</p>
-          <Input v-model="doc.author" style="width: 400px" />
+          <Input v-model="doc.author" maxlength="100" style="width: 400px" />
         </div>
         <div class="doc-title">
           <p>文献名称：</p>
           <div>
             <Input
               v-model="doc.title"
+              maxlength="255"
               style="width: 400px; font-weight: bold"
             />
           </div>
@@ -79,6 +80,7 @@
               </Tag>
               <Input
                 class="input-new-tag"
+                maxlength="25"
                 v-if="inputVisible"
                 v-model="inputValue"
                 ref="saveTagInput"
@@ -104,6 +106,7 @@
           <Input
             style="width: 400px;"
             type="textarea"
+            maxlength="300"
             :autosize="{ maxRows: 6, minRows: 6 }"
             v-model="doc.abstractText"
           />
