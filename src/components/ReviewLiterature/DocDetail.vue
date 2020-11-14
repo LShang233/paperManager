@@ -32,7 +32,7 @@
           </div>
           <div class="text-content">
             <strong>摘要：</strong>
-            <span>{{docMessage.abstractText}}</span>
+            <span>{{ docMessage.abstractText }}</span>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@
           :mask-closable="false"
           width="500"
         >
-          <div class="extra-message" @click="$refs.myChild.journalShow=false">
+          <div class="extra-message" @click="$refs.myChild.journalShow = false">
             <ExtraMessage
               :extraMessage="docMessage"
               @getMessageList="getExtraMessage"
@@ -112,6 +112,7 @@ export default {
       fromJournal: "", //收录
       time: "", //时间
       paperType: "", //类被
+      periodicalId: 0, //期刊id
       paperTypes: [
         {
           label: "OA期刊",
@@ -199,16 +200,17 @@ export default {
   methods: {
     //审核文献是否通过（status为状态）
     review(status) {
-      if (status) {
-        this.publishModal = true;
-      } else {
+      if (!status) {
         //拒绝后通知面板消失
         this.docModal = false;
+      } else {
+        this.publishModal = true;
       }
-
+      
       this.$http
         .post(
-          this.domain + `cons/${status}/${this.docMessage.title}/${this.docMessage.email}`
+          this.domain +
+            `cons/${status}/${this.docMessage.title}/${this.docMessage.email}`
         )
         .then((res) => {
           console.log(res.data);
@@ -217,9 +219,9 @@ export default {
           } else {
             if (!status) {
               this.$Message.info("已拒绝");
-            }
-            //删除对应的项
+              //删除对应的项
             this.$parent.deleteDoc(this.docMessage.title);
+            }
           }
         })
         .catch((err) => {
@@ -239,10 +241,11 @@ export default {
     },
 
     //获取子组件传来的值
-    getExtraMessage(time, fromJournal, paperType) {
+    getExtraMessage(time, fromJournal, paperType, periodicalId) {
       this.time = time; //刊期
       this.fromJournal = fromJournal; //收录
       this.paperType = paperType; //类别
+      this.periodicalId = periodicalId; //期刊id
       // console.log(time + ' ' + fromJournal + ' ' + paperType);
     },
 
@@ -252,8 +255,6 @@ export default {
       if (!state) {
         return false;
       }
-      this.publishModal = false;
-      this.docModal = false;
       let data = new FormData();
       data.append("title", this.docMessage.title); //标题
       data.append("author", this.docMessage.author); //作者
@@ -261,23 +262,29 @@ export default {
       data.append("publishTime", this.time); //刊期
       data.append("fromJournal", this.fromJournal); //收录
       data.append("paperType", this.paperType); //类别
+      data.append("abstractText",this.docMessage.abstractText); //摘要
+      data.append("periodicalId",this.periodicalId); //期刊id
       this.$http
         .post(this.domain + "docs", data)
         .then((res) => {
           console.log(res.data);
           if (res.data.code == 1) {
             this.$Message.success("已添加文献");
+            this.publishModal = false;
+            this.docModal = false;
+            //清空输入框
+            this.$refs.myChild.clearAll();
+            this.getExtraMessage();
+            //删除对应的项
+            this.$parent.deleteDoc(this.docMessage.title);
+          } else {
+            this.$Message.error(res.data.msg);
           }
         })
         .catch((err) => {
           console.log(err);
+          this.$Message.error('服务器错误\|请检查字段是否有效');
         });
-
-      this.publishModal = false;
-      this.docModal = false;
-      //清空输入框
-      this.$refs.myChild.clearAll();
-      this.getExtraMessage();
     },
 
     //检查参数

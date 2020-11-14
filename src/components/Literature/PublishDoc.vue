@@ -3,6 +3,7 @@
     <div class="title">
       已发布的文献
       <span>({{ AllDoc }}篇)</span>
+      <Button type="primary">添加文献</Button>
     </div>
     <Table :columns="columns1" :data="docList" :key="reflush">
       <template slot-scope="{ index }" slot="action">

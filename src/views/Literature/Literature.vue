@@ -4,8 +4,12 @@
     <div class="literature-container">
       <!-- <PublishDoc /> -->
       <div class="title">
-        已发布的文献
-        <span>({{ AllDoc }}篇)</span>
+        <div>已发布的文献({{ AllDoc }}篇)</div>
+        <div>
+          <router-link to="/NewLiterature">
+          <Button type="primary" ghost>+添加文献</Button>
+        </router-link>
+        </div>
       </div>
       <Table :columns="columns1" :data="docList">
         <template slot-scope="{ index }" slot="action">
@@ -66,6 +70,10 @@ export default {
   methods: {
     //获取已发布文献
     getPublishDoc(pageNum) {
+      const docsmsg = this.$Message.loading({
+        content: "Loading...",
+        duration: 0,
+      });
       this.$http
         .get(this.domain + "doc", {
           params: {
@@ -74,11 +82,18 @@ export default {
           },
         })
         .then((res) => {
-        //   console.log(res.data);
-          this.AllDoc = res.data.data.total;
-          this.docList = res.data.data.list;
+          setTimeout(docsmsg, 0);
+          // console.log(res.data);
+          if (res.data.code == 1) {
+            this.$Message.success("获取成功");
+            this.AllDoc = res.data.data.total;
+            this.docList = res.data.data.list;
+          } else {
+            this.$Message.error('获取失败');
+          }
         })
         .catch((err) => {
+          setTimeout(docsmsg, 0);
           console.log(err);
         });
     },
@@ -91,10 +106,10 @@ export default {
         onOk: () => {
           //删除文献
           this.$http
-            .delete(this.domain + `docs/${this.docList[index].id}`,{
-              headers : {
-                "token" : sessionStorage.getItem('token')
-              }
+            .delete(this.domain + `docs/${this.docList[index].id}`, {
+              headers: {
+                token: sessionStorage.getItem("token"),
+              },
             })
             .then((res) => {
               console.log(res);
@@ -114,7 +129,7 @@ export default {
         path: "LiteratureDetail",
         query: {
           id: this.docList[index].id,
-          title: this.docList[index].title
+          title: this.docList[index].title,
         },
       });
       this.$http
@@ -144,6 +159,8 @@ export default {
     padding: 20px;
 
     .title {
+      display: flex;
+      justify-content: space-between;
       padding: 3px;
       font-size: 18px;
       font-weight: bold;

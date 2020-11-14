@@ -9,6 +9,7 @@ import ServiceManager from '@/views/ServiceManager/ServiceManager'
 import JournalDetail from '@/views/JournalDetail/JournalDetail'
 import Login from "@/views/Login/Login"
 import LiteratureDetail from '@/views/LiteratureDetail/LiteratureDetail'
+import NewLiterature from '@/views/LiteratureDetail/NewLiterature'
 import Errors from '@/views/Error/Error'
 Vue.use(Router)
 
@@ -61,6 +62,11 @@ export default new Router({
           path: 'LiteratureDetail',
           name: 'LiteratureDetail',
           component: LiteratureDetail
+        },
+        {
+          path: 'NewLiterature',
+          name: "NewLiterature",
+          component: NewLiterature
         }
       ]
     },

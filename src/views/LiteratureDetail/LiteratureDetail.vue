@@ -44,7 +44,7 @@
             type="textarea"
             :autosize="{ maxRows: 5, minRows: 5 }"
             v-model="doc.abstractText"
-          ></Input>
+          />
         </div>
         <div>
           <Button @click="returnBack" style="margin-right: 20px">返回</Button>
@@ -104,10 +104,23 @@ export default {
     getTheDoc() {
       let id = this.$route.query.id;
       //   console.log(id);
-
+       const docsmsg = this.$Message.loading({
+        content: "Loading...",
+        duration: 0,
+      });
       this.$http.get(this.domain + `doc/${id}`).then((res) => {
+        setTimeout(docsmsg, 0);
         console.log(res.data);
-        this.doc = res.data.data;
+        if(res.data.code == 1){
+          this.$Message.success("获取成功");
+           this.doc = res.data.data;
+        } else {
+          this.$Message.error('获取失败');
+        }
+       
+      }).catch(err=>{
+        console.log(err);
+        setTimeout(docsmsg, 0);
       });
     },
 
@@ -148,6 +161,7 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+          this.$Message.error("修改失败");
         });
     },
 
