@@ -298,7 +298,7 @@ export default {
         .catch((err) => {
           console.log(err);
           if(this.periodicalId == 0){
-              this.$Message.error("收录选择有误");
+              this.$Message.error("请选择有效的期刊收录");
           } else {
               this.$Message.error("服务器连接失败");
           }

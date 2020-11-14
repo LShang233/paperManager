@@ -257,6 +257,9 @@ export default {
       this.time = time; //刊期
       this.fromJournal = fromJournal; //收录
       this.paperType = paperType; //类别
+      if(!periodicalId){
+        periodicalId = 0;
+      }
       this.periodicalId = periodicalId; //期刊id
       // console.log(time + ' ' + fromJournal + ' ' + paperType);
     },
@@ -295,7 +298,12 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          this.$Message.error("服务器错误|请检查字段是否有效");
+          
+          if(this.periodicalId == 0){
+            this.$Message.error("请选择有效的期刊收录");
+          } else {
+            this.$Message.error("服务器连接失败");
+          }
         });
     },
 

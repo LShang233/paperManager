@@ -78,6 +78,8 @@ export default {
         abstractText: "",
         periodicalId: ""
       },
+      periodicalId: 0,
+      fromJournal: '',
     };
   },
 
@@ -87,10 +89,17 @@ export default {
       if (time) {
         console.log(time, fromJournal, paperType, periodicalId);
         this.doc.publishTime = time;
-        this.doc.fromJournal = fromJournal;
+        if(periodicalId == this.doc.periodicalId){
+          this.doc.fromJournal = this.fromJournal;
+        } else {
+          this.doc.fromJournal = fromJournal;
+        }
         this.doc.paperType = paperType;
+        if(!periodicalId){
+          periodicalId = 0;
+        }
         this.doc.periodicalId = periodicalId;
-      }
+      } 
     },
 
     //查看文件
@@ -121,6 +130,7 @@ export default {
         if(res.data.code == 1){
           this.$Message.success("获取成功");
            this.doc = res.data.data;
+           this.fromJournal = res.data.data.fromJournal;
         } else {
           this.$Message.error('获取失败');
         }
@@ -168,7 +178,12 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          this.$Message.error("修改失败");
+         
+          if(this.doc.periodicalId == 0){
+            this.$Message.error('请选择有效期刊收录');
+          } else {
+             this.$Message.error("修改失败");
+          }
         });
     },
 
