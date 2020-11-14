@@ -258,7 +258,7 @@ export default {
         this.file.name.length
       );
       //修改文件名
-      let newfile = new File([this.file], this.docName + suffix);
+      let newfile = new File([this.file], this.doc.title + suffix);
       fileData.append("file", newfile);
 
       this.$http
