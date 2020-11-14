@@ -11,6 +11,20 @@ import Login from "@/views/Login/Login"
 import LiteratureDetail from '@/views/LiteratureDetail/LiteratureDetail'
 import NewLiterature from '@/views/LiteratureDetail/NewLiterature'
 import Errors from '@/views/Error/Error'
+
+// // 懒加载路由，实现页面渲染速度提高
+// const Layout = ()=>('@/views/Layout/Layout')
+// const Journal = ()=>('@/views/Journal/Journal')
+// const Literature = ()=>('@/views/Literature/Literature')
+// const ReviewLiterature = ()=>('@/views/ReviewLiterature/ReviewLiterature')
+// const CustomerService = ()=>('@/views/CustomerService/CustomerService')
+// const ServiceManager = ()=>('@/views/ServiceManager/ServiceManager')
+// const JournalDetail = ()=>('@/views/JournalDetail/JournalDetail')
+// const Login = ()=>("@/views/Login/Login")
+// const LiteratureDetail = ()=>('@/views/LiteratureDetail/LiteratureDetail')
+// const NewLiterature = ()=>('@/views/LiteratureDetail/NewLiterature')
+// const Errors = ()=>('@/views/Error/Error')
+
 Vue.use(Router)
 
 export default new Router({
