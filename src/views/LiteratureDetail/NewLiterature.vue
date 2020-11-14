@@ -17,14 +17,14 @@
             />
           </div>
         </div>
-         <div class="submit-select">
+        <div class="submit-select">
           <div>
             <p>上传稿件：</p>
             <div>
               选择文件
               <input
                 type="file"
-                accept=".text,.txt,.doc,.docx"
+                accept=".doc,.docx"
                 @change="getFile($event)"
               />
             </div>
@@ -52,16 +52,6 @@
             @getMessageList="getAllMessage"
             :Width="400"
           />
-        </div>
-      </div>
-      <div class="doc-container second-container">
-        <div>
-          <p>联系电话：</p>
-          <Input v-model="doc.phone" style="width: 400px" />
-        </div>
-        <div class="submit-title">
-          <p>电子邮箱：</p>
-          <Input v-model="doc.email" style="width: 400px" />
         </div>
         <div class="message-add">
           <div class="keywords">
@@ -101,10 +91,10 @@
             </div>
           </div>
         </div>
-         <div>
+        <div>
           <p>摘要：</p>
           <Input
-            style="width: 400px;"
+            style="width: 400px"
             type="textarea"
             maxlength="300"
             :autosize="{ maxRows: 6, minRows: 6 }"
@@ -112,8 +102,18 @@
           />
         </div>
       </div>
+      <div class="doc-container second-container">
+        <!-- <div>
+          <p>联系电话：</p>
+          <Input v-model="doc.phone" style="width: 400px" />
+        </div>
+        <div class="submit-title">
+          <p>电子邮箱：</p>
+          <Input v-model="doc.email" style="width: 400px" />
+        </div> -->
+      </div>
     </div>
-    <div style="text-align: center; margin-top: 80px">
+    <div style="text-align: center; margin: 30px 0">
       <Button @click="returnBack" style="margin-right: 20px">返回</Button>
       <Button @click="clear" type="error" ghost style="margin-right: 20px"
         >清空</Button
@@ -137,8 +137,6 @@ export default {
     return {
       doc: {
         author: "",
-        phone: "",
-        email: "",
         publishTime: "",
         fromJournal: "",
         paperType: "",
@@ -147,7 +145,7 @@ export default {
         abstractText: "",
         periodicalId: "",
       },
-      periodicalId: "",
+      periodicalId: 0,
       file: "", //文件
       countTags: [], //标签组
       inputVisible: false, //是否显示输入框
@@ -174,6 +172,9 @@ export default {
       this.doc.publishTime = time;
       this.doc.fromJournal = fromJournal;
       this.doc.paperType = paperType;
+      if (!periodicalId) {
+        periodicalId = 0;
+      }
       this.periodicalId = periodicalId;
     },
 
@@ -207,14 +208,14 @@ export default {
         arr.push("类别");
         state = false;
       }
-      if (!this.isPhone(this.doc.phone) || !this.doc.phone) {
-        state = false;
-        arr.push("电话");
-      }
-      if (!this.isEmail(this.doc.email) || !this.doc.email) {
-        state = false;
-        arr.push("邮箱");
-      }
+      //   if (!this.isPhone(this.doc.phone) || !this.doc.phone) {
+      //     state = false;
+      //     arr.push("电话");
+      //   }
+      //   if (!this.isEmail(this.doc.email) || !this.doc.email) {
+      //     state = false;
+      //     arr.push("邮箱");
+      //   }
       if (!this.doc.publishTime) {
         arr.push("刊期");
         state = false;
@@ -242,14 +243,7 @@ export default {
       if (!state) {
         return false;
       }
-      //表单数据
-      let data = new FormData();
-      data.append("title", this.doc.title);
-      data.append("keyword", this.doc.keyword);
-      data.append("author", this.doc.author);
-      data.append("email", this.doc.email);
-      data.append("phone", this.doc.phone);
-      data.append("abstractText", this.doc.abstractText);
+
       //文件上传
       let fileData = new FormData();
       //后缀名
@@ -261,33 +255,16 @@ export default {
       let newfile = new File([this.file], this.doc.title + suffix);
       fileData.append("file", newfile);
 
-      this.$http
-        .post(this.domain + "con/stc", data)
-        .then((res) => {
-          console.log(res, "上传文件");
-          if (res.data.code != 1) {
-            return false;
-          }
+      //上传文件
+      //配置请求头
+      let config = {
+        headers: { "Content-Type": "multipart/form-data" },
+      };
 
-          //上传文件
-          //配置请求头
-          let config = {
-            headers: { "Content-Type": "multipart/form-data" },
-          };
-          return this.$http.post(this.domain + "con/fu", fileData, config);
-        })
+      this.$http
+        .post(this.domain + "con/fu", fileData, config)
         .then((res) => {
-          console.log(res, "投稿");
-          if (res.data.code != 1) {
-            //失败状态
-            return false;
-          }
-          return this.$http.post(
-            this.domain + `cons/${true}/${this.doc.title}/${this.doc.email}`
-          );
-        })
-        .then((res) => {
-          console.log(res, "审核");
+          console.log(res, "文件");
           if (res.data.code != 1) {
             //失败状态
             return false;
@@ -311,12 +288,20 @@ export default {
               this.returnBack();
             }, 1000);
           } else {
-            this.$Messsage.error("添加失败");
+            if (this.periodicalId == 0) {
+              this.$Message.error("收录选择有误");
+            } else {
+              this.$Messsage.error("添加失败");
+            }
           }
         })
         .catch((err) => {
           console.log(err);
-          this.$Message.error("服务器连接失败");
+          if(this.periodicalId == 0){
+              this.$Message.error("收录选择有误");
+          } else {
+              this.$Message.error("服务器连接失败");
+          }
         });
     },
 
@@ -344,18 +329,18 @@ export default {
       this.inputValue = "";
     },
 
-    //校验邮箱
-    isEmail(email) {
-      let reg = /^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/;
-      if (!reg.test(email)) return false;
-      else return true;
-    },
-    //检查电话
-    isPhone(phone) {
-      let reg = /^1[0-9]{10}$/;
-      if (!reg.test(phone)) return false;
-      else return true;
-    },
+    // //校验邮箱
+    // isEmail(email) {
+    //   let reg = /^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/;
+    //   if (!reg.test(email)) return false;
+    //   else return true;
+    // },
+    // //检查电话
+    // isPhone(phone) {
+    //   let reg = /^1[0-9]{10}$/;
+    //   if (!reg.test(phone)) return false;
+    //   else return true;
+    // },
   },
   watch: {
     countTags(newVal, oldVal) {
