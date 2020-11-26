@@ -12,6 +12,7 @@
             prefix="ios-mail"
             placeholder="请输入邮箱"
             style="width: 320px; height: 40px"
+            @keyup.enter.native="login"
           />
           <Input
             v-model="l_pwd"
@@ -20,6 +21,7 @@
             prefix="md-lock"
             placeholder="请输入您的密码"
             style="width: 320px"
+            @keyup.enter.native="login"
           >
           </Input>
           <button class="login-btn" @click="login">登录</button>
@@ -30,24 +32,15 @@
             v-model="email"
             prefix="ios-mail"
             placeholder="请输入邮箱"
+            @keyup.enter.native="changePwd"
             style="width: 320px; height: 40px"
           />
-          <!-- <Input
-            v-model="verify"
-            suffix="md-flag"
-            placeholder="请输入验证码"
-            style="width: 320px"
-          >
-            <Icon slot="prepend" type="md-flag" />
-            <Button slot="append" @click="sendVerify" id="login-verify">{{
-              clock
-            }}</Button>
-          </Input> -->
           <div class="verify">
             <Input
               v-model="verify"
               prefix="md-flag"
               placeholder="请输入验证码"
+              @keyup.enter.native="changePwd"
               style="width: 220px"
             />
             <Button @click="sendVerify" id="login-verify">{{ clock }}</Button>
@@ -58,6 +51,7 @@
             password
             prefix="md-lock"
             placeholder="请输入您的新密码"
+            @keyup.enter.native="changePwd"
             style="width: 320px; height: 40px"
           />
           <Input
@@ -67,6 +61,7 @@
             prefix="md-lock"
             placeholder="请再次输入新密码"
             style="width: 320px; height: 40px"
+            @keyup.enter.native="changePwd"
           />
           <button class="login-btn" @click="changePwd">修改密码</button>
           <span @click="flag = false">返回登录</span>
@@ -91,7 +86,7 @@ export default {
   },
   methods: {
     // 验证邮箱格式
-    isEmailValid(){
+    isEmailValid() {
       const reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
       return reg.test(this.email);
     },
@@ -102,9 +97,9 @@ export default {
         data.append("username", this.email);
         data.append("password", this.l_pwd);
         const lmsg = this.$Message.loading({
-          content : "登录中...",
-          duration : 0
-        })
+          content: "登录中...",
+          duration: 0,
+        });
         this.$http
           .post(this.domain + "user/login", data)
           .then((res) => {
@@ -112,8 +107,8 @@ export default {
             if (res.data.code === 1) {
               this.$Message.success("登录成功！");
               sessionStorage.setItem("token", res.data.data.token);
-              sessionStorage.setItem("nickname",res.data.data.nickname);
-              sessionStorage.setItem("email",this.email);
+              sessionStorage.setItem("nickname", res.data.data.nickname);
+              sessionStorage.setItem("email", this.email);
               setTimeout(() => {
                 window.location.href = "/paperhub/manager/Journal";
               }, 1000);
@@ -144,17 +139,18 @@ export default {
         }, 1000);
 
         let formdata = new FormData();
-        formdata.append("email",this.email);
+        formdata.append("email", this.email);
         const vmsg = this.$Message.loading({
-          content : "登录中...",
-          duration : 0
-        })
-        this.$http.post(this.domain + "user/getCode",formdata)
-        .then(res=>{
+          content: "登录中...",
+          duration: 0,
+        });
+        this.$http
+          .post(this.domain + "user/getCode", formdata)
+          .then((res) => {
             setTimeout(vmsg, 0);
-            this.$Message.success("验证码已发送，请查收(两分钟内有效)");  
-        })
-        .catch((err) => {
+            this.$Message.success("验证码已发送，请查收(两分钟内有效)");
+          })
+          .catch((err) => {
             this.$Message.error("服务器连接失败");
           });
       } else {
@@ -163,31 +159,30 @@ export default {
     },
     // 修改密码
     changePwd() {
-      if(this.isEmailValid() && (this.r_pwd1 == this.r_pwd2)){
-        if(this.verify != ''){
+      if (this.isEmailValid() && this.r_pwd1 == this.r_pwd2) {
+        if (this.verify != "") {
           let data = new FormData();
-          data.append('email',this.email);
-          data.append('code',this.verify);
-          data.append('password',this.r_pwd2);
+          data.append("email", this.email);
+          data.append("code", this.verify);
+          data.append("password", this.r_pwd2);
           const cmsg = this.$Message.loading({
-          content : "登录中...",
-          duration : 0
-        })
-          this.$http.post(this.domain + "user/fp",data)
-          .then(res=>{
+            content: "登录中...",
+            duration: 0,
+          });
+          this.$http.post(this.domain + "user/fp", data).then((res) => {
             setTimeout(cmsg, 0);
-            if(res.data.code == 1){
-              this.$Message.success("修改密码成功！"); 
+            if (res.data.code == 1) {
+              this.$Message.success("修改密码成功！");
               this.flag = false;
-            }else{
+            } else {
               this.$Message.warning(res.data.msg);
             }
-          })
-        }else{
-          this.$Message.warning('请填写验证码！');
+          });
+        } else {
+          this.$Message.warning("请填写验证码！");
         }
-      }else{
-        this.$Message.warning('请检查邮箱格式或两次密码是否一致');
+      } else {
+        this.$Message.warning("请检查邮箱格式或两次密码是否一致");
       }
     },
   },
