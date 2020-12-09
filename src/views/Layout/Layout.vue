@@ -12,6 +12,11 @@ export default {
     name: "Layout",
     components: {
         Header
+    },
+    beforeCreate(){
+      if(!sessionStorage.getItem('token')){
+        location.replace("/paperhub/manager/");
+      }
     }
 }
 </script>

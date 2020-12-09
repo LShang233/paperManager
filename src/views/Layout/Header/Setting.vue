@@ -147,6 +147,7 @@ export default {
     exit() {
       let flag = confirm("确定退出登录吗？");
       if (flag) {
+        sessionStorage.setItem('token','');
         this.$http.get(this.domain + "user/logout").then((res) => {
           this.$Message.success("退出成功！");
           setTimeout(() => {
