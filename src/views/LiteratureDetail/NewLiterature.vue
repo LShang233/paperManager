@@ -176,6 +176,7 @@ export default {
         periodicalId = 0;
       }
       this.periodicalId = periodicalId;
+      this.doc.periodicalId = periodicalId;
     },
 
     //返回文献管理
