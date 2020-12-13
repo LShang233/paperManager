@@ -77,11 +77,22 @@ export default {
   methods: {
     // 判断最高管理员
     isMainManager() {
-      if (sessionStorage.getItem("email") == "429075156@qq.com") return;
-      else {
-        this.$Message.info("请登录！");
-        window.location.replace("/Journal");
-      }
+      this.$http
+        .post(
+          this.domain + `user/isAdmin`,
+          {},
+          {
+            headers: {
+              token: sessionStorage.getItem("token"),
+            },
+          }
+        )
+        .then((res) => {
+          if (res.data.code == 0) {
+            this.$Message.info("无权限！");
+            window.location.replace("/Journal");
+          }
+        });
     },
 
     // 删除客服
@@ -98,7 +109,7 @@ export default {
               this.$Message.info("删除成功！");
               location.reload();
             } else {
-              this.$Message.info(res.data.msg);
+              this.$Message.info(res.data.msg + "邮箱或密码错误");
             }
           });
       }
@@ -115,11 +126,11 @@ export default {
     // 添加客服
     addNewService() {
       if (this.username == "") {
-        this.$Message.error("请输入用户邮箱！")
+        this.$Message.error("请输入用户邮箱！");
         return;
       }
       if (this.nickname == "") {
-        this.$Message.error("请输入用户昵称！")
+        this.$Message.error("请输入用户昵称！");
         return;
       }
       this.tips = "";
@@ -149,24 +160,34 @@ export default {
         content: "Loading...",
         duration: 0,
       });
-      this.$http.get(this.domain + "user/getList").then((res) => {
-        if (res.data.code == 1) {
+      this.$http
+        .get(this.domain + "user/getList", {
+          headers: {
+            token: sessionStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
           setTimeout(getServiceListMsg, 0);
-          this.$Message.success("获取成功");
-          let list = res.data.data;
-          for (let item in list) {
-            this.dataList.push({
-              name: list[item].nickname,
-              mail: list[item].mail,
-              id: list[item].id,
-            });
+          if (res.data.code == 1) {
+            this.$Message.success("获取成功");
+            let list = res.data.data;
+            for (let item in list) {
+              this.dataList.push({
+                name: list[item].nickname,
+                mail: list[item].mail,
+                id: list[item].id,
+              });
+            }
+          } else {
+            this.$Message.error(res.data.msg);
           }
-        }
-      });
+        });
     },
   },
   mounted() {
     this.getServiceList();
+  },
+  created() {
     this.isMainManager();
   },
 };

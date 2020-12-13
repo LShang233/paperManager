@@ -14,29 +14,51 @@
       <li>
         <router-link to="/CustomerService">客服聊天</router-link>
       </li>
-      <li v-if="isMainManager() == 1">
+      <li v-if="isAdmin">
         <router-link to="/ServiceManager">客服管理</router-link>
       </li>
     </ul>
-    <Setting/>
+    <Setting />
   </div>
 </template>
 <script>
-import Setting from "./Setting"
+import Setting from "./Setting";
 export default {
   name: "Header",
-  components : {
-    Setting
+  components: {
+    Setting,
+  },
+  data() {
+    return {
+      isAdmin: 0,
+    };
   },
   methods: {
+    // 判断最高管理员
     isMainManager() {
-      if(sessionStorage.getItem("email") == "429075156@qq.com") return 1;
-      else return 0;
-    }
+      this.$http
+        .post(
+          this.domain + `user/isAdmin`,
+          {},
+          {
+            headers: {
+              token: sessionStorage.getItem("token"),
+            },
+          }
+        )
+        .then((res) => {
+          if (res.data.code == 0) {
+            this.$Message.info("无权限！");
+            this.isAdmin = 0;
+          } else {
+            this.isAdmin = 1;
+          }
+        });
+    },
   },
-  mounted() {
-this.isMainManager();
-  }
+  created(){
+    this.isMainManager();
+  },
 };
 </script>
 <style lang="scss" scoped>
