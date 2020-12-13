@@ -16,6 +16,17 @@ export default {
     beforeCreate(){
       if(!sessionStorage.getItem('token')){
         location.replace("/paperhub/manager/");
+      }else{
+        this.$http.post(this.domain + 'user/authentication',{},{
+          headers : {
+            "token" : sessionStorage.getItem('token')
+          }
+        })
+        .then(res=>{
+          if(res.data.code != 1) {
+            location.replace('/paperhub/manager/');
+          }
+        })
       }
     }
 }

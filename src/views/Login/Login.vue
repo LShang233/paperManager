@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-pane">
       <div class="login-title">
-        <span>期刊发表网</span>
+        <span>集文网</span>
         <p>管理员端</p>
       </div>
       <div class="login-main">
