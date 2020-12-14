@@ -40,6 +40,7 @@
           maxlength="255"
           placeholder="输入有效信息，自动搜索有关的收录期刊"
           @on-change="delaySearch"
+          @on-blur="journalShow = false"
         />
         <transition name="close">
           <ul

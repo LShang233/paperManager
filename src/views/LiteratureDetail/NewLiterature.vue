@@ -1,7 +1,7 @@
 <template>
   <div class="new-literature">
     <Banner :title="'添加文献'" />
-    <div class="big-container" @click="$refs.child.journalShow = false">
+    <div class="big-container">
       <div class="doc-container">
         <div>
           <p>作者：</p>

@@ -1,5 +1,5 @@
 <template>
-  <div @click="$refs.child.journalShow = false">
+  <div>
     <Banner :title="'修改文献'" />
     <div class="big-container">
       <div class="doc-container">
@@ -27,7 +27,7 @@
         </div>
         <div>
           <p>关键词：</p>
-          <Input v-model="doc.keyword" style="width: 400px" maxlength="255"/>
+          <Input v-model="doc.keyword" style="width: 400px" maxlength="255" />
         </div>
         <div>
           <EditMessage
@@ -42,7 +42,7 @@
           <Input
             style="width: 400px"
             type="textarea"
-            maxlength="300" 
+            maxlength="300"
             show-word-limit
             :autosize="{ maxRows: 5, minRows: 5 }"
             v-model="doc.abstractText"
@@ -76,10 +76,10 @@ export default {
         keyword: "",
         title: "",
         abstractText: "",
-        periodicalId: ""
+        periodicalId: "",
       },
       periodicalId: 0,
-      fromJournal: '',
+      fromJournal: "",
     };
   },
 
@@ -89,56 +89,88 @@ export default {
       if (time) {
         console.log(time, fromJournal, paperType, periodicalId);
         this.doc.publishTime = time;
-        if(periodicalId == this.doc.periodicalId){
+        if (periodicalId == this.doc.periodicalId) {
           this.doc.fromJournal = this.fromJournal;
         } else {
           this.doc.fromJournal = fromJournal;
         }
         this.doc.paperType = paperType;
-        if(!periodicalId){
+        if (!periodicalId) {
           periodicalId = 0;
         }
         this.doc.periodicalId = periodicalId;
-      } 
+      }
     },
 
     //查看文件
     look() {
-      this.$http.get(this.domain + "cons/" + this.doc.title,{
+      /* this.$http.get(this.domain + "cons/" + this.doc.title,{
         headers : {
           'token' : sessionStorage.getItem('token')
         }
       }).then((res) => {
         console.log(res);
-        // window.location.href = res.request.responseURL;
-        window.open(res.request.responseURL,'top');
+        //window.location = res.request.responseURL;
+        //window.open(res.request.responseURL,'top');
         // console.log(res.request.responseURL);
-      });
+      }); */
+
+      this.$http
+        .get(this.domain + "cons/fd", {
+          params: {
+            name: this.doc.title,
+          },
+          headers: { token: sessionStorage.getItem("token") },
+          responseType: "blob",
+        })
+        .then((res) => {
+          // const content = res;
+          console.log(res);
+          const content = res.data;
+          const blob = new Blob([content]);
+          const fileName = this.doc.title + ".doc";
+          if ("download" in document.createElement("a")) {
+            // 非IE下载
+            const elink = document.createElement("a");
+            elink.download = fileName;
+            elink.style.display = "none";
+            elink.href = URL.createObjectURL(blob);
+            document.body.appendChild(elink);
+            elink.click();
+            URL.revokeObjectURL(elink.href); // 释放URL 对象
+            document.body.removeChild(elink);
+          } else {
+            // IE10+下载
+            navigator.msSaveBlob(blob, fileName);
+          }
+        });
     },
 
     //获取要修改的文献
     getTheDoc() {
       let id = this.$route.query.id;
       //   console.log(id);
-       const docsmsg = this.$Message.loading({
+      const docsmsg = this.$Message.loading({
         content: "Loading...",
         duration: 0,
       });
-      this.$http.get(this.domain + `doc/${id}`).then((res) => {
-        setTimeout(docsmsg, 0);
-        console.log(res.data);
-        if(res.data.code == 1){
-          this.$Message.success("获取成功");
-           this.doc = res.data.data;
-           this.fromJournal = res.data.data.fromJournal;
-        } else {
-          this.$Message.error('获取失败');
-        }
-       
-      }).catch(err=>{
-        console.log(err);
-        setTimeout(docsmsg, 0);
-      });
+      this.$http
+        .get(this.domain + `doc/${id}`)
+        .then((res) => {
+          setTimeout(docsmsg, 0);
+          console.log(res.data);
+          if (res.data.code == 1) {
+            this.$Message.success("获取成功");
+            this.doc = res.data.data;
+            this.fromJournal = res.data.data.fromJournal;
+          } else {
+            this.$Message.error("获取失败");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setTimeout(docsmsg, 0);
+        });
     },
 
     //返回文献管理
@@ -178,11 +210,11 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-         
-          if(this.doc.periodicalId == 0){
-            this.$Message.error('请选择有效期刊收录');
+
+          if (this.doc.periodicalId == 0) {
+            this.$Message.error("请选择有效期刊收录");
           } else {
-             this.$Message.error("修改失败");
+            this.$Message.error("修改失败");
           }
         });
     },
@@ -211,7 +243,7 @@ export default {
         arr.push("刊期");
         state = false;
       }
-      if(!this.doc.abstractText) {
+      if (!this.doc.abstractText) {
         arr.push("摘要");
         state = false;
       }

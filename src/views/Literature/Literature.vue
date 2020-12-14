@@ -59,7 +59,7 @@
           >
         </template>
       </Table>
-      <Page class="page" :total="docNum" @on-change="changePage" />
+      <Page class="page" :total="docNum" page-size=9 @on-change="changePage" />
     </div>
   </div>
 </template>

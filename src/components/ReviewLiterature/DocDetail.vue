@@ -46,7 +46,7 @@
           :mask-closable="false"
           width="500"
         >
-          <div class="extra-message" @click="$refs.myChild.journalShow = false">
+          <div class="extra-message">
             <ExtraMessage
               :extraMessage="docMessage"
               @getMessageList="getExtraMessage"
@@ -200,34 +200,30 @@ export default {
   methods: {
     //审核文献是否通过（status为状态）
     review(status) {
-      if (!status) {
-        //拒绝后通知面板消失
-        this.docModal = false;
-      } else {
-        this.publishModal = true;
-      }
+      let data = new FormData();
+      data.append("isAccess", status);
+      data.append("title", this.docMessage.title);
+      data.append("email", this.docMessage.email);
 
       this.$http
-        .post(
-          this.domain +
-            `cons/${status}/${this.docMessage.title}/${this.docMessage.email}`,
-          {},
-          {
-            headers: {
-              token: sessionStorage.getItem("token"),
-            },
-          }
-        )
+        .post(this.domain + "cons", data, {
+          headers: {
+            token: sessionStorage.getItem("token"),
+          },
+        })
         .then((res) => {
           console.log(res.data);
           if (res.data.code == 0) {
             this.$Message.error(res.data.msg);
           } else {
             if (!status) {
+              //拒绝后通知面板消失
+              this.docModal = false;
               this.$Message.info("已拒绝");
               //删除对应的项
               this.$parent.deleteDoc(this.docMessage.title);
             }
+            this.publishModal = true;
           }
         })
         .catch((err) => {
@@ -237,8 +233,41 @@ export default {
 
     //查看文件
     look() {
+      // let data = new FormData();
+      // data.append("name",this.docMesssage.title);
+      this.$http.get(this.domain + 'cons/fd',{
+        params: {
+          name: this.docMessage.title
+        },
+        headers: {'token' : sessionStorage.getItem('token')},
+        responseType: "blob",
+      })
+      .then((res) => {
+          console.log(res);
+          // window.location.href = res.request.responseURL;
+
+          // window.open(res.request.responseURL, "top");
+          const content = res.data;
+          const blob = new Blob([content]);
+          const fileName = this.doc.title + ".doc";
+          if ("download" in document.createElement("a")) {
+            // 非IE下载
+            const elink = document.createElement("a");
+            elink.download = fileName;
+            elink.style.display = "none";
+            elink.href = URL.createObjectURL(blob);
+            document.body.appendChild(elink);
+            elink.click();
+            URL.revokeObjectURL(elink.href); // 释放URL 对象
+            document.body.removeChild(elink);
+          } else {
+            // IE10+下载
+            navigator.msSaveBlob(blob, fileName);
+          }
+        });
+        /*
       this.$http
-        .get(this.domain + "cons/" + this.docMessage.title, {
+        .get(this.domain + "cons/fd" + this.docMessage.title, data,{
           headers: {
             token: sessionStorage.getItem("token"),
           },
@@ -250,6 +279,7 @@ export default {
           window.open(res.request.responseURL, "top");
           // console.log(res.request.responseURL);
         });
+        */
     },
 
     //获取子组件传来的值
@@ -257,7 +287,7 @@ export default {
       this.time = time; //刊期
       this.fromJournal = fromJournal; //收录
       this.paperType = paperType; //类别
-      if(!periodicalId){
+      if (!periodicalId) {
         periodicalId = 0;
       }
       this.periodicalId = periodicalId; //期刊id
@@ -298,8 +328,8 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          
-          if(this.periodicalId == 0){
+
+          if (this.periodicalId == 0) {
             this.$Message.error("请选择有效的期刊收录");
           } else {
             this.$Message.error("服务器连接失败");
