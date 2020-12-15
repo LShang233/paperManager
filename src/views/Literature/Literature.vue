@@ -59,7 +59,7 @@
           >
         </template>
       </Table>
-      <Page class="page" :total="docNum" page-size=9 @on-change="changePage" />
+      <Page class="page" :total="docNum" page-size=15 @on-change="changePage" />
     </div>
   </div>
 </template>
@@ -125,7 +125,7 @@ export default {
         .get(this.domain + "doc", {
           params: {
             pageNum: parseInt(pageNum),
-            pageSize: 9,
+            pageSize: 15,
           },
         })
         .then((res) => {
@@ -197,7 +197,7 @@ export default {
         .get(this.domain + "doc", {
           params: {
             pageNum: pageNum,
-            pageSize: 9,
+            pageSize: 15,
             input: this.searchContent,
             attach: this.attach, //以标题来搜索
           },

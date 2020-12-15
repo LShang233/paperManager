@@ -1,6 +1,6 @@
 <template>
   <div id="header-container">
-    <div class="header-logo">期刊管理平台</div>
+    <div class="header-logo">集文管理平台</div>
     <ul>
       <li>
         <router-link to="/Journal">期刊管理</router-link>

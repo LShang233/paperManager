@@ -24,6 +24,39 @@
             @keyup.enter.native="login"
           >
           </Input>
+          <div
+            style="
+              width: 320px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <Input
+              v-model="code"
+              prefix="ios-plane"
+              placeholder="请输入图形验证码(不区分大小写)"
+              style="width: 220px"
+              @keyup.enter.native="login"
+            ></Input>
+            <Poptip trigger="hover" width="150px">
+              <div slot="content">点击刷新验证码</div>
+              <div
+                @click="getLoginVerify"
+                style="
+                  width: 100px;
+                  height: 32px;
+                  cursor: pointer;
+                  border: 1px solid #dcdee2;
+                  border-radius: 5px;
+                  display : flex;
+                  justify-content : center;
+                "
+              >
+                <img style="width : 90px;height : 28px" :src="code_img" alt="">
+              </div>
+            </Poptip>
+          </div>
           <button class="login-btn" @click="login">登录</button>
           <span @click="flag = true">找回密码</span>
         </div>
@@ -78,10 +111,15 @@ export default {
       flag: false,
       email: "",
       l_pwd: "",
+      // 找回密码的密码
       r_pwd1: "",
       r_pwd2: "",
+      // 找回密码验证码
       verify: "",
       clock: "发送验证码",
+      // 登录验证码
+      code: "",
+      code_img : require("../../assets/code.png")
     };
   },
   methods: {
@@ -92,10 +130,11 @@ export default {
     },
     // 登录
     login() {
-      if (this.isEmailValid() && this.l_pwd) {
+      if (this.isEmailValid() && this.l_pwd && this.code) {
         let data = new FormData();
         data.append("username", this.email);
         data.append("password", this.l_pwd);
+        data.append("code",this.code);
         const lmsg = this.$Message.loading({
           content: "登录中...",
           duration: 0,
@@ -113,7 +152,8 @@ export default {
                 window.location.href = "/paperhub/manager/Journal";
               }, 1000);
             } else {
-              this.$Message.warning("邮箱与密码不匹配，请检查后重试");
+              this.$Message.warning(res.data.msg);
+              this.getLoginVerify();
             }
           })
           .catch((err) => {
@@ -184,6 +224,21 @@ export default {
       } else {
         this.$Message.warning("请检查邮箱格式或两次密码是否一致");
       }
+    },
+    // 获取登录验证码
+    getLoginVerify() {
+      if (this.email == "" || this.email == null) {
+        this.$Message.warning("请先填写邮箱！");
+        return;
+      }
+      let data = new FormData();
+      data.append("email", this.email);
+      this.$http.post(this.domain + "user/drawCode", data,{
+        responseType : "blob"
+      }).then((res) => {
+        const blob = new Blob([res.data]);
+        this.code_img = window.URL.createObjectURL(blob);
+      });
     },
   },
 };
