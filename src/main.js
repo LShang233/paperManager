@@ -9,7 +9,7 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
-Vue.prototype.domain = "http://119.3.228.123:80/article/"
+Vue.prototype.domain = "http://47.105.50.27/article/"
 Vue.use(iView)
 
 //  忽略警告

@@ -151,7 +151,7 @@ export default {
         this.$http.get(this.domain + "user/logout").then((res) => {
           this.$Message.success("退出成功！");
           setTimeout(() => {
-            window.location.href = "/paperhub/manager/";
+            window.location.href = "/manager/";
           }, 1000);
         });
       }

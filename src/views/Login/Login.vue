@@ -149,7 +149,7 @@ export default {
               sessionStorage.setItem("nickname", res.data.data.nickname);
               sessionStorage.setItem("email", this.email);
               setTimeout(() => {
-                window.location.href = "/paperhub/manager/Journal";
+                window.location.href = "/manager/Journal";
               }, 1000);
             } else {
               this.$Message.warning(res.data.msg);

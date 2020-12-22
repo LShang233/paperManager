@@ -29,7 +29,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: "history",
-  base : "/paperhub/manager/",
+  base : "/manager/",
   routes: [
     {
       path : "/",
