@@ -62,7 +62,7 @@ export default {
     getVisitors(pageNum) {
       let data = new FormData();
       data.append("pageNum", pageNum);
-      data.append("pageSize", 4);
+      data.append("pageSize", 15);
         //加载
       const loadingMsg = this.$Message.loading({
         content: "Loading...",
