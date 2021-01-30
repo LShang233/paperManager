@@ -1,6 +1,6 @@
 <template>
   <div class="Literature">
-    <Banner :title="'文献管理'" />
+    <Banner :title="'文献管理'" :icon="'md-list'"/>
     <div class="literature-container">
       <!-- <PublishDoc /> -->
       <div class="title">

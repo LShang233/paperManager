@@ -11,6 +11,7 @@ import Login from "@/views/Login/Login"
 import LiteratureDetail from '@/views/LiteratureDetail/LiteratureDetail'
 import NewLiterature from '@/views/LiteratureDetail/NewLiterature'
 import Errors from '@/views/Error/Error'
+import VisitorsView from "@/views/VisitorsView/VisitorsView"
 
 // // 懒加载路由，实现页面渲染速度提高
 // const Layout = ()=>('@/views/Layout/Layout')
@@ -81,6 +82,11 @@ export default new Router({
           path: 'NewLiterature',
           name: "NewLiterature",
           component: NewLiterature
+        },
+        {
+          path: 'VisitorsView',
+          name: "VisitorsView",
+          component: VisitorsView
         }
       ]
     },

@@ -1,6 +1,6 @@
 <template>
   <div class="reviewliterature">
-    <Banner :title="'审核文献'" />
+    <Banner :title="'审核文献'" :icon="'md-list'"/>
     <div class="message-container">
       <div
         class="docMessage-list"

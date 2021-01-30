@@ -12,6 +12,9 @@
         <router-link to="/ReviewLiterature">审核文献</router-link>
       </li>
       <li>
+        <router-link to="/VisitorsView">游客管理</router-link>
+      </li>
+      <li>
         <router-link to="/CustomerService">客服聊天</router-link>
       </li>
       <li v-if="isAdmin">
