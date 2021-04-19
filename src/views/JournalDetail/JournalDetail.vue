@@ -278,7 +278,7 @@ export default {
       var data = new FormData();
       data.append("file", this.myPhoto);
       this.$http
-        .post(this.domain + "journal/upload", data, {
+        .post(this.domain + "journals/upload", data, {
           headers: {
             token: sessionStorage.getItem("token"),
           },

@@ -16,7 +16,7 @@
         </ul>
       </div>
       <div class="chat-utils">
-        <emoji @emotion="handleEmotion" />
+        <!-- <emoji @emotion="handleEmotion" /> -->
         <div class="chat-icon" @click="addModel = true">
           <svg
             t="1604055294598"
@@ -104,7 +104,7 @@
 </template>
 <script>
 import Header from "../../components/Banner/Banner";
-import Emoji from "./Emoji/Emoji";
+// import Emoji from "./Emoji/Emoji";
 import Message from "./Message/Message";
 import User from "../../components/CustomerService/User";
 import SockJs from "sockjs-client";
@@ -140,7 +140,7 @@ export default {
   },
   components: {
     Header,
-    Emoji,
+    // Emoji,
     Message,
     User,
   },
@@ -298,17 +298,7 @@ export default {
         /\$/gi,
         '<img src="https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/'
       );
-      this.content = this.content.replace(/\&/gi, '.gif" align="middle">');
-      // 获取日期
-      let date = new Date();
-      this.history.push({
-        type: 2,
-        name: "我",
-        date: date.getMonth() + 1 + "-" + date.getDate(),
-        time:
-          date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
-        content: this.content,
-      });
+
       // 发送至服务端
       let formdata = new FormData();
       formdata.append("content", this.content);
@@ -319,6 +309,22 @@ export default {
         )
         .then((res) => {
           console.log("发送成功！");
+          this.content = this.content.replace(/\&/gi, '.gif" align="middle">');
+          // // 获取日期
+          // let date = new Date();
+          // this.history.push({
+          //   type: 2,
+          //   name: "我",
+          //   date: date.getMonth() + 1 + "-" + date.getDate(),
+          //   time:
+          //     date.getHours() +
+          //     ":" +
+          //     date.getMinutes() +
+          //     ":" +
+          //     date.getSeconds(),
+          //   content: res.data.data.content,
+          // });
+          this.getHistory();
         });
       this.content = "";
       document.getElementById("chat-area").focus();
@@ -454,19 +460,6 @@ export default {
       this.clientId = id;
       this.customerName = "游客" + id;
       this.getHistory();
-      // 发送自动问候语
-      // if (this.newModel) {
-      //   let formdata = new FormData();
-      //   formdata.append("content", this.newModel);
-      //   this.$http
-      //     .post(
-      //       this.domain + `chat/${this.serverId}/sendTo/${this.clientId}`,
-      //       formdata
-      //     )
-      //     .then((res) => {
-      //       console.log("发送成功！");
-      //     });
-      // }
       //接收用户消息
       window.socket.subscribe("/user/queue/chat/" + this.clientId, (res) => {
         let data = JSON.parse(res.body);
